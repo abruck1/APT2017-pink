@@ -3,9 +3,32 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.views.generic import TemplateView
+
+import random
 
 from .models import Choice, Question
 
+
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(HomeView, self).get_context_data(*args, **kwargs)
+        num = None
+        some_list = [
+            random.randint(0, 100000000), 
+            random.randint(0, 100000000), 
+            random.randint(0, 100000000)
+        ]
+        condition_bool_item = True
+        if condition_bool_item:
+            num = random.randint(0, 100000000)
+        context = {
+            "num": num, 
+            "some_list": some_list
+        }
+        return context
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
