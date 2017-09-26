@@ -5,10 +5,14 @@ from django.views import generic
 from django.utils import timezone
 from django.views.generic import TemplateView
 
+from google.appengine.api import users
+from google.appengine.ext import ndb
+from django.http import HttpResponse
+from django.utils.deprecation import MiddlewareMixin
+
 import random
 
 from .models import Choice, Question
-
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -32,7 +36,7 @@ class HomeView(TemplateView):
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
-    context_object_name = 'latest_question_list'
+    context_object_name = 'latest_question_list'    
 
     def get_queryset(self):
         """Return the last five published questions not including those to be published in the future."""
