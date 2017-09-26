@@ -1,0 +1,10 @@
+{% extends "templates/base.html" %}
+
+{% block head_title %}Search || {{ page }}{% endblock head_title %}
+
+
+{% block content %}
+<h1>Search</h1>
+{% include 'templates/snippets/sidebar.html' %}
+<a href='mailto:{{ email }}'>Email us</a>
+{% endblock  %}
