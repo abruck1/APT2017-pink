@@ -45,6 +45,18 @@ def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
     """
     return ndb.Key('Guestbook', guestbook_name)
 
+def logout_func(self):
+    user = users.get_current_user()
+    if user:
+        url = users.create_logout_url(self.request.uri)
+        url_linktext = 'Logout'
+    else:
+        url = users.create_login_url(self.request.uri)
+        url_linktext = 'Login'
+        user = "Anonymous"
+    return (url, url_linktext, user)
+
+
 
 # [START greeting]
 class Author(ndb.Model):
@@ -121,16 +133,21 @@ class Guestbook(webapp2.RequestHandler):
 class HomePage(webapp2.RequestHandler):
 
     def get(self):
+        client_id = "521418538274-ful52avc9n4dm8isfbv7igrq54k3teh4.apps.googleusercontent.com"
+
         user = users.get_current_user()
+        print("user={}".format(user))
         if user:
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
+            #url = users.create_logout_url(self.request.uri)
+            url = "/view"
+            url_linktext = 'Enter Connex.us!'
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
             user = "Anonymous"
 
         template_values = {
+            'client_id': client_id,
             'page': "Guestbook",
             'user': user,
             'greetings': "Hello!",
@@ -179,6 +196,10 @@ class ViewPage(webapp2.RequestHandler):
             'page': "Guestbook",
             'email': email,
         }
+        url, url_linktext, user = logout_func(self)
+        template_values['url'] = url
+        template_values['url_linktext'] = url_linktext
+        template_values['user'] = user
 
         template = JINJA_ENVIRONMENT.get_template('templates/view.html')
         self.response.write(template.render(template_values))
