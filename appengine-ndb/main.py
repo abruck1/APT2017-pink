@@ -17,7 +17,6 @@
 # [START imports]
 import os
 
-from SignIn import SignIn
 from google.appengine.api import users
 #from google.appengine.ext import ndb
 
@@ -188,7 +187,7 @@ class SocialPage(webapp2.RequestHandler):
 
 # [START app]
 app = webapp2.WSGIApplication([
-    ('/', SignIn),
+    ('/', 'SignIn.SignIn'),
     ('/create', CreatePage),
     ('/view', ViewPage),
     ('/search', SearchPage),
