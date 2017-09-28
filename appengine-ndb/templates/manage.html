@@ -1,0 +1,26 @@
+{% extends "templates/base.html" %}
+
+{% block head_title %}Manage || {{ page }}{% endblock head_title %}
+
+
+{% block content %}
+
+<h1>Manage</h1>
+
+    <b><u>Streams I own:</u></b><br>
+    	{% for stream in streams %}
+        	{% if stream.coverImage %}
+            	<img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
+            {% endif %}
+            Name: {{ stream.name }}  User: {{ stream.user }} Number of Views: {{ stream.numViews }}<br>
+        {% endfor %}
+    
+    <b><u>Streams I subscribe to:</u></b><br>
+        {% for stream in subscribe %}
+            {% if stream.coverImageURL %}
+                <img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
+            {% endif %}
+            Name: {{ stream.name }}  User: {{ stream.user }}  Number of Views: {{ stream.numViews }}<br>
+        {% endfor %}
+
+{% endblock  %}

@@ -5,6 +5,20 @@
 
 {% block content %}
 <h1>Create</h1>
-{% include 'templates/snippets/sidebar.html' %}
-<a href='mailto:{{ email }}'>Email us</a>
+ Create Stream!<br>
+    <p>
+        <b><u><i>FIXME!!! Add a input boxes:  Name, Tags, Subscriber emails, cover image url.</i></u></b><br>
+    </p>
+    <form action="create" method="post">
+        Name your stream:<br>
+        <input type="text" name="streamname"><br>
+        Add subscribers (comma delimited):<br>
+        <input type="text" name="subs"><br>
+        Tag your stream (comma delimited):<br>
+        <input type="text" name="tags"><br>
+        URL to cover image<br>(can be empty)<br>
+        <input type="text" name="coverUrl"><br>
+        <input type="submit" value="Create">
+    </form>
+
 {% endblock  %}
