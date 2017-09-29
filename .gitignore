@@ -1,11 +1,11 @@
-.metadata
-bin
-.classpath
-.project
-.settings
-.pyc
+*.metadata
+**/bin
+*.classpath
+*.project
+*.settings
+*.pyc
 
 # IntelliJ files
-.idea
+**/.idea
 *.iml
-out
+**/out
