@@ -22,4 +22,3 @@ class StreamUser(ndb.Model):
     email = ndb.StringProperty(indexed=True)
     firstName = ndb.StringProperty(indexed=False)
     lastName = ndb.StringProperty(indexed=False)
-    nickName = ndb.StringProperty(indexed=False)

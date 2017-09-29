@@ -39,9 +39,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-# google auth needs this
-#CLIENT_ID = "521418538274-ful52avc9n4dm8isfbv7igrq54k3teh4.apps.googleusercontent.com"
-
 # FIXME: REMOVE CONTACT PAGE
 # [START contact_page]
 class ContactPage(webapp2.RequestHandler):

@@ -4,23 +4,63 @@
 
 
 {% block content %}
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
 <h1>Manage</h1>
 
     <b><u>Streams I own:</u></b><br>
+        <table id="t01">
+        <tr>
+            <th>Name</th>
+            <th>Last New Picture</th> 
+            <th>Number of Pictures</th>
+            <th>Delete</th>
+        </tr>
     	{% for stream in streams %}
-        	{% if stream.coverImage %}
-            	<img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
-            {% endif %}
-            Name: {{ stream.name }}  User: {{ stream.user }} Number of Views: {{ stream.numViews }}<br>
+            <tr>
+                <td>{{ stream.name }}</td>
+                <td>FIXME! Last new picture</td> 
+                <td>FIXME! Num of pictures</td> 
+                <td>FIXME! Delete</td>
+            </tr>
         {% endfor %}
+        </table>
     
     <b><u>Streams I subscribe to:</u></b><br>
+        <table id="t02">
+        <tr>
+            <th>Name</th>
+            <th>Last New Picture</th> 
+            <th>Number of Pictures</th>
+            <th>Views</th>
+            <th>Unsubscribe</th>
+        </tr>
         {% for stream in subscribe %}
-            {% if stream.coverImage %}
-                <img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
-            {% endif %}
-            Name: {{ stream.stream.get().name }}  Owner: {{ stream.user.get().name }}  Number of Views: {{ stream.stream.get().numViews }}<br>
+            <tr>
+                <td>{{ stream.stream.get().name }}</td>
+                <td>FIXME! Last new picture</td> 
+                <td>FIXME! Num of pictures</td> 
+                <td>{{ stream.stream.get().numViews }}</td> 
+                <td>FIXME! Unsubscribe</td>
+            </tr>
         {% endfor %}
+        </table>
 
 {% endblock  %}

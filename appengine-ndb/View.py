@@ -19,12 +19,10 @@ class ViewAllPage(webapp2.RequestHandler):
         user = users.get_current_user()
         
         if user:
-            nickname = user.nickname()
-            
             #Check to see if user is present in StreamUser table, if not add them.
             stream_user = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
             if stream_user == None:
-                stream_user = StreamUser(email = user.email(), nickName = nickname, id=user.user_id())
+                stream_user = StreamUser(email = user.email(), id=user.user_id())
                 stream_user.put()
 
         user_streams = Stream.query(Stream.owner == stream_user.key).fetch()
@@ -83,16 +81,17 @@ class ViewPage(webapp2.RequestHandler):
         user = users.get_current_user()
         print("getting")
         if user:
-            nickname = user.nickname()
-            
             #Check to see if user is present in StreamUser table, if not add them.
             print("StreamUser.key={0} user.user_id={1} ndb.key={2}".format(StreamUser.key, user.user_id(), ndb.Key('StreamUser',user.user_id())))
             stream_user = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
             if not stream_user:
-                stream_user = StreamUser(email = user.email(), nickName = nickname, id=user.user_id())
+                stream_user = StreamUser(email = user.email(), id=user.user_id())
                 stream_user.put()
 
         user_streams = Stream.query(Stream.owner == stream_user.key).fetch()
+
+        for s in user_streams:
+            print("s = {}".format(s))
 
         template_values = {
             'streams': user_streams,

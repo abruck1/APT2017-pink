@@ -19,12 +19,10 @@ class ManagePage(webapp2.RequestHandler):
         user = users.get_current_user()
         
         if user:
-            nickname = user.nickname()
-            
             #Check to see if user is present in StreamUser table, if not add them.
             stream_user = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
             if not stream_user:
-                stream_user = StreamUser(email = user.email(), nickName = nickname, id=user.user_id())
+                stream_user = StreamUser(email = user.email(), id=user.user_id())
                 stream_user.put()
 
         user_streams = Stream.query(Stream.owner == stream_user.key).fetch()

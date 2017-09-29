@@ -11,6 +11,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+# google auth needs this
+CLIENT_ID = "521418538274-ful52avc9n4dm8isfbv7igrq54k3teh4.apps.googleusercontent.com"
+
 # [START home_page]
 class HomePage(webapp2.RequestHandler):
 
@@ -18,6 +21,7 @@ class HomePage(webapp2.RequestHandler):
 
         template_values = {
             'page': "Connex.us",
+            'CLIENT_ID': CLIENT_ID,
         }
         url, url_linktext, user = logout_func(self, user_text='Enter Connex.us!')
         template_values['url'] = url
