@@ -5,7 +5,7 @@
 <title>{% block head_title %}Connex.us{% endblock head_title %}</title>
 
 	{% if user %}
-        You're signed in as {{ user }} <br>
+        Logged in as: {{ user }}<br>
     {% endif %}
       <a href="{{ url|safe }}">{{ url_linktext }}</a>
 

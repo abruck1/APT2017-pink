@@ -17,10 +17,10 @@
     
     <b><u>Streams I subscribe to:</u></b><br>
         {% for stream in subscribe %}
-            {% if stream.coverImageURL %}
+            {% if stream.coverImage %}
                 <img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
             {% endif %}
-            Name: {{ stream.name }}  User: {{ stream.user }}  Number of Views: {{ stream.numViews }}<br>
+            Name: {{ stream.stream.get().name }}  Owner: {{ stream.user.get().name }}  Number of Views: {{ stream.stream.get().numViews }}<br>
         {% endfor %}
 
 {% endblock  %}

@@ -18,7 +18,7 @@ class TrendingPage(webapp2.RequestHandler):
         
         email = 'youremail@gmail.com'
         template_values = {
-            'page': "Connex.us",
+            'page': "Trending",
             'email': email,
         }
         url, url_linktext, user = logout_func(self)

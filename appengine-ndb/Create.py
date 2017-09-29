@@ -23,25 +23,39 @@ class CreatePage(webapp2.RequestHandler):
         subscribers = self.request.get('subs')
         tags = self.request.get('tags')
         coverImage = self.request.get('coverUrl')
-        myStreamUser = StreamUser.query(StreamUser.email==user.email()).get()
+        myStreamUser = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
+        assert(myStreamUser != None)
+        
+        #Create a new Stream entity then redirect to /view the new stream
+        newStream = Stream(name=streamName, owner=myStreamUser.key, coverImage=coverImage, numViews=0)
+        newStream.put()
         
         subscriberArray = subscribers.split(",") 
         tagArray = tags.split(",")
         
-        #Create a new Stream entity then redirect to /view the new stream
-        newStream = Stream(name=streamName, user=myStreamUser.key, coverImage=coverImage, numViews=0)
-        newStream.put()
-        
-        print "len(subscriberArray) = ", len(subscriberArray)
-        
         for sub in subscriberArray:
-            print "sub = ", subby
-            myUser = StreamUser.query(StreamUser.email == sub).get()
-            newSub = StreamSubscriber(stream = newStream.key, user = myUser.key)
-            newSub.put()
+            stream = StreamUser.query().get()
+            print("stream={}".format(stream.email))
+            streamUserQ = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id()))
+            myUser = None
+            for u in streamUserQ:
+                print("user={0} email={1}".format(u.firstName, u.email))
+                if u.email == sub:
+                    myUser = u
+                    #StreamUser.query(StreamUser.email == sub).get()
+                    #myUser = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
+            if myUser == None:
+                # this is an error, I cannot add a subscriber that is not in the system
+                assert(False)
+            else:
+                print("myUser={}".format(myUser))
+                #myUser = StreamUser.query(StreamUser.email == sub).get()
+                newSub = StreamSubscriber(stream = newStream.key, user = myUser.key)
+                newSub.put()
         
         for tag in tagArray:
             newTag = Tag.get_or_insert(tag)
+            newTag.put()
             newStreamTag = StreamTag(stream = newStream.key, tag = newTag.key)
             newStreamTag.put()
             

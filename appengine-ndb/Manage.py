@@ -27,14 +27,14 @@ class ManagePage(webapp2.RequestHandler):
                 stream_user = StreamUser(email = user.email(), nickName = nickname, id=user.user_id())
                 stream_user.put()
 
-        # get streams owned by this user
         user_streams = Stream.query(Stream.owner == stream_user.key).fetch()
-
-        # get streams subscribed by this user
         user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == stream_user.key).fetch()
 
+        for s in user_subscriptions:
+            print("stream.user.email={0}".format(s.user.get().email))
+
         template_values = {
-            'streams': user_streams,
+            'stream': user_streams,
             'subscribe': user_subscriptions,
             'page': 'Manage',
         }

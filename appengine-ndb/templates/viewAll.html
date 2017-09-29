@@ -21,19 +21,18 @@
 </style>
 </head>
 
-<h1>View Streams</h1>
+<h1>View All Streams</h1>
 {% for s in streams %}
-	<a href="{{ s }}">
+	<!--<a href="{{ s }}">-->
+    <a href="/viewOne">
 			{% if s.coverImage %}
-			<div class="stream_name">
-            	<h2>WTF0</h2>
+                <div class="stream_name">
+                <h2>WTF0</h2>
 	  			<div class="centered"> {{ s.name }}</div>
-	  			<a href="/view.html">
-                	<img src = "{{ s.coverImage }}"  style="width:160px;height:160px;">
-            	</a>
-			</div>
+                <img src = "{{ s.coverImage }}"  style="width:160px;height:160px;">
+                </div>
             {% else %}
-            	<h2>WTF</h2>
+                WTF
             {% endif %}
 	</a>
 {% endfor %}

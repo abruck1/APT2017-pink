@@ -18,7 +18,7 @@ class SearchPage(webapp2.RequestHandler):
         
         email = 'youremail@gmail.com'
         template_values = {
-            'page': "Connex.us",
+            'page': "Search",
             'email': email,
         }
         url, url_linktext, user = logout_func(self)
