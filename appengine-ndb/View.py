@@ -2,6 +2,8 @@ from google.appengine.api import users
 from commonMethods import *
 from ndbClass import *
 
+from urlparse import urlparse
+
 import os
 import jinja2
 import webapp2
@@ -88,13 +90,24 @@ class ViewPage(webapp2.RequestHandler):
                 stream_user = StreamUser(email = user.email(), id=user.user_id())
                 stream_user.put()
 
-        user_streams = Stream.query(Stream.owner == stream_user.key).fetch()
+        user_stream = Stream.query(Stream.owner == stream_user.key).fetch()
+        user_stream = Stream.query()
 
-        for s in user_streams:
-            print("s = {}".format(s))
+        #foo = urlparse(self.response)
+        foo = self.request.GET #get('name')
+        for f in foo:
+            print("Stream.key={0} stream_id={1} ndb.key={2}".format(Stream.key, f, ndb.Key('Stream',str(f))))
+            #user_stream = Stream.query(Stream.key == ndb.Key('Stream', f)).get()
+            #user_stream = Stream.query(Stream.key == ndb.Key('Stream', str(f))).get()
+            print("f={0} and f[]={1}".format(Stream.key, f))
+            assert(user_stream != None)
+            for s in user_stream:
+                    if s.name == f:
+                        user_stream = s
+                        break
 
         template_values = {
-            'streams': user_streams,
+            'stream': user_stream,
             'page': 'View',
         }
         url, url_linktext, user = logout_func(self)

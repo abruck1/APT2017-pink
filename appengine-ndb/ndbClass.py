@@ -3,7 +3,7 @@ from google.appengine.ext import ndb
 
 class Stream(ndb.Model):
     owner = ndb.KeyProperty(indexed=True, kind='StreamUser')
-    name = ndb.StringProperty(indexed=False)
+    name = ndb.StringProperty(indexed=True)
     numViews = ndb.IntegerProperty(indexed=False)
     coverImage = ndb.StringProperty(indexed=False)
 
