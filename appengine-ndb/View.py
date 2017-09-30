@@ -3,6 +3,7 @@ from commonMethods import *
 from ndbClass import *
 
 from urlparse import urlparse
+import re
 
 import os
 import jinja2
@@ -48,35 +49,19 @@ class ViewAllPage(webapp2.RequestHandler):
 class ViewPage(webapp2.RequestHandler):
     def post(self):
         
-        user = users.get_current_user()
-        print("posting")
+        print("view posting")
         
-        streamName = self.request.get('streamname')
-        subscribers = self.request.get('subs')
-        tags = self.request.get('tags')
-        coverImage = self.request.get('coverUrl')
-        myStreamUser = StreamUser.query(StreamUser.email==user.email()).get()
+        fileName = self.request.get('file_name')
+        comments = self.request.get('comments')
         
-        subscriberArray = subscribers.split(",") 
-        tagArray = tags.split(",")
+        url = self.request.referer
+        streamName = re.search(r'\?(.*)', url).group(1)
+        print("stream name={0} fileName={1} comments={2}".format(streamName, fileName, comments))
         
-        #Create a new Stream entity then redirect to /view the new stream
-        newStream = Stream(name=streamName, user=myStreamUser.key, coverImage=coverImage, numViews=0)
-        newStream.put()
-        
-        for sub in subscriberArray:
-            print "sub = ", sub
-            myUser = StreamUser.query(StreamUser.email == sub).get()
-            newSub = StreamSubscriber(stream = newStream.key, user = myUser.key)
-            newSub.put()
-        
-        for tag in tagArray:
-            newTag = Tag.get_or_insert(tag)
-            newStreamTag = StreamTag(stream = newStream.key, tag = newTag.key)
-            newStreamTag.put()
+        # add the file to the ndb and add it to this stream
             
         #Redirect to /view for this stream
-        self.redirect('/view')
+        self.redirect('/viewOne?'+streamName)
 
     def get(self):
     
@@ -105,6 +90,9 @@ class ViewPage(webapp2.RequestHandler):
                     if s.name == f:
                         user_stream = s
                         break
+
+        user_stream.numViews = user_stream.numViews + 1
+        user_stream.put()
 
         template_values = {
             'stream': user_stream,
