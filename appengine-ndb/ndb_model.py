@@ -2,7 +2,6 @@ from google.appengine.ext import ndb
 
 
 class Stream(ndb.Model):
-    streamID = ndb.KeyProperty()
     owner = ndb.StringProperty()
     name = ndb.StringProperty()
     createDate = ndb.DateTimeProperty(auto_now_add=True)

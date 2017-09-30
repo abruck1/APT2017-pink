@@ -25,7 +25,8 @@ import webapp2
 from Home import *
 from Manage import *
 from create_stream import *
-from View import *
+from view_stream import *
+from view_all import *
 from Search import *
 from Trending import *
 from Social import *
@@ -58,8 +59,8 @@ class ContactPage(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', HomePage),
     ('/create', CreateStream),
-    ('/view', ViewAllPage),
-    ('/viewOne', ViewPage),
+    ('/viewall', ViewAll),
+    ('/view', ViewStream),
     ('/search', SearchPage),
     ('/trending', TrendingPage),
     ('/social', SocialPage),

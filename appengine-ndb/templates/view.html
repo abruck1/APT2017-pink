@@ -21,8 +21,8 @@
 </style>
 </head>
 
-<h1>View Streams</h1>
-	<a href="{{ s }}">
+<h1>View a Stream</h1>
+	<a href="{{ stream }}">
 			{% if stream.coverImage %}
 			<div class="stream_name">
             	<h2>WTF0</h2>
@@ -37,17 +37,17 @@
 	</a>
 
 
-<form action="/viewOne" method="post">
+<form action="/view" method="post">
     <input type="text" name="file_name" placeholder="File Name"><br>
     <input type="text" name="comments" placeholder="Comments"><br>
-    <input type="submit" value="Upload File">
+    <input type="submit" value="UploadFile">
     Add and Image<br>
 </form>
 
 <br>
 <br>
 <br>
-<form action="/viewOne" method="get">
+<form action="/view" method="post">
     <input type="submit" value="Subscribe">
 </form>
 

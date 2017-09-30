@@ -18,7 +18,7 @@ class CreateStream(webapp2.RequestHandler):
     def post(self):
 
         # todo: make sure we are getting the email address
-        user = users.get_current_user()
+        user = users.get_current_user().email()
         streamName = self.request.get('streamname')
         subscribers = self.request.get('subs')
         tags = self.request.get('tags')
@@ -40,7 +40,8 @@ class CreateStream(webapp2.RequestHandler):
 
 
         #Redirect to /view for this stream
-        self.redirect('/view')
+        print('CREATE REDIRECT = {}'.format(str(newStream.key.id())))
+        self.redirect('/view?streamid=' + str(newStream.key.id()))
     
     def get(self):
     
