@@ -1,6 +1,6 @@
 {% extends "templates/base.html" %}
 
-{% block head_title %}ViewAll || {{ page }}{% endblock head_title %}
+{% block head_title %}{{ page }} || Connex.us{% endblock head_title %}
 
 {% block content %}
 
@@ -22,20 +22,33 @@
 </head>
 
 <h1>View Streams</h1>
-{% for s in streams %}
 	<a href="{{ s }}">
-			{% if s.coverImage %}
+			{% if stream.coverImage %}
 			<div class="stream_name">
             	<h2>WTF0</h2>
-	  			<div class="centered"> {{ s.name }}</div>
+	  			<div class="centered"> {{ stream.name }}</div>
 	  			<a href="/view.html">
-                	<img src = "{{ s.coverImage }}"  style="width:160px;height:160px;">
+                	<img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
             	</a>
 			</div>
             {% else %}
-            	<h2>WTF</h2>
+            	<h2>{{ stream.name }}</h2>
             {% endif %}
 	</a>
-{% endfor %}
+
+
+<form action="/viewOne" method="post">
+    <input type="text" name="file_name" placeholder="File Name"><br>
+    <input type="text" name="comments" placeholder="Comments"><br>
+    <input type="submit" value="Upload File">
+    Add and Image<br>
+</form>
+
+<br>
+<br>
+<br>
+<form action="/viewOne" method="get">
+    <input type="submit" value="Subscribe">
+</form>
 
 {% endblock  %}

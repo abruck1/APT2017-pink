@@ -9,15 +9,11 @@
     <p>
         <b><u><i>FIXME!!! Add a input boxes:  Name, Tags, Subscriber emails, cover image url.</i></u></b><br>
     </p>
-    <form action="create" method="post">
-        Name your stream:<br>
-        <input type="text" name="streamname"><br>
-        Add subscribers (comma delimited):<br>
-        <input type="text" name="subs"><br>
-        Tag your stream (comma delimited):<br>
-        <input type="text" name="tags"><br>
-        URL to cover image<br>(can be empty)<br>
-        <input type="text" name="coverUrl"><br>
+    <form action="/create" method="post">
+        <input type="text" name="streamname" placeholder="Name your stream"><br>
+        <input type="text" name="subs" placeholder="Add subscribers (comma delimited)"><br>
+        <input type="text" name="tags" placeholder="Tag your stream (comma delimited)"><br>
+        <input type="text" name="coverUrl" placeholder="URL to cover image (can be empty)"><br>
         <input type="submit" value="Create">
     </form>
 

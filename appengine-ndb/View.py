@@ -2,6 +2,9 @@ from google.appengine.api import users
 from commonMethods import *
 from ndb_model import *
 
+from urlparse import urlparse
+import re
+
 import os
 import jinja2
 import webapp2
@@ -46,35 +49,19 @@ class ViewAllPage(webapp2.RequestHandler):
 class ViewPage(webapp2.RequestHandler):
     def post(self):
         
-        user = users.get_current_user()
-        print("posting")
+        print("view posting")
         
-        streamName = self.request.get('streamname')
-        subscribers = self.request.get('subs')
-        tags = self.request.get('tags')
-        coverImage = self.request.get('coverUrl')
-        myStreamUser = StreamUser.query(StreamUser.email==user.email()).get()
+        fileName = self.request.get('file_name')
+        comments = self.request.get('comments')
         
-        subscriberArray = subscribers.split(",") 
-        tagArray = tags.split(",")
+        url = self.request.referer
+        streamName = re.search(r'\?(.*)', url).group(1)
+        print("stream name={0} fileName={1} comments={2}".format(streamName, fileName, comments))
         
-        #Create a new Stream entity then redirect to /view the new stream
-        newStream = Stream(name=streamName, user=myStreamUser.key, coverImage=coverImage, numViews=0)
-        newStream.put()
-        
-        for sub in subscriberArray:
-            print "sub = ", sub
-            myUser = StreamUser.query(StreamUser.email == sub).get()
-            newSub = StreamSubscriber(stream = newStream.key, user = myUser.key)
-            newSub.put()
-        
-        for tag in tagArray:
-            newTag = Tag.get_or_insert(tag)
-            newStreamTag = StreamTag(stream = newStream.key, tag = newTag.key)
-            newStreamTag.put()
+        # add the file to the ndb and add it to this stream
             
         #Redirect to /view for this stream
-        self.redirect('/view')
+        self.redirect('/viewOne?'+streamName)
 
     def get(self):
     
@@ -88,13 +75,27 @@ class ViewPage(webapp2.RequestHandler):
                 stream_user = StreamUser(email = user.email(), id=user.user_id())
                 stream_user.put()
 
-        user_streams = Stream.query(Stream.owner == stream_user.key).fetch()
+        user_stream = Stream.query(Stream.owner == stream_user.key).fetch()
+        user_stream = Stream.query()
 
-        for s in user_streams:
-            print("s = {}".format(s))
+        #foo = urlparse(self.response)
+        foo = self.request.GET #get('name')
+        for f in foo:
+            print("Stream.key={0} stream_id={1} ndb.key={2}".format(Stream.key, f, ndb.Key('Stream',str(f))))
+            #user_stream = Stream.query(Stream.key == ndb.Key('Stream', f)).get()
+            #user_stream = Stream.query(Stream.key == ndb.Key('Stream', str(f))).get()
+            print("f={0} and f[]={1}".format(Stream.key, f))
+            assert(user_stream != None)
+            for s in user_stream:
+                    if s.name == f:
+                        user_stream = s
+                        break
+
+        user_stream.numViews = user_stream.numViews + 1
+        user_stream.put()
 
         template_values = {
-            'streams': user_streams,
+            'stream': user_stream,
             'page': 'View',
         }
         url, url_linktext, user = logout_func(self)

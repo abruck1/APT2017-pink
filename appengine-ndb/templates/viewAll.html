@@ -1,6 +1,6 @@
 {% extends "templates/base.html" %}
 
-{% block head_title %}ViewAll || {{ page }}{% endblock head_title %}
+{% block head_title %}{{ page }} || Connex.us{% endblock head_title %}
 
 {% block content %}
 
@@ -24,7 +24,7 @@
 <h1>View All Streams</h1>
 {% for s in streams %}
 	<!--<a href="{{ s }}">-->
-    <a href="/viewOne">
+    <a href="/viewOne?{{ s.name }}">
 			{% if s.coverImage %}
                 <div class="stream_name">
                 <h2>WTF0</h2>
@@ -32,7 +32,7 @@
                 <img src = "{{ s.coverImage }}"  style="width:160px;height:160px;">
                 </div>
             {% else %}
-                WTF
+                {{ s.name }}
             {% endif %}
 	</a>
 {% endfor %}
