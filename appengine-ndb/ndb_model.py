@@ -10,8 +10,9 @@ class Stream(ndb.Model):
     viewCount = ndb.IntegerProperty()
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
+    images = ndb.StringProperty(repeated=True)
 
 class StreamSubscriber(ndb.Model):
-    stream = ndb.KeyProperty(indexed=True, kind='Stream')
-    user = ndb.KeyProperty(indexed=True, kind='StreamUser')
+    stream = ndb.KeyProperty(kind='Stream')
+    user = ndb.KeyProperty()
 

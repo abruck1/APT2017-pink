@@ -16,49 +16,29 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class CreateStream(webapp2.RequestHandler):
 
     def post(self):
-        
+
+        # todo: make sure we are getting the email address
         user = users.get_current_user()
-        
         streamName = self.request.get('streamname')
         subscribers = self.request.get('subs')
         tags = self.request.get('tags')
         coverImage = self.request.get('coverUrl')
-        myStreamUser = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
-        assert(myStreamUser != None)
-        
-        #Create a new Stream entity then redirect to /view the new stream
-        newStream = Stream(name=streamName, owner=myStreamUser.key, coverImage=coverImage, numViews=0)
+
+        # Create a new Stream entity then redirect to /view the new stream
+        newStream = Stream(name=streamName,
+                           owner=user,
+                           coverImageURL=coverImage,
+                           viewCount=0,
+                           tags=tags.split(",") ) # todo trim after split
+
         newStream.put()
-        
+
+        # todo send invite emails
         subscriberArray = subscribers.split(",") 
-        tagArray = tags.split(",")
-        
-        for sub in subscriberArray:
-            stream = StreamUser.query().get()
-            print("stream={}".format(stream.email))
-            streamUserQ = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id()))
-            myUser = None
-            for u in streamUserQ:
-                print("user={0} email={1}".format(u.firstName, u.email))
-                if u.email == sub:
-                    myUser = u
-                    #StreamUser.query(StreamUser.email == sub).get()
-                    #myUser = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
-            if myUser == None:
-                # this is an error, I cannot add a subscriber that is not in the system
-                assert(False)
-            else:
-                print("myUser={}".format(myUser))
-                #myUser = StreamUser.query(StreamUser.email == sub).get()
-                newSub = StreamSubscriber(stream = newStream.key, user = myUser.key)
-                newSub.put()
-        
-        for tag in tagArray:
-            newTag = Tag.get_or_insert(tag)
-            newTag.put()
-            newStreamTag = StreamTag(stream = newStream.key, tag = newTag.key)
-            newStreamTag.put()
-            
+
+        #for sub in subscriberArray:
+
+
         #Redirect to /view for this stream
         self.redirect('/view')
     
