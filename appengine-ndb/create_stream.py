@@ -1,6 +1,6 @@
 from google.appengine.api import users
 from commonMethods import *
-from ndbClass import *
+from ndb_model import *
 
 import os
 import jinja2
@@ -13,7 +13,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 
 # [START create_page]
-class CreatePage(webapp2.RequestHandler):
+class CreateStream(webapp2.RequestHandler):
 
     def post(self):
         

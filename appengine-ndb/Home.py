@@ -1,6 +1,6 @@
 from google.appengine.api import users
 from commonMethods import *
-from ndbClass import *
+from ndb_model import *
 
 import os
 import jinja2

@@ -24,12 +24,12 @@ import webapp2
 
 from Home import *
 from Manage import *
-from Create import *
+from create_stream import *
 from View import *
 from Search import *
 from Trending import *
 from Social import *
-from ndbClass import *
+from ndb_model import *
 from commonMethods import *
 
 # [END imports]
@@ -57,7 +57,7 @@ class ContactPage(webapp2.RequestHandler):
 # [START app]
 app = webapp2.WSGIApplication([
     ('/', HomePage),
-    ('/create', CreatePage),
+    ('/create', CreateStream),
     ('/view', ViewAllPage),
     ('/viewOne', ViewPage),
     ('/search', SearchPage),
