@@ -45,7 +45,9 @@ tr:nth-child(even) {
             </tr>
         {% endfor %}
         </table>
-                <input type="submit" value="Delete Checked Streams">
+                {% if user_streams %}
+                    <input type="submit" value="Delete Checked Streams">
+                {% endif %}
             </form>
 
 <br>
@@ -74,7 +76,9 @@ tr:nth-child(even) {
             </tr>
         {% endfor %}
         </table>
-                <input type="submit" value="Unsubscribe Checked Streams">
+                {% if subscribe %}
+                    <input type="submit" value="Unsubscribe Checked Streams">
+                {% endif %}
             </form>
 
 

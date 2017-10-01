@@ -25,10 +25,15 @@ class SubscribeStream(webapp2.RequestHandler):
 
         if user is not None:
             stream = ndb.Key(Stream, int(streamid)).get()
-            newStreamSubscriber = StreamSubscriber(stream=stream.key,
-                                                   user=user
-                                                   )
-            newStreamSubscriber.put()
+            if not StreamSubscriber.query(StreamSubscriber.stream == stream.key).filter(StreamSubscriber.user == user).get():
+                newStreamSubscriber = StreamSubscriber(stream=stream.key,
+                                                       user=user
+                                                       )
+                newStreamSubscriber.put()
+            
+            # subtract 1 due to redirect to view will increase the view by one
+            stream.viewCount -= 1
+            stream.put()
             # todo pop up saying subscribed?
         else:
             # todo pop up message saying not logged in
@@ -78,9 +83,16 @@ class DeleteStream(webapp2.RequestHandler):
             
             print("delete_stream={}".format(stream_id))
             if user is not None:
+                # delete any subscriber to the stream
+                stream = ndb.Key(Stream, int(stream_id))
+                sub = StreamSubscriber.query(StreamSubscriber.stream == stream).fetch()
+                for s in sub:
+                    s.key.delete()
+
                 stream = ndb.Key(Stream, int(stream_id))
                 stream_to_be_del = Stream.query(Stream.key == stream).filter(Stream.owner == user).get()
                 stream_to_be_del.key.delete()
+                
                 # todo pop up saying unsubscribed?
             else:
                 # todo pop up message saying not logged in
