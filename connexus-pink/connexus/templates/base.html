@@ -6,8 +6,8 @@
 
 	{% if user %}
         Logged in as: {{ user }}<br>
+        <a href="{{ url|safe }}">Logout</a>
     {% endif %}
-      <a href="{{ url|safe }}">{{ url_linktext }}</a>
 
 {% include 'snippets/css.html' %}
 </head>
