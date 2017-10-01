@@ -16,20 +16,15 @@ class Manage(webapp2.RequestHandler):
 
     def get(self):
     
-        user = users.get_current_user()
+        user = users.get_current_user().email()
         
-        if user:
-            #Check to see if user is present in StreamUser table, if not add them.
-            stream_user = StreamUser.query(StreamUser.key == ndb.Key('StreamUser',user.user_id())).get()
-            if not stream_user:
-                stream_user = StreamUser(email = user.email(), id=user.user_id())
-                stream_user.put()
+        user_streams = Stream.query(Stream.owner == user).fetch()
+        user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
 
-        user_streams = Stream.query(Stream.owner == stream_user.key).fetch()
-        user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == stream_user.key).fetch()
+        print("USER_STREAMS={0} USER_SUBSCRIPTIONS={1}".format(user_streams, user_subscriptions))
 
         for s in user_subscriptions:
-            print("stream.user.email={0}".format(s.user.get().email))
+            print("stream.user={0}".format(s.user))
 
         template_values = {
             'stream': user_streams,

@@ -13,5 +13,5 @@ class Stream(ndb.Model):
 
 class StreamSubscriber(ndb.Model):
     stream = ndb.KeyProperty(kind='Stream')
-    user = ndb.KeyProperty()
+    user = ndb.StringProperty()
 

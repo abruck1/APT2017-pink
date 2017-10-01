@@ -6,6 +6,7 @@ from connexus.services.search import *
 from connexus.services.social import *
 from connexus.services.view_all import *
 from connexus.services.view_stream import *
+from connexus.services.subscribe_stream import *
 from connexus.services.trending import *
 
 # [END imports]
@@ -16,6 +17,7 @@ app = webapp2.WSGIApplication([
     ('/create', CreateStream),
     (r'/view/(\d+)', ViewStream),
     ('/view', ViewAll),
+    (r'/subscribe/(\d+)', SubscribeStream),
     ('/search', Search),
     ('/trending', Trending),
     ('/social', Social),
