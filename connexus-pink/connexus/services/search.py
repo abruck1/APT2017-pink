@@ -27,6 +27,15 @@ class Search(webapp2.RequestHandler):
         search_string = urllib2.unquote(self.request.query_string)
 
         index = search.Index(name='connexus_search')
+        if search_string:
+            try:
+                index = search.Index('connexus_search')
+                search_query = search.Query(query_string=search_string)
+                search_results = index.search(search_query)
+                print("Search Results={}".format(search_results))
+            except search.Error:
+                print("Caught a search Error")
+
 
         num_results = 0
         template_values = {
