@@ -1,13 +1,13 @@
-from google.appengine.api import users
-from commonMethods import *
-from ndb_model import *
-
 import os
+import sys
+
 import jinja2
 import webapp2
 
+from connexus.common import *
+
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    loader=jinja2.PackageLoader('connexus', 'templates'),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
@@ -15,7 +15,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 CLIENT_ID = "521418538274-ful52avc9n4dm8isfbv7igrq54k3teh4.apps.googleusercontent.com"
 
 # [START home_page]
-class HomePage(webapp2.RequestHandler):
+class Login(webapp2.RequestHandler):
 
     def get(self):
 
@@ -26,9 +26,8 @@ class HomePage(webapp2.RequestHandler):
         url, url_linktext, user = logout_func(self, user_text='Enter Connex.us!')
         template_values['url'] = url
         template_values['url_linktext'] = url_linktext
-        template_values['user'] = user 
+        template_values['user'] = user
 
-        template = JINJA_ENVIRONMENT.get_template('templates/home.html')
+        template = JINJA_ENVIRONMENT.get_template('login.html')
         self.response.write(template.render(template_values))
 # [END home_page]
-

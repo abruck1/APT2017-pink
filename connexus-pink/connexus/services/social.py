@@ -1,32 +1,31 @@
-from google.appengine.api import users
-from commonMethods import *
-from ndb_model import *
-
 import os
+
 import jinja2
 import webapp2
 
+from connexus.common import *
+
 JINJA_ENVIRONMENT = jinja2.Environment(
-    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    loader=jinja2.PackageLoader('connexus', 'templates'),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-# [START search_page]
-class SearchPage(webapp2.RequestHandler):
+# [START social_page]
+class Social(webapp2.RequestHandler):
 
     def get(self):
         
         email = 'youremail@gmail.com'
         template_values = {
-            'page': "Search",
+            'page': "Connex.us",
             'email': email,
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url
         template_values['url_linktext'] = url_linktext
         template_values['user'] = user
-       
-        template = JINJA_ENVIRONMENT.get_template('templates/search.html')
+
+        template = JINJA_ENVIRONMENT.get_template('social.html')
         self.response.write(template.render(template_values))
 
-# [END search_page]
+# [END social_page]
