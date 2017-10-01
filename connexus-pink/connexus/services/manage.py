@@ -19,6 +19,10 @@ class Manage(webapp2.RequestHandler):
         user = users.get_current_user().email()
         
         user_streams = Stream.query(Stream.owner == user).fetch()
+        for u in user_streams:
+            print("u={}".format(u))
+
+
         user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
 
         print("USER_STREAMS={0} USER_SUBSCRIPTIONS={1}".format(user_streams, user_subscriptions))
@@ -27,7 +31,7 @@ class Manage(webapp2.RequestHandler):
             print("stream.user={0}".format(s.user))
 
         template_values = {
-            'stream': user_streams,
+            'user_streams': user_streams,
             'subscribe': user_subscriptions,
             'page': 'Manage',
         }

@@ -33,16 +33,25 @@ tr:nth-child(even) {
             <th>Number of Pictures</th>
             <th>Delete</th>
         </tr>
-    	{% for stream in streams %}
+    	{% for stream in user_streams %}
+            <form action="/delete" method="post">
             <tr>
                 <td>{{ stream.name }}</td>
-                <td>FIXME! Last new picture</td> 
+                <td>{{ stream.lastPicDate }}</td> 
                 <td>FIXME! Num of pictures</td> 
-                <td>FIXME! Delete</td>
+                <td>
+                <input type="checkbox" name="delete" value="{{ stream.key.id() }}">
+                </td>
             </tr>
         {% endfor %}
         </table>
-    
+                <input type="submit" value="Delete Checked Streams">
+            </form>
+
+<br>
+<br>
+<br>
+
     <b><u>Streams I subscribe to:</u></b><br>
         <table id="t02">
         <tr>
@@ -53,14 +62,22 @@ tr:nth-child(even) {
             <th>Unsubscribe</th>
         </tr>
         {% for stream in subscribe %}
+            <form action="/unsubscribe" method="post">
             <tr>
                 <td>{{ stream.stream.get().name }}</td>
-                <td>FIXME! Last new picture</td> 
+                <td>{{ stream.stream.get().lastPicDate }}</td> 
                 <td>FIXME! Num of pictures</td> 
-                <td>{{ stream.stream.get().numViews }}</td> 
-                <td>FIXME! Unsubscribe</td>
+                <td>{{ stream.stream.get().viewCount }}</td> 
+                <td>
+                <input type="checkbox" name="unsub" value="{{ stream.key.id() }}">
+                </td>
             </tr>
         {% endfor %}
         </table>
+                <input type="submit" value="Unsubscribe Checked Streams">
+            </form>
+
+
+
 
 {% endblock  %}

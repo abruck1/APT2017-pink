@@ -37,5 +37,56 @@ class SubscribeStream(webapp2.RequestHandler):
         # Redirect to /view for this stream
         self.redirect('/view/' + stream_id )
 
-# [END vSubscribeStream]
+# [END SubscribeStream]
 
+# [START UnSubscribeStream]
+class UnSubscribeStream(webapp2.RequestHandler):
+    def post(self):
+
+        url = self.request.referer
+        user = users.get_current_user().email()
+
+        subscriber_stream_list = self.request.params.getall('unsub')
+
+        for sub_stream_id in subscriber_stream_list:
+            
+            print("unsub_stream={}".format(sub_stream_id))
+            if user is not None:
+                stream_sub = ndb.Key(StreamSubscriber, int(sub_stream_id))
+                sub = StreamSubscriber.query(StreamSubscriber.key == stream_sub).filter(StreamSubscriber.user == user).get()
+                sub.key.delete()
+                # todo pop up saying unsubscribed?
+            else:
+                # todo pop up message saying not logged in
+                pass
+
+        # Redirect to /view for this stream
+        self.redirect('/manage')
+
+# [END UnSubscribeStream]
+
+# [START DeleteStream]
+class DeleteStream(webapp2.RequestHandler):
+    def post(self):
+
+        url = self.request.referer
+        user = users.get_current_user().email()
+
+        delete_stream_list = self.request.params.getall('delete')
+
+        for stream_id in delete_stream_list:
+            
+            print("delete_stream={}".format(stream_id))
+            if user is not None:
+                stream = ndb.Key(Stream, int(stream_id))
+                stream_to_be_del = Stream.query(Stream.key == stream).filter(Stream.owner == user).get()
+                stream_to_be_del.key.delete()
+                # todo pop up saying unsubscribed?
+            else:
+                # todo pop up message saying not logged in
+                pass
+
+        # Redirect to /view for this stream
+        self.redirect('/manage')
+
+# [END DeleteStream]
