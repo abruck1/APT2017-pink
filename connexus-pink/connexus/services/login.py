@@ -5,8 +5,8 @@ import jinja2
 import webapp2
 
 from connexus.common import *
-from google.oauth2 import id_token
-from google.auth.transport import requests
+# from google.oauth2 import id_token
+# from google.auth.transport import requests
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.PackageLoader('connexus', 'templates'),
