@@ -24,7 +24,7 @@
 <h1>View All Streams</h1>
 {% for s in streams %}
 	<!--<a href="{{ s }}">-->
-    <a href="/view?streamid={{ s.key }}">
+    <a href="/view/{{ s.key.id() }}">
 			{% if s.coverImageURL %}
                 <div class="stream_name">
                 <h2>WTF0</h2>

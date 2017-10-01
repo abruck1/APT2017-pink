@@ -17,8 +17,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 # [START ViewStream]
 class ViewStream(webapp2.RequestHandler):
-    def post(self):
+    def post(self, streamid):
 
+        # is this an upload or subscribe?
         # print("view posting")
 
         fileName = self.request.get('file_name')
@@ -36,20 +37,11 @@ class ViewStream(webapp2.RequestHandler):
         # Redirect to /view for this stream
         self.redirect('/view?' + stream_id )
 
-    def get(self):
+    def get(self, streamid):
 
         user = users.get_current_user()
 
-
-        user_stream = Stream.query()
-
-        request_string = self.request.GET  # get('streamID')
-        print("RESULT = {}".format(self.request.get('streamid')))
-
-        my_streamid = int(self.request.get('streamid'))
-
-        #stream = Stream.get_by_id(my_streamid) # == self.request.get('streamid')).get()
-        stream = ndb.Key(Stream, my_streamid).get()
+        stream = ndb.Key(Stream, int(streamid)).get()
 
             #print("Stream.key={0} stream_id={1} ndb.key={2}".format(Stream.key, param, ndb.Key('Stream', str(param))))
             # user_stream = Stream.query(Stream.key == ndb.Key('Stream', f)).get()

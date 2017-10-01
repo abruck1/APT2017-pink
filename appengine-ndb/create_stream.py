@@ -40,8 +40,7 @@ class CreateStream(webapp2.RequestHandler):
 
 
         #Redirect to /view for this stream
-        print('CREATE REDIRECT = {}'.format(str(newStream.key.id())))
-        self.redirect('/view?streamid=' + str(newStream.key.id()))
+        self.redirect('/view/' + str(newStream.key.id()))
     
     def get(self):
     

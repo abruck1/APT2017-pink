@@ -59,8 +59,8 @@ class ContactPage(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', HomePage),
     ('/create', CreateStream),
-    ('/viewall', ViewAll),
-    ('/view', ViewStream),
+    (r'/view/(\d+)', ViewStream),
+    ('/view', ViewAll),
     ('/search', SearchPage),
     ('/trending', TrendingPage),
     ('/social', SocialPage),
