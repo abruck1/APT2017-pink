@@ -17,8 +17,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class ViewStream(webapp2.RequestHandler):
     def post(self, streamid):
 
-        # is this an upload or subscribe?
-        # print("view posting")
+        # This is for uploading the file
 
         fileName = self.request.get('file_name')
         # todo what to do with comments?
@@ -27,13 +26,13 @@ class ViewStream(webapp2.RequestHandler):
         url = self.request.referer
 
         # todo get the params and upload the file
-        stream_id = re.search(r'\?(.*)', url).group(1)
+        stream_id = re.search(r'view/(.*)', url).group(1)
         print("stream name={0} fileName={1} comments={2}".format(stream_id, fileName))
 
         # add the file to the ndb and add it to this stream
 
         # Redirect to /view for this stream
-        self.redirect('/view?' + stream_id )
+        self.redirect('/view/' + stream_id )
 
     def get(self, streamid):
 

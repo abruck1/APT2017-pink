@@ -20,7 +20,7 @@ app = webapp2.WSGIApplication([
     (r'/subscribe/(\d+)', SubscribeStream),
     ('/unsubscribe', UnSubscribeStream),
     ('/delete', DeleteStream),
-    ('/search', Search),
+    (r'/search', Search),
     ('/trending', Trending),
     ('/social', Social),
     ('/manage', Manage),
