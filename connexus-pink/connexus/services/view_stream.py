@@ -1,5 +1,4 @@
-import os
-import re
+
 
 import jinja2
 import webapp2
@@ -15,37 +14,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 
 # [START ViewStream]
 class ViewStream(webapp2.RequestHandler):
-    def post(self, streamid):
-
-        # is this an upload or subscribe?
-        # print("view posting")
-
-        fileName = self.request.get('file_name')
-        # todo what to do with comments?
-        # comments = self.request.get('comments')
-
-        url = self.request.referer
-
-        # todo get the params and upload the file
-        stream_id = re.search(r'\?(.*)', url).group(1)
-        print("stream name={0} fileName={1} comments={2}".format(stream_id, fileName))
-
-        # add the file to the ndb and add it to this stream
-
-        # Redirect to /view for this stream
-        self.redirect('/view?' + stream_id )
-
     def get(self, streamid):
 
         user = users.get_current_user()
 
         stream = ndb.Key(Stream, int(streamid)).get()
 
-            #print("Stream.key={0} stream_id={1} ndb.key={2}".format(Stream.key, param, ndb.Key('Stream', str(param))))
-            # user_stream = Stream.query(Stream.key == ndb.Key('Stream', f)).get()
-            # user_stream = Stream.query(Stream.key == ndb.Key('Stream', str(f))).get()
-            #print("f={0} and f[]={1}".format(Stream.key, param))
-
+        #todo handle this in an if block
         assert (stream is not None)
 
         stream.viewCount += 1

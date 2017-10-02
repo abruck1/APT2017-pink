@@ -37,11 +37,18 @@
 	</a>
 
 
-<form action="/view" method="post">
-    <input type="text" name="file_name" placeholder="File Name"><br>
-    <input type="text" name="comments" placeholder="Comments"><br>
-    <input type="submit" value="UploadFile">
-    Add and Image<br>
+<form action="/upload/{{ stream.key.id() }}" method="post" enctype="multipart/form-data">
+    <div class="form-inline">
+        <label for="image">Upload an image</label>
+        <input type="file" name="image" id="image">
+    </div>
+    <div class="form-inline">
+        <input type="text" name="comments" placeholder="Comments">
+    </div>
+    <div>
+        <input type="submit" value="Upload Image">
+    </div>
+
 </form>
 
 <br>

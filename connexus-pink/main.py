@@ -8,6 +8,7 @@ from connexus.services.view_all import *
 from connexus.services.view_stream import *
 from connexus.services.subscribe_stream import *
 from connexus.services.trending import *
+from connexus.services.upload import *
 
 # [END imports]
 
@@ -24,5 +25,6 @@ app = webapp2.WSGIApplication([
     ('/trending', Trending),
     ('/social', Social),
     ('/manage', Manage),
+    (r'/upload/(\d+)', UploadImage)
 ], debug=True)
 # [END app]
