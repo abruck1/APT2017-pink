@@ -2,11 +2,11 @@ import os
 
 import jinja2
 import webapp2
-print(webapp2.__file__)
-# import requests
+import httplib2
 
 from connexus.common import *
 from connexus.ndb_model import *
+from urllib import urlencode
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.PackageLoader('connexus', 'templates'),
@@ -41,18 +41,28 @@ class CreateStream(webapp2.RequestHandler):
         # todo send invite emails
         subscriberArray = subscribers.split(",")
 
-        # def send_simple_message():
-        #     print("message sent")
-        #     return requests.post(
-        #         "https://api.mailgun.net/v3/" + DOMAIN_NAME + "/messages",
-        #         auth=("api", API_KEY),
-        #         data={"from": "<mailgun@" + DOMAIN_NAME + ">",
-        #               "to": ["wey.matt@utexas.edu"],
-        #               "subject": "Hello",
-        #               "text": "Testing some Mailgun awesomness!"})
-        #
-        # send_simple_message()
+        def send_simple_message(recipient):
+            http = httplib2.Http()
+            http.add_credentials('api', API_KEY)
 
+            url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
+            data = {
+                'from': 'Example Sender <mailgun@{}>'.format(DOMAIN_NAME),
+                'to': recipient,
+                'subject': 'This is an example email from Mailgun',
+                'text': 'Test message from Mailgun'
+            }
+
+            resp, content = http.request(
+                url, 'POST', urlencode(data),
+                headers={"Content-Type": "application/x-www-form-urlencoded"})
+
+            if resp.status != 200:
+                raise RuntimeError(
+                    'Mailgun API error: {} {}'.format(resp.status, content))
+
+        for subscriber in subscriberArray:
+            send_simple_message(subscriber)
         #for sub in subscriberArray:
 
 
