@@ -5,6 +5,14 @@
 
 {% block content %}
 <h1>Search</h1>
-{% include 'snippets/sidebar.html' %}
-<a href='mailto:{{ email }}'>Email us</a>
+<form action="/search" method="post">
+        <input type="text" name="search_string" placeholder="Search Streams"><br>
+        <input type="submit" value="Search">
+</form>
+
+{% if search_string %}
+	<h4>Search for <b><u>"{{ search_string }}"</u></b> found {{ num_results }}:</h4>
+{% endif %}
+
+
 {% endblock  %}

@@ -38,5 +38,5 @@ class ViewStream(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('view.html')
         self.response.write(template.render(template_values))
 
-# [END view_page]
+# [END ViewStream]
 

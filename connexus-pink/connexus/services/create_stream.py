@@ -2,6 +2,8 @@ import os
 
 import jinja2
 import webapp2
+print(webapp2.__file__)
+# import requests
 
 from connexus.common import *
 from connexus.ndb_model import *
@@ -10,6 +12,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.PackageLoader('connexus', 'templates'),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
+
+DOMAIN_NAME = 'sandbox53d25b427601433298c59606e4d513a8.mailgun.org'
+API_KEY = 'key-259539f231fa908edfc7e8e1726fb578'
 
 
 # [START create_page]
@@ -34,7 +39,19 @@ class CreateStream(webapp2.RequestHandler):
         newStream.put()
 
         # todo send invite emails
-        subscriberArray = subscribers.split(",") 
+        subscriberArray = subscribers.split(",")
+
+        # def send_simple_message():
+        #     print("message sent")
+        #     return requests.post(
+        #         "https://api.mailgun.net/v3/" + DOMAIN_NAME + "/messages",
+        #         auth=("api", API_KEY),
+        #         data={"from": "<mailgun@" + DOMAIN_NAME + ">",
+        #               "to": ["wey.matt@utexas.edu"],
+        #               "subject": "Hello",
+        #               "text": "Testing some Mailgun awesomness!"})
+        #
+        # send_simple_message()
 
         #for sub in subscriberArray:
 
