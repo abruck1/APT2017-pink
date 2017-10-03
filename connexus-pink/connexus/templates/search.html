@@ -12,6 +12,7 @@
 
 {% if search_string %}
 	<h4>Search for <b><u>"{{ search_string }}"</u></b> found {{ num_results }} results:</h4>
+	<h5>Click on an image to view stream</h5>
 	{% for stream in found_streams %}
 	    <a href="/view/{{ stream.key.id() }}">
 			{% if stream.coverImageURL %}
