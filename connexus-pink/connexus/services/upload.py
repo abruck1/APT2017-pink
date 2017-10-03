@@ -23,17 +23,18 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [START UploadImage]
 class UploadImage(webapp2.RequestHandler):
     def post(self, streamid):
-        file = self.request.get('image')
+        file = self.request.post('image')
 
         client = storage.Client()
-        gcs_bucket = client.get_bucket(app_identity.get_default_gcs_bucket_name())
+        default_bucket = 'connexus-pink.appspot.com'#app_identity.get_default_gcs_bucket_name()
+        gcs_bucket = client.get_bucket(default_bucket)
 
-        print("source: {}\ndest: {}\{}".format(file.filename, gcs_bucket.name, file.filename))
+        # print("source: {}\ndest: {}\{}".format(file.filename, gcs_bucket.name, file.filename))
 
-        #blob = gcs_bucket.blob(file.filename)
-        #blob.upload_from_string(file.read(), content_type=file.content_type)
+        blob = gcs_bucket.blob(file.filename)
+        blob.upload_from_string(file.read(), content_type=file.content_type)
 
-        #url = blob.public_url
+        url = blob.public_url
 
         #print(url)
 
