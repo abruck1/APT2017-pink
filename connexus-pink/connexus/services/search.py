@@ -25,7 +25,7 @@ class Search(webapp2.RequestHandler):
 
 
     def get(self):
-        search_string = urllib2.unquote(self.request.query_string)
+        search_string = urllib2.unquote(self.request.query_string).lower()
 
         index = search.Index(name='connexus_search')
         num_results = 0
@@ -35,22 +35,23 @@ class Search(webapp2.RequestHandler):
                 index = search.Index('connexus_search')
                 streams = Stream.query()
                 for s in streams:
-                    key = str(s.key)
-                    print("s={0} key={1}".format(s, key))
+                    tags = ''.join(str(e).lower() for e in s.tags)
                     doc = search.Document(doc_id=str(s.key.id()),
-                                          fields=[search.TextField(name='name', value=s.name)]
+                                          fields=[search.TextField(name='name', value=s.name.lower()),
+                                                  search.TextField(name='tags', value=tags),
+                                                 ]
                                          )
                     search.Index(name='connexus_search').put(doc)
 
                 search_query = search.Query(query_string=search_string)
                 search_results = index.search(search_query)
-                print("Search Results={}".format(search_results))
+                #print("Search Results={}".format(search_results))
                 num_results = search_results.number_found
                 for doc in search_results:
                     doc_id = doc.doc_id
                     found_streams.append(ndb.Key(Stream, int(doc_id)).get())
-                    fields = doc.fields
-                    print("doc_id={0} fields={1}".format(doc_id, fields)) 
+                    #fields = doc.fields
+                    #print("doc_id={0} fields={1}".format(doc_id, fields)) 
             
             except search.Error:
                 print("Caught a search Error")
