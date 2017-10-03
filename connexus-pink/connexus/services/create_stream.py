@@ -24,45 +24,25 @@ class CreateStream(webapp2.RequestHandler):
 
         # todo: make sure we are getting the email address
         user = users.get_current_user().email()
-        streamName = self.request.get('streamname')
+        stream_name = self.request.get('streamname')
         subscribers = self.request.get('subs')
         tags = self.request.get('tags')
-        coverImage = self.request.get('coverUrl')
+        cover_image = self.request.get('coverUrl')
 
         # Create a new Stream entity then redirect to /view the new stream
-        newStream = Stream(name=streamName,
+        new_stream = Stream(name=stream_name,
                            owner=user,
-                           coverImageURL=coverImage,
+                           coverImageURL=cover_image,
                            viewCount=0,
                            tags=tags.split(",") ) # todo trim after split
 
-        newStream.put()
+        new_stream.put()
 
         # todo send invite emails
-        subscriberArray = subscribers.split(",")
+        subscriber_array = subscribers.split(",")
 
-        def send_simple_message(recipient):
-            http = httplib2.Http()
-            http.add_credentials('api', API_KEY)
-
-            url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
-            data = {
-                'from': 'Example Sender <mailgun@{}>'.format(DOMAIN_NAME),
-                'to': recipient,
-                'subject': 'This is an example email from Mailgun',
-                'text': 'Test message from Mailgun'
-            }
-
-            resp, content = http.request(
-                url, 'POST', urlencode(data),
-                headers={"Content-Type": "application/x-www-form-urlencoded"})
-
-            if resp.status != 200:
-                raise RuntimeError(
-                    'Mailgun API error: {} {}'.format(resp.status, content))
-
-        for subscriber in subscriberArray:
-            send_simple_message(subscriber)
+        for subscriber in subscriber_array:
+            send_simple_message(subscriber, new_stream)
         #for sub in subscriberArray:
 
 
@@ -82,4 +62,26 @@ class CreateStream(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('create.html')
         self.response.write(template.render(template_values))
 
+
+def send_simple_message(recipient, stream):
+    http = httplib2.Http()
+    http.add_credentials('api', API_KEY)
+
+    url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
+    data = {
+        'from': 'Example Sender <mailgun@{}>'.format(DOMAIN_NAME),
+        'to': recipient,
+        'subject': 'This is an example email from Mailgun',
+        'text': 'Test message from Mailgun',
+        'html': '<a href="connexus-pink.appspot.com/view/{}/"> '
+                'Click here to subscribe to the stream </a>'.format(stream.key.id())
+    }
+
+    resp, content = http.request(
+        url, 'POST', urlencode(data),
+        headers={"Content-Type": "application/x-www-form-urlencoded"})
+
+    if resp.status != 200:
+        raise RuntimeError(
+            'Mailgun API error: {} {}'.format(resp.status, content))
 # [END create_page]
