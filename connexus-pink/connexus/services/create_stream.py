@@ -26,28 +26,34 @@ class CreateStream(webapp2.RequestHandler):
         user = users.get_current_user().email()
         stream_name = self.request.get('streamname')
         subscribers = self.request.get('subs')
+        subs_msg = self.request.get('subs_msg')
         tags = self.request.get('tags')
         cover_image = self.request.get('coverUrl')
 
-        # Create a new Stream entity then redirect to /view the new stream
-        new_stream = Stream(name=stream_name,
-                           owner=user,
-                           coverImageURL=cover_image,
-                           viewCount=0,
-                           tags=tags.split(",") ) # todo trim after split
+        existing_stream_name = Stream.query(Stream.name == stream_name).get()
+        if existing_stream_name:
+            print("Stream exists")
 
-        new_stream.put()
+            # Redirect to manage page as per spec
+            self.redirect('/error')
+        else:
+            # Create a new Stream entity then redirect to /view the new stream
+            new_stream = Stream(name=stream_name,
+                                owner=user,
+                                coverImageURL=cover_image,
+                                viewCount=0,
+                                tags=tags.split(",") ) # todo trim after split
+            new_stream.put()
 
-        # todo send invite emails
-        subscriber_array = subscribers.split(",")
+            # todo send invite emails
+            subscriber_array = subscribers.split(",")
+            print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
+            for subscriber in subscriber_array:
+                if subscriber != "":
+                    send_simple_message(subscriber, subs_msg, new_stream)
 
-        for subscriber in subscriber_array:
-            send_simple_message(subscriber, new_stream)
-        #for sub in subscriberArray:
-
-
-        #Redirect to /view for this stream
-        self.redirect('/manage')
+            # Redirect to manage page as per spec
+            self.redirect('/manage')
     
     def get(self):
     
@@ -63,17 +69,17 @@ class CreateStream(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-def send_simple_message(recipient, stream):
+def send_simple_message(recipient, subs_msg, stream):
     http = httplib2.Http()
     http.add_credentials('api', API_KEY)
 
     url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
     data = {
-        'from': 'Example Sender <mailgun@{}>'.format(DOMAIN_NAME),
+        'from': 'Connex.us Pink <mailgun@{}>'.format(DOMAIN_NAME),
         'to': recipient,
-        'subject': 'This is an example email from Mailgun',
+        'subject': 'Subscribe to my Connex.us Stream',
         'text': 'Test message from Mailgun',
-        'html': '<a href="connexus-pink.appspot.com/view/{}/"> '
+        'html': '<p>' + subs_msg + '</p><br><a href="connexus-pink.appspot.com/view/{}/"> '
                 'Click here to subscribe to the stream </a>'.format(stream.key.id())
     }
 
