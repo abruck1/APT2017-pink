@@ -47,9 +47,12 @@ class Search(webapp2.RequestHandler):
                 search_results = index.search(search_query)
                 #print("Search Results={}".format(search_results))
                 num_results = search_results.number_found
-                for doc in search_results:
+                for index, doc in enumerate(search_results):
                     doc_id = doc.doc_id
                     found_streams.append(ndb.Key(Stream, int(doc_id)).get())
+                    # if there are more than 5 then do not display them as per spec
+                    if index == 4:
+                        break
                     #fields = doc.fields
                     #print("doc_id={0} fields={1}".format(doc_id, fields)) 
             

@@ -46,8 +46,10 @@ class CreateStream(webapp2.RequestHandler):
 
             # todo send invite emails
             subscriber_array = subscribers.split(",")
+            print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
             for subscriber in subscriber_array:
-                send_simple_message(subscriber, new_stream)
+                if subscriber != "":
+                    send_simple_message(subscriber, new_stream)
 
             # Redirect to manage page as per spec
             self.redirect('/manage')
