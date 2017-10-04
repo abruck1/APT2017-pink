@@ -15,3 +15,8 @@ class StreamSubscriber(ndb.Model):
     stream = ndb.KeyProperty(kind='Stream')
     user = ndb.StringProperty()
 
+# not entirely sure about this class.  also, blob has builtin creation date, may not need the date field
+class StreamImage(ndb.Model):
+    stream = ndb.KeyProperty(kind='Stream')
+    imageBlobKey = ndb.BlobKeyProperty()
+    createDate = ndb.DateTimeProperty(auto_now_add=True)

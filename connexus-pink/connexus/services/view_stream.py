@@ -1,5 +1,5 @@
 
-
+from google.appengine.ext import blobstore
 import jinja2
 import webapp2
 
@@ -26,8 +26,14 @@ class ViewStream(webapp2.RequestHandler):
         stream.viewCount += 1
         stream.put()
 
+        # generate upload URLd
+        # todo this needs to be generated closer to the actual upload, jquery maybe?
+        # it will work as is, but there's a 10 min timeout on the blob key
+        upload_url = blobstore.create_upload_url('/upload')
+
         template_values = {
             'stream': stream,
+            'upload_url': upload_url,
             'page': 'View',
         }
         url, url_linktext, user = logout_func(self)
