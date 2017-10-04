@@ -25,6 +25,6 @@ app = webapp2.WSGIApplication([
     ('/trending', Trending),
     ('/social', Social),
     ('/manage', Manage),
-    (r'/upload/(\d+)', UploadImage)
+    ('/upload', UploadImage)
 ], debug=True)
 # [END app]

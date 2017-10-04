@@ -37,7 +37,7 @@
 	</a>
 
 
-<form action="/upload/{{ stream.key.id() }}" method="post" enctype="multipart/form-data">
+<form action="{{ upload_url }}?streamid={{ stream.key.id() }}" method="post" enctype="multipart/form-data">
     <div class="form-inline">
         <label for="image">Upload an image</label>
         <input type="file" name="image" id="image">
