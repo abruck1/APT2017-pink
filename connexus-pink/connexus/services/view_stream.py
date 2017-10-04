@@ -21,7 +21,9 @@ class ViewStream(webapp2.RequestHandler):
         stream = ndb.Key(Stream, int(streamid)).get()
 
         #todo handle this in an if block
-        assert (stream is not None)
+        if stream is None:
+            # todo error
+            pass
 
         stream.viewCount += 1
         stream.put()
