@@ -30,11 +30,13 @@ class SubscribeStream(webapp2.RequestHandler):
                                                        user=user
                                                        )
                 newStreamSubscriber.put()
-            
+            else:
+                # todo pop up saying subscribed?
+                pass            
+   
             # subtract 1 due to redirect to view will increase the view by one
             stream.viewCount -= 1
             stream.put()
-            # todo pop up saying subscribed?
         else:
             # todo pop up message saying not logged in
             pass

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block head_title %}Error || {{ page }}{% endblock head_title %}
+
+{% block content %}
+<h1>Error!</h1>
+
+<p>
+	You tried to create a new stream<br>
+	whose name is the same as an<br>
+	existing stream; operation did not complete.
+</p>
+
+{% endblock  %}

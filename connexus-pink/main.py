@@ -1,6 +1,7 @@
 # [START imports]
 from connexus.services.create_stream import *
 from connexus.services.login import *
+from connexus.services.error import *
 from connexus.services.manage import *
 from connexus.services.search import *
 from connexus.services.social import *
@@ -24,6 +25,7 @@ app = webapp2.WSGIApplication([
     (r'/search', Search),
     ('/trending', Trending),
     ('/social', Social),
+    ('/error', Error),
     ('/manage', Manage),
     (r'/upload/(\d+)', UploadImage)
 ], debug=True)

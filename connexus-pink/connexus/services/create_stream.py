@@ -29,25 +29,28 @@ class CreateStream(webapp2.RequestHandler):
         tags = self.request.get('tags')
         cover_image = self.request.get('coverUrl')
 
-        # Create a new Stream entity then redirect to /view the new stream
-        new_stream = Stream(name=stream_name,
-                           owner=user,
-                           coverImageURL=cover_image,
-                           viewCount=0,
-                           tags=tags.split(",") ) # todo trim after split
+        existing_stream_name = Stream.query(Stream.name == stream_name).get()
+        if existing_stream_name:
+            print("Stream exists")
 
-        new_stream.put()
+            # Redirect to manage page as per spec
+            self.redirect('/error')
+        else:
+            # Create a new Stream entity then redirect to /view the new stream
+            new_stream = Stream(name=stream_name,
+                                owner=user,
+                                coverImageURL=cover_image,
+                                viewCount=0,
+                                tags=tags.split(",") ) # todo trim after split
+            new_stream.put()
 
-        # todo send invite emails
-        subscriber_array = subscribers.split(",")
+            # todo send invite emails
+            subscriber_array = subscribers.split(",")
+            for subscriber in subscriber_array:
+                send_simple_message(subscriber, new_stream)
 
-        for subscriber in subscriber_array:
-            send_simple_message(subscriber, new_stream)
-        #for sub in subscriberArray:
-
-
-        #Redirect to /view for this stream
-        self.redirect('/manage')
+            # Redirect to manage page as per spec
+            self.redirect('/manage')
     
     def get(self):
     
