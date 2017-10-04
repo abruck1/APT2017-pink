@@ -33,6 +33,8 @@ class Search(webapp2.RequestHandler):
         if search_string:
             try:
                 index = search.Index('connexus_search')
+                # removes all stale documents in index
+                delete_all_in_index(index)
                 streams = Stream.query()
                 for s in streams:
                     tags = ''.join(str(e).lower() for e in s.tags)
@@ -46,15 +48,16 @@ class Search(webapp2.RequestHandler):
                 search_query = search.Query(query_string=search_string)
                 search_results = index.search(search_query)
                 #print("Search Results={}".format(search_results))
+                
                 num_results = search_results.number_found
                 for index, doc in enumerate(search_results):
                     doc_id = doc.doc_id
-                    found_streams.append(ndb.Key(Stream, int(doc_id)).get())
+                    stream = ndb.Key(Stream, int(doc_id)).get()
+                    found_streams.append(stream)
                     # if there are more than 5 then do not display them as per spec
                     if index == 4:
                         break
-                    #fields = doc.fields
-                    #print("doc_id={0} fields={1}".format(doc_id, fields)) 
+                    #print("doc_id={0} fields={1} stream={2}".format(doc_id, doc.fields, ndb.Key(Stream, int(doc_id)).get())) 
             
             except search.Error:
                 print("Caught a search Error")
@@ -75,3 +78,23 @@ class Search(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 # [END search_page]
+
+# from google's snippets
+def delete_all_in_index(index):
+    # index.get_range by returns up to 100 documents at a time, so we must
+    # loop until we've deleted all items.
+    while True:
+        # Use ids_only to get the list of document IDs in the index without
+        # the overhead of getting the entire document.
+        document_ids = [
+            document.doc_id
+            for document
+            in index.get_range(ids_only=True)]
+
+        # If no IDs were returned, we've deleted everything.
+        if not document_ids:
+            break
+
+        # Delete the documents for the given IDs
+        index.delete(document_ids)
+
