@@ -28,9 +28,15 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
 
         #update the stream
         stream.lastPicDate = stream_image.createDate
-        stream.imageCount += 1
+        if stream.imageCount:
+            stream.imageCount += 1
+        else:
+            stream.imageCount = 0
+
         # need to subtract one due to the redirect increasing viewCount by one
-        stream.viewCount -= 1
+        if stream.viewCount > 0:
+            stream.viewCount -= 1
+
         if stream.coverImageURL == "":
             stream.coverImageURL = images.get_serving_url(stream_image.imageBlobKey)
             print("url={}".format(images.get_serving_url(stream_image.imageBlobKey)))
