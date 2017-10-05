@@ -48,7 +48,7 @@ class CreateStream(webapp2.RequestHandler):
 
             # todo send invite emails
             subscriber_array = subscribers.split(",")
-            print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
+            # print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
             for subscriber in subscriber_array:
                 if subscriber != "":
                     send_simple_message(subscriber, subs_msg, new_stream)
@@ -80,7 +80,7 @@ def send_simple_message(recipient, subs_msg, stream):
         'to': recipient,
         'subject': 'Subscribe to my Connex.us Stream',
         'text': 'Test message from Mailgun',
-        'html': '<p>' + subs_msg + '</p><br><a href="connexus-pink.appspot.com/view/{}/"> '
+        'html': '<p>' + subs_msg + '</p><br><a href="connexus-pink.appspot.com/view/{}"> '
                 'Click here to subscribe to the stream </a>'.format(stream.key.id())
     }
 
