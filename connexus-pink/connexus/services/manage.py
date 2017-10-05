@@ -16,7 +16,9 @@ class Manage(webapp2.RequestHandler):
 
     def get(self):
     
-        user = users.get_current_user().email()
+        user = users.get_current_user()
+        if user:
+            user = user.email()
         
         user_streams = Stream.query(Stream.owner == user).fetch()
         for u in user_streams:

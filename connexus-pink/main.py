@@ -10,6 +10,7 @@ from connexus.services.view_stream import *
 from connexus.services.subscribe_stream import *
 from connexus.services.trending import *
 from connexus.services.upload import *
+from connexus.services.trending_cron import *
 
 # [END imports]
 
@@ -27,6 +28,7 @@ app = webapp2.WSGIApplication([
     ('/social', Social),
     ('/error', Error),
     ('/manage', Manage),
-    ('/upload', UploadImage)
+    ('/upload', UploadImage),
+    ('/trendingcron', TrendingCron)
 ], debug=True)
 # [END app]
