@@ -10,6 +10,8 @@
     position: relative;
     text-align: center;
     color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 30px;
 }
 /* Centered text */
 .centered {
@@ -27,7 +29,6 @@
     <a href="/view/{{ s.key.id() }}">
 			{% if s.coverImageURL %}
                 <div class="stream_name">
-                <!--<h2>WTF0</h2>-->
 	  			<div class="centered"> {{ s.name }}</div>
                 <img src = "{{ s.coverImageURL }}"  style="width:160px;height:160px;">
                 </div>
