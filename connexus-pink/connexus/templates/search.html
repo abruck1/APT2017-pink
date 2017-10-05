@@ -4,6 +4,29 @@
 
 
 {% block content %}
+
+<head>
+<style>
+.stream_name {
+    position: relative;
+    text-align: center;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 30px;
+}
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
+</head>
+
+
+
+
 <h1>Search</h1>
 <form action="/search" method="post">
         <input type="text" name="search_string" placeholder="Search Streams"><br>
@@ -20,7 +43,6 @@
 	    <a href="/view/{{ stream.key.id() }}">
 			{% if stream.coverImageURL %}
                 <div class="stream_name">
-                <h2>WTF0</h2>
 	  			<div class="centered"> {{ stream.name }}</div>
                 <img src = "{{ stream.coverImageURL }}"  style="width:160px;height:160px;">
                 </div>

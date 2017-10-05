@@ -1,6 +1,7 @@
 import jinja2
 from connexus.ndb_model import *
 from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import images
 
 JINJA_ENVIRONMENT = jinja2.Environment(
   loader=jinja2.PackageLoader('connexus', 'templates'),
@@ -27,6 +28,12 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
 
         #update the stream
         stream.lastPicDate = stream_image.createDate
+        stream.imgCount += 1
+        # need to subtract one due to the redirect increasing viewCount by one
+        stream.viewCount -= 1
+        if stream.coverImageURL == "":
+            stream.coverImageURL = images.get_serving_url(stream_image.imageBlobKey)
+            print("url={}".format(images.get_serving_url(stream_image.imageBlobKey)))
         stream.put()
 
         # todo what to do with comments?
