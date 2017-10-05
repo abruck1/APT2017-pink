@@ -16,7 +16,7 @@ def logout_func(self, user_text='Logout', user_url='/'):
 
 def get_stream_image_url(image_blobkey):
     # returns the image URL with the resizing
-    return images.get_serving_url(image_blobkey) + '=s32-c'
+    return images.get_serving_url(image_blobkey) + '=s256'
 
 def get_cover_image_url():
     # hmm, if it's just a URL, we can't manipulate it as easy as the images in the blobstore
