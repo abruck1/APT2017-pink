@@ -31,7 +31,7 @@ class ViewStream(webapp2.RequestHandler):
         # load images
         # todo pagination, see https://www.the-swamp.info/blog/pagination-google-app-engine/
         # todo this could be none
-        stream_images = StreamImage.query(ancestor=stream.key).fetch()
+        stream_images = StreamImage.query(ancestor=stream.key).order(-StreamImage.createDate).fetch()
 
         image_urls = []
         for stream_image in stream_images:

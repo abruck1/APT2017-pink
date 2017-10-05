@@ -38,7 +38,7 @@ tr:nth-child(even) {
             <tr>
                 <td><a href="/view/{{ stream.key.id() }}">{{ stream.name }}</a></td>
                 <td>{{ stream.lastPicDate }}</td> 
-                <td>{{ stream.images|count }}</td> 
+                <td>{{ stream.imgCount }}</td> 
                 <td>
                 <input type="checkbox" name="delete" value="{{ stream.key.id() }}">
                 </td>

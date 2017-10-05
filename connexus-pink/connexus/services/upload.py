@@ -27,6 +27,9 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
 
         #update the stream
         stream.lastPicDate = stream_image.createDate
+        stream.imgCount += 1
+        # need to subtract one due to the redirect increasing viewCount by one
+        stream.viewCount -= 1
         stream.put()
 
         # todo what to do with comments?
