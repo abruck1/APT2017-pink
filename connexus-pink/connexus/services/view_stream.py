@@ -20,7 +20,6 @@ class ViewStream(webapp2.RequestHandler):
 
         stream = ndb.Key(Stream, int(streamid)).get()
 
-        #todo handle this in an if block
         if stream is None:
             # todo error
             pass
@@ -39,10 +38,10 @@ class ViewStream(webapp2.RequestHandler):
 
         image_urls = []
         for stream_image in stream_images:
-            # todo make sure the append is putting the images in the correct order
-            image_urls.append(images.get_serving_url(stream_image.imageBlobKey))
+            # crop to 32 pixels
+            image_urls.append(get_stream_image_url(stream_image.imageBlobKey))
 
-        # generate upload URLd
+        # generate upload URL
         # todo this needs to be generated closer to the actual upload, jquery maybe?
         # it will work as is, but there's a 10 min timeout on the blob key
         upload_url = blobstore.create_upload_url('/upload')

@@ -29,4 +29,7 @@ libraries:
 
 - name: ssl
   version: latest
+
+- name: PIL
+  version: latest
 # [END libraries]

@@ -1,7 +1,8 @@
 import httplib2
 
-from google.appengine.api import users
 from urllib import urlencode
+from google.appengine.api import users
+from google.appengine.api import images
 
 DOMAIN_NAME = 'sandbox53d25b427601433298c59606e4d513a8.mailgun.org'
 API_KEY = 'key-259539f231fa908edfc7e8e1726fb578'
@@ -76,3 +77,11 @@ def send_trend_report(recipient, top_three_streams):
     if resp.status != 200:
         raise RuntimeError(
             'Mailgun API error: {} {}'.format(resp.status, content))
+
+def get_stream_image_url(image_blobkey):
+    # returns the image URL with the resizing
+    return images.get_serving_url(image_blobkey) + '=s32-c'
+
+def get_cover_image_url():
+    # hmm, if it's just a URL, we can't manipulate it as easy as the images in the blobstore
+    pass
