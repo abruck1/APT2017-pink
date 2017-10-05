@@ -18,3 +18,7 @@ class StreamSubscriber(ndb.Model):
 class StreamImage(ndb.Model):
     imageBlobKey = ndb.BlobKeyProperty()
     createDate = ndb.DateTimeProperty(auto_now_add=True)
+
+class StreamImage(ndb.Model):
+    imageBlobKey = ndb.BlobKeyProperty()
+    createDate = ndb.DateTimeProperty(auto_now_add=True)
