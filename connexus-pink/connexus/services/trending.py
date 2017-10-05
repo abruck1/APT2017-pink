@@ -2,6 +2,7 @@ import os
 
 import jinja2
 import webapp2
+from connexus.ndb_model import *
 
 from connexus.common import *
 
@@ -20,6 +21,24 @@ class Trending(webapp2.RequestHandler):
             email = user.email()
         else:
             email = "Not logged in"
+
+        # testing the streamview logic
+        streamviews = StreamView.query().fetch()
+        trends = {}
+
+        for view in streamviews:
+            if view.key.parent().id() not in trends:
+                trends[view.key.parent().id()] = 1
+            else:
+                trends[view.key.parent().id()] += 1
+
+        for stream, view_count in trends.items():
+            print(stream, view_count)
+
+
+
+
+        email = 'youremail@gmail.com'
         template_values = {
             'page': "Trending",
             'email': email,
