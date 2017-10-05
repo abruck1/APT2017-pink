@@ -42,6 +42,7 @@ class CreateStream(webapp2.RequestHandler):
                                 owner=user,
                                 coverImageURL=cover_image,
                                 viewCount=0,
+                                imgCount=0,
                                 tags=tags.split(",") ) # todo trim after split
             new_stream.put()
 
