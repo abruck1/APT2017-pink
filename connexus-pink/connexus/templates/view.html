@@ -21,20 +21,18 @@
 </style>
 </head>
 
-<h1>View a Stream</h1>
-	<a href="{{ stream }}">
-			{% if stream.coverImage %}
-			<div class="stream_name">
-            	<h2>WTF0</h2>
-	  			<div class="centered"> {{ stream.name }}</div>
-	  			<a href="view.html">
-                	<img src = "{{ stream.coverImage }}"  style="width:160px;height:160px;">
-            	</a>
-			</div>
-            {% else %}
-            	<h2>{{ stream.name }}</h2>
-            {% endif %}
-	</a>
+	<div class="centered">
+        <h1>{{ stream.name }}</h1>
+        <table>
+            <tr>
+                {% for image in image_urls %}
+                    <td>
+                        <img src = "{{ image }}">
+                    </td>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
 
 
 <form action="{{ upload_url }}?streamid={{ stream.key.id() }}" method="post" enctype="multipart/form-data">

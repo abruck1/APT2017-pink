@@ -1,4 +1,4 @@
-
+from google.appengine.api import images
 from google.appengine.ext import blobstore
 import jinja2
 import webapp2
@@ -28,6 +28,16 @@ class ViewStream(webapp2.RequestHandler):
         stream.viewCount += 1
         stream.put()
 
+        # load images
+        # todo pagination, see https://www.the-swamp.info/blog/pagination-google-app-engine/
+        # todo this could be none
+        stream_images = StreamImage.query(ancestor=stream.key).fetch()
+
+        image_urls = []
+        for stream_image in stream_images:
+            # todo make sure the append is putting the images in the correct order
+            image_urls.append(images.get_serving_url(stream_image.imageBlobKey))
+
         # generate upload URLd
         # todo this needs to be generated closer to the actual upload, jquery maybe?
         # it will work as is, but there's a 10 min timeout on the blob key
@@ -35,6 +45,7 @@ class ViewStream(webapp2.RequestHandler):
 
         template_values = {
             'stream': stream,
+            'image_urls': image_urls,
             'upload_url': upload_url,
             'page': 'View',
         }
@@ -48,3 +59,5 @@ class ViewStream(webapp2.RequestHandler):
 
 # [END ViewStream]
 
+# from google.appengine.api import images
+# avatar = images.resize(avatar, 32, 32)

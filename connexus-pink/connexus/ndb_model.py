@@ -9,14 +9,12 @@ class Stream(ndb.Model):
     viewCount = ndb.IntegerProperty()
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
-    images = ndb.StringProperty(repeated=True)
 
 class StreamSubscriber(ndb.Model):
     stream = ndb.KeyProperty(kind='Stream')
     user = ndb.StringProperty()
 
-# not entirely sure about this class.  also, blob has builtin creation date, may not need the date field
+# uses parent=stream.key on creation
 class StreamImage(ndb.Model):
-    stream = ndb.KeyProperty(kind='Stream')
     imageBlobKey = ndb.BlobKeyProperty()
     createDate = ndb.DateTimeProperty(auto_now_add=True)

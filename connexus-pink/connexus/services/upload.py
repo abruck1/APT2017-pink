@@ -19,7 +19,7 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
         stream = (ndb.Key('Stream', int(streamid))).get()
 
         stream_image = StreamImage(
-            stream= ndb.Key(Stream, int(streamid)),
+            parent=stream.key,
             imageBlobKey=imagefile.key())
 
         #store the image
