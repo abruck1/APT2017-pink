@@ -25,8 +25,12 @@ class ViewStream(webapp2.RequestHandler):
             # todo error
             pass
 
+        # increment view count and add view to trending queue
         stream.viewCount += 1
         stream.put()
+
+        stream_view = StreamView(parent=stream.key)
+        stream_view.put()
 
         # load images
         # todo pagination, see https://www.the-swamp.info/blog/pagination-google-app-engine/

@@ -9,6 +9,7 @@ class Stream(ndb.Model):
     viewCount = ndb.IntegerProperty()
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
+    imageCount = ndb.IntegerProperty()
 
 class StreamSubscriber(ndb.Model):
     stream = ndb.KeyProperty(kind='Stream')
@@ -18,3 +19,11 @@ class StreamSubscriber(ndb.Model):
 class StreamImage(ndb.Model):
     imageBlobKey = ndb.BlobKeyProperty()
     createDate = ndb.DateTimeProperty(auto_now_add=True)
+
+class StreamView(ndb.Model):
+    viewDate = ndb.DateTimeProperty(auto_now_add=True)
+
+class AppConfig(ndb.Model):
+    # 0=none, 1=5min, 2=hour, 3=day
+    # todo make this an enum?
+    trendEmailSend = ndb.IntegerProperty()
