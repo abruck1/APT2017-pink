@@ -39,8 +39,8 @@ class ViewStream(webapp2.RequestHandler):
 
         image_urls = []
         for stream_image in stream_images:
-            # todo make sure the append is putting the images in the correct order
-            image_urls.append(images.get_serving_url(stream_image.imageBlobKey))
+            # crop to 32 pixels
+            image_urls.append(images.get_serving_url(stream_image.imageBlobKey) + '=s32-c')
 
         # generate upload URLd
         # todo this needs to be generated closer to the actual upload, jquery maybe?
