@@ -11,6 +11,7 @@ class Stream(ndb.Model):
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
     imageCount = ndb.IntegerProperty()
+    viewsInPastHour = ndb.IntegerProperty()
 
 class StreamSubscriber(ndb.Model):
     stream = ndb.KeyProperty(kind='Stream')

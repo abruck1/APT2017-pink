@@ -42,3 +42,37 @@ def send_simple_message(recipient, subs_msg, stream):
     if resp.status != 200:
         raise RuntimeError(
             'Mailgun API error: {} {}'.format(resp.status, content))
+
+
+def send_trend_report(recipient, top_three_streams):
+    http = httplib2.Http()
+    http.add_credentials('api', API_KEY)
+    message = "See links below for the top three most popular streams"
+
+    top_three_stream_ids = []
+    for stream in top_three_streams:
+        top_three_stream_ids.append(stream.key.id())
+
+    url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
+    data = {
+        'from': 'Connex.us Pink <mailgun@{}>'.format(DOMAIN_NAME),
+        'to': recipient,
+        'subject': 'Subscribe to my Connex.us Stream',
+        'text': 'Test message from Mailgun',
+        'html': '<p>' + message + '</p><br><a href="connexus-pink.appspot.com/view/{}/"> '
+                'Most Trending Stream </a>'
+                '<a href="connexus-pink.appspot.com/view/{}/"> '
+                'Second Most Trending Stream </a>'
+                '<a href="connexus-pink.appspot.com/view/{}/"> '
+                'Third Most Trending Stream </a>'.format(top_three_stream_ids[0],
+                                                         top_three_stream_ids[3],
+                                                         top_three_stream_ids[2])
+    }
+
+    resp, content = http.request(
+        url, 'POST', urlencode(data),
+        headers={"Content-Type": "application/x-www-form-urlencoded"})
+
+    if resp.status != 200:
+        raise RuntimeError(
+            'Mailgun API error: {} {}'.format(resp.status, content))
