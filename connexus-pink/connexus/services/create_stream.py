@@ -42,7 +42,7 @@ class CreateStream(webapp2.RequestHandler):
 
             # todo send invite emails
             subscriber_array = subscribers.split(",")
-            print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
+            # print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
             for subscriber in subscriber_array:
                 if subscriber != "":
                     send_simple_message(subscriber, subs_msg, new_stream)
@@ -63,4 +63,26 @@ class CreateStream(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('create.html')
         self.response.write(template.render(template_values))
 
+
+def send_simple_message(recipient, subs_msg, stream):
+    http = httplib2.Http()
+    http.add_credentials('api', API_KEY)
+
+    url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
+    data = {
+        'from': 'Connex.us Pink <mailgun@{}>'.format(DOMAIN_NAME),
+        'to': recipient,
+        'subject': 'Subscribe to my Connex.us Stream',
+        'text': 'Test message from Mailgun',
+        'html': '<p>' + subs_msg + '</p><br><a href="connexus-pink.appspot.com/view/{}"> '
+                'Click here to subscribe to the stream </a>'.format(stream.key.id())
+    }
+
+    resp, content = http.request(
+        url, 'POST', urlencode(data),
+        headers={"Content-Type": "application/x-www-form-urlencoded"})
+
+    if resp.status != 200:
+        raise RuntimeError(
+            'Mailgun API error: {} {}'.format(resp.status, content))
 # [END create_page]

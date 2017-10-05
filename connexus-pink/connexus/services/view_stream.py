@@ -44,7 +44,11 @@ class ViewStream(webapp2.RequestHandler):
         # generate upload URL
         # todo this needs to be generated closer to the actual upload, jquery maybe?
         # it will work as is, but there's a 10 min timeout on the blob key
-        upload_url = blobstore.create_upload_url('/upload')
+        upload_url = blobstore.create_upload_url('/upload', )
+
+        # action = "http://connexus-pink.appspot.com/_ah/upload/AMmfu6Yk3J5eyl1YWQVdyInu7l60ezT-aIv2hdS-XqrOz-NAXv_BqyPX-gDhgbOftfiV5DAkfAgK7Tepo9da6l_TQTQlRT17evnLVb1qlEsH-koKtuiuw3_T9Ai5S1kR1hQfMx8JjJWsXjG2QxyTMTIcaNxbkOOZfrhCGBiPlr1pdxxA6pnAuMQ/ALBNUaYAAAAAWdXWoYBYLP245jkZIhu7vDjIeObHdYdu/?streamid=5649391675244544"
+
+        # action="http://localhost:8080/_ah/upload/aghkZXZ-Tm9uZXIiCxIVX19CbG9iVXBsb2FkU2Vzc2lvbl9fGICAgICA-JUJDA?streamid=5275456790069248" method="post" enctype="multipart/form-data">
 
         template_values = {
             'stream': stream,

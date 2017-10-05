@@ -39,7 +39,7 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
 
         if stream.coverImageURL == "":
             stream.coverImageURL = images.get_serving_url(stream_image.imageBlobKey)
-            print("url={}".format(images.get_serving_url(stream_image.imageBlobKey)))
+            # print("url={}".format(images.get_serving_url(stream_image.imageBlobKey)))
         stream.put()
 
         # todo what to do with comments?
