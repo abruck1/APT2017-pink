@@ -2,20 +2,14 @@ import os
 
 import jinja2
 import webapp2
-import httplib2
 
 from connexus.common import *
 from connexus.ndb_model import *
-from urllib import urlencode
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.PackageLoader('connexus', 'templates'),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
-
-DOMAIN_NAME = 'sandbox53d25b427601433298c59606e4d513a8.mailgun.org'
-API_KEY = 'key-259539f231fa908edfc7e8e1726fb578'
-
 
 # [START create_page]
 class CreateStream(webapp2.RequestHandler):

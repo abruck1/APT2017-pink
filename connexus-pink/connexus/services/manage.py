@@ -15,7 +15,11 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class Manage(webapp2.RequestHandler):
 
     def get(self):
-    
+
+        user = users.get_current_user()
+        if user:
+            user = user.email()
+
         try:
             user = users.get_current_user().email()
         except:
