@@ -16,7 +16,12 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class ViewStream(webapp2.RequestHandler):
     def get(self, streamid):
 
-        user = users.get_current_user()
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
 
         stream = ndb.Key(Stream, int(streamid)).get()
 

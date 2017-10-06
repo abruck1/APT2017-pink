@@ -16,8 +16,13 @@ class Manage(webapp2.RequestHandler):
 
     def get(self):
     
-        user = users.get_current_user().email()
-        
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
+
         user_streams = Stream.query(Stream.owner == user).fetch()
         for u in user_streams:
             print("u={}".format(u))

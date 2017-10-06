@@ -16,6 +16,13 @@ class Trending(webapp2.RequestHandler):
 
     def get(self):
 
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
+
         # testing the streamview logic
         streamviews = StreamView.query().fetch()
         trends = {}
