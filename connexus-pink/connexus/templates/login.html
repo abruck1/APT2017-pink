@@ -5,6 +5,12 @@
 
 </body>
 
+{% if user %}
+    Logged in as: {{ user }}<br>
+    <a href="{{ url|safe }}">Logout</a>
+{% endif %}
+
+
 <div class="nav-collapse">
     <a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a>
 </div>
