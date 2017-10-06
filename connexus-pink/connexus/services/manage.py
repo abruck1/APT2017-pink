@@ -22,8 +22,8 @@ class Manage(webapp2.RequestHandler):
             user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
         except:
             # todo raise error message to user?
-            user_streams = None
-            user_subscriptions = None
+            user_streams = ""
+            user_subscriptions = ""
 
         template_values = {
             'user_streams': user_streams,
