@@ -6,22 +6,32 @@
 
 <head>
 <style>
-.stream_name {
+.image {
     position: relative;
-    text-align: center;
+    width: 256px;
+    height: 256px;
+    float: left;
+    border: 5px;
+    border-style: solid;
+    border-color: black;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
-/* Centered text */
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+h2 {
+   position: absolute;
+   top: 200px;
+   left: 0;
+   width: 100%;
+}
+h2 span {
+   color: white;
+   font: bold 24px/45px Helvetica, Sans-Serif;
+   letter-spacing: -1px;
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
+   padding: 10px;
 }
 
-h2 {
-    position: absolute;
-    color: black;
-}
 </style>
 </head>
 
@@ -30,15 +40,16 @@ h2 {
 	<!--<a href="{{ s }}">-->
     <a href="/view/{{ s.key.id() }}">
 			{% if s.coverImageURL %}
-                <div>
-                <img src = "{{ s.coverImageURL }}" style="float:left;margin-right:1%;margin-bottom:0.5em;width:160px;height:160px;">
-            {% else %}
-                <div>
-                <img src = "/bootstrap/img/empty_cover_image.png" style="float:left;margin-right:1%;margin-bottom:0.5em;width:160px;height:160px;">
-            {% endif %}
-                <h2>{{ s.name }}</h2>
-                </img>
+                <div class="image">
+                    <img src = "{{ s.coverImageURL }}"  alt=""/>
+                    <h2><span>{{ s.name }}</span></h2>
                 </div>
+            {% else %}
+                <div class="image">
+                    <img src = "/bootstrap/img/empty_cover_image.png" alt=""/>
+                    <h2><span>{{ s.name }}</span></h2>
+                </div>
+            {% endif %}
 	</a>
 {% endfor %}
 
