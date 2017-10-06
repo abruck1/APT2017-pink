@@ -4,11 +4,6 @@
 <head>
 <title>{% block head_title %}Connex.us{% endblock head_title %}</title>
 
-	{% if user %}
-        Logged in as: {{ user }}<br>
-        <a href="{{ url|safe }}">Logout</a>
-    {% endif %}
-
 {% include 'snippets/css.html' %}
 </head>
 <body>
