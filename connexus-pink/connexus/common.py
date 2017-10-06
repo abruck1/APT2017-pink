@@ -19,9 +19,11 @@ def logout_func(self, user_text='Logout', user_url='/'):
     else:
         url_linktext = 'Login'
         url = users.create_login_url('view')
+
     return (url, url_linktext, user)
 
 
+# todo: update send simple message to actually subscribe the person that clicks the link
 def send_simple_message(recipient, subs_msg, stream):
     http = httplib2.Http()
     http.add_credentials('api', API_KEY)
@@ -31,7 +33,7 @@ def send_simple_message(recipient, subs_msg, stream):
         'from': 'Connex.us Pink <mailgun@{}>'.format(DOMAIN_NAME),
         'to': recipient,
         'subject': 'Subscribe to my Connex.us Stream',
-        'text': 'Test message from Mailgun',
+        'text': '',
         'html': '<p>' + subs_msg + '</p><br><a href="connexus-pink.appspot.com/view/{}/"> '
                 'Click here to subscribe to the stream </a>'.format(stream.key.id())
     }
@@ -78,9 +80,11 @@ def send_trend_report(recipient, top_three_streams):
         raise RuntimeError(
             'Mailgun API error: {} {}'.format(resp.status, content))
 
+
 def get_stream_image_url(image_blobkey):
     # returns the image URL with the resizing
     return images.get_serving_url(image_blobkey) + '=s256'
+
 
 def get_cover_image_url():
     # hmm, if it's just a URL, we can't manipulate it as easy as the images in the blobstore

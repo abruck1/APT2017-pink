@@ -4,7 +4,59 @@
 
 
 {% block content %}
-<h1>Trending</h1>
-{% include 'snippets/sidebar.html' %}
-<a href='mailto:{{ email }}'>Email us</a>
+<head>
+<style>
+.stream_name {
+    position: relative;
+    text-align: center;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 30px;
+}
+/* Centered text */
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
+</head>
+
+<h1> Top 3 Trending Streams</h1>
+<div class="streams">
+    {% for s in streams %}
+        <table class="container">
+            <a href="/view/{{ s.key.id() }}">
+                    {% if s.coverImageURL %}
+                        <div class="stream_name">
+                        <div class="centered"> {{ s.name }}</div>
+                        <img src = "{{ s.coverImageURL }}"  style="width:160px;height:160px;">
+                        </div>
+                    {% else %}
+                        {{ s.name }}
+                    {% endif %}
+            </a>
+            <caption align="center">
+            {% if s.viewsInPastHour == "" %}
+                0 views in past hour
+            {% else %}
+                {{ s.viewsInPastHour }} views in past hour
+            {% endif %}
+            </caption>
+        </table>
+    {% endfor %}
+    <form action="/trending" method="post">
+        {% for i in range(0,4) %}
+        <input type="radio" name="reportfreq" value="{{ labels[i] }}"
+        {% if property_checked == labels[i] %}
+            checked
+        {% endif %}>
+        {{ labels_text[i]}}<br>
+        {% endfor %}
+        <caption align="center|bottom">Email Trending Report</caption> <br>
+        <input type="submit" value="Update Rate">
+    </form>
+</div>
+
 {% endblock  %}

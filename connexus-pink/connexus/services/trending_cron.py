@@ -39,22 +39,29 @@ class TrendingCron(webapp2.RequestHandler):
         # ************************************************************************************
 
         # **************************check email report setting and send email if necessary****
-        reportEmail = AppConfig.query().fetch(1)[0]
-        send_reports_to = [
-            "wey.matt@utexas.edu",
-            "ee382vta @ gmail.com"
-        ]
-        top_three_streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
-        if reportEmail == 1:
-            for recipient in send_reports_to:
-                send_trend_report(recipient, top_three_streams)
-        if reportEmail == 2:
-            timestamp = time()
-            if 0 <= timestamp % 3600 < 300:
+        report_email = AppConfig.query().fetch(1)
+        if report_email:
+            report_email = report_email[0].trendEmailSend
+            # todo: update email addresses after finalized to send emails to instructors
+            # send_reports_to = [
+            #     "wey.matt@utexas.edu",
+            #     "ee382vta@gmail.com"
+            # ]
+            send_reports_to = [
+                "wey.matt@utexas.edu"
+            ]
+            top_three_streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
+            if report_email == 'minutes':
                 for recipient in send_reports_to:
                     send_trend_report(recipient, top_three_streams)
-        if reportEmail == 3:
-            if datetime.time(hour=0, minute=0) <= datetime.now() < datetime.time(hour=0, minute=5):
-                for recipient in send_reports_to:
-                    send_trend_report(recipient, top_three_streams)
+            if report_email == 'hour':
+                timestamp = time()
+                if 0 <= timestamp % 3600 < 300:
+                    for recipient in send_reports_to:
+                        send_trend_report(recipient, top_three_streams)
+            if report_email == 'day':
+                if datetime.time(hour=0, minute=0) <= datetime.now() < datetime.time(hour=0, minute=5):
+                    for recipient in send_reports_to:
+                        send_trend_report(recipient, top_three_streams)
+
         self.response.status = 204
