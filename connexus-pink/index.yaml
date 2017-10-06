@@ -14,6 +14,11 @@ indexes:
   ancestor: yes
   properties:
   - name: createDate
+
+- kind: StreamImage
+  ancestor: yes
+  properties:
+  - name: createDate
     direction: desc
 
 - kind: StreamSubscriber

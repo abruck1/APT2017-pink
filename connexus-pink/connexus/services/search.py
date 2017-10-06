@@ -65,7 +65,7 @@ class Search(webapp2.RequestHandler):
 
 
         template_values = {
-            'page': "Search",
+            'page': 'Connex.us',
             'search_string': search_string,
             'num_results': num_results,
             'found_streams': found_streams,

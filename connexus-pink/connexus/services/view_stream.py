@@ -56,7 +56,7 @@ class ViewStream(webapp2.RequestHandler):
             'stream': stream,
             'image_urls': image_urls,
             'upload_url': upload_url,
-            'page': 'View',
+            'page': 'Connex.us',
             'error': show_error,
         }
         url, url_linktext, user = logout_func(self)
