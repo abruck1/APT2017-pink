@@ -6,20 +6,27 @@
 
 <head>
 <style>
-.stream_name {
+.image {
     position: relative;
-    text-align: center;
-    color: white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    font-size: 30px;
+    width: 256px;
+    height: 256px;
+    float: left;
 }
-/* Centered text */
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+h2 {
+   position: absolute;
+   top: 200px;
+   left: 0;
+   width: 100%;
 }
+h2 span {
+   color: white;
+   font: bold 24px/45px Helvetica, Sans-Serif;
+   letter-spacing: -1px;
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
+   padding: 10px;
+}
+
 </style>
 </head>
 
@@ -28,9 +35,9 @@
 	<!--<a href="{{ s }}">-->
     <a href="/view/{{ s.key.id() }}">
 			{% if s.coverImageURL %}
-                <div class="stream_name">
-	  			<div class="centered"> {{ s.name }}</div>
-                <img src = "{{ s.coverImageURL }}"  style="width:160px;height:160px;">
+                <div class="image">
+                    <img src = "{{ s.coverImageURL }}"  alt=""/>
+                    <h2><span>{{ s.name }}</span></h2>
                 </div>
             {% else %}
                 {{ s.name }}
