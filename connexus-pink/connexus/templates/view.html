@@ -5,6 +5,11 @@
 {% block content %}
 
 <head>
+<script>
+function myFunction() {
+   alert("I am an alert box!");
+}
+</script>
 <style>
 .stream_name {
     position: relative;
@@ -54,5 +59,9 @@
 <form action="/subscribe/{{ stream.key.id() }}" method="post">
     <input type="submit" value="Subscribe">
 </form>
+
+{% if error == "1" %}
+    <span>User needs to be logged in in order to subscribe!</span>
+{% endif %}
 
 {% endblock  %}

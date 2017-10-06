@@ -17,11 +17,12 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class SubscribeStream(webapp2.RequestHandler):
     def post(self, streamid):
 
-        url = self.request.referer
-        stream_id = re.search(r'view/(.*)', url).group(1)
-        print("stream name={0}".format(stream_id))
-
-        user = users.get_current_user().email()
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/view/' + streamid + '?e=1')
+            return
 
         if user is not None:
             stream = ndb.Key(Stream, int(streamid)).get()
@@ -42,7 +43,7 @@ class SubscribeStream(webapp2.RequestHandler):
             pass
 
         # Redirect to /view for this stream
-        self.redirect('/view/' + stream_id )
+        self.redirect('/view/' + streamid )
 
 # [END SubscribeStream]
 
@@ -51,7 +52,12 @@ class UnSubscribeStream(webapp2.RequestHandler):
     def post(self):
 
         url = self.request.referer
-        user = users.get_current_user().email()
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
 
         subscriber_stream_list = self.request.params.getall('unsub')
 
@@ -77,7 +83,12 @@ class DeleteStream(webapp2.RequestHandler):
     def post(self):
 
         url = self.request.referer
-        user = users.get_current_user().email()
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
 
         delete_stream_list = self.request.params.getall('delete')
 

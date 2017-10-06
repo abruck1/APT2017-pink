@@ -15,13 +15,10 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [START ViewStream]
 class ViewStream(webapp2.RequestHandler):
     def get(self, streamid):
-
-        try:
-            user = users.get_current_user().email()
-        except:
-            # todo raise error message to user?
-            self.redirect('/')
-            return
+        show_error = self.request.get('e')
+        print("show_error={}".format(show_error))
+        if show_error == "":
+            show_error = 0
 
         stream = ndb.Key(Stream, int(streamid)).get()
 
@@ -60,6 +57,7 @@ class ViewStream(webapp2.RequestHandler):
             'image_urls': image_urls,
             'upload_url': upload_url,
             'page': 'View',
+            'error': show_error,
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url
