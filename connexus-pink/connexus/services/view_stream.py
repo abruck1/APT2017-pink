@@ -11,6 +11,15 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+class CursorPaginationHandler(webapp2.RequestHandler):
+    """Display objects with cursor pagination"""
+
+    def get(self):
+        prev_cursor = self.request.get('prev_cursor', '')
+        next_cursor = self.request.get('next_cursor', '')
+        res = TestModelPag.cursor_pagination(prev_cursor, next_cursor)
+        template = JINJA_ENVIRONMENT.get_template('templates/cursor_pagination.html')
+        self.response.write(template.render(res))
 
 # [START ViewStream]
 class ViewStream(webapp2.RequestHandler):
@@ -35,11 +44,14 @@ class ViewStream(webapp2.RequestHandler):
 
         # load images
         # todo pagination, see https://www.the-swamp.info/blog/pagination-google-app-engine/
+        prev_cursor = self.request.get('prev_cursor', '')
+        next_cursor = self.request.get('next_cursor', '')
+
         # todo this could be none
-        stream_images = StreamImage.query(ancestor=stream.key).order(-StreamImage.createDate).fetch()
+        stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor) # StreamImage.query(ancestor=stream.key).order(-StreamImage.createDate).fetch()
 
         image_urls = []
-        for stream_image in stream_images:
+        for stream_image in stream_images['objects']:
             # crop to 32 pixels
             image_urls.append(get_stream_image_url(stream_image.imageBlobKey))
 
@@ -52,12 +64,19 @@ class ViewStream(webapp2.RequestHandler):
 
         # action="http://localhost:8080/_ah/upload/aghkZXZ-Tm9uZXIiCxIVX19CbG9iVXBsb2FkU2Vzc2lvbl9fGICAgICA-JUJDA?streamid=5275456790069248" method="post" enctype="multipart/form-data">
 
+        print("prev_cursor={}".format(stream_images['prev_cursor']))
+        print("next_cursor={}".format(stream_images['next_cursor']))
+
         template_values = {
             'stream': stream,
             'image_urls': image_urls,
             'upload_url': upload_url,
             'page': 'View',
             'error': show_error,
+            'prev_cursor': stream_images['prev_cursor'],
+            'next_cursor': stream_images['next_cursor'],
+            'prev': stream_images['prev'],
+            'next': stream_images['next'],
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url
