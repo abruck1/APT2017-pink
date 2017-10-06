@@ -47,14 +47,10 @@ def send_simple_message(recipient, subs_msg, stream):
             'Mailgun API error: {} {}'.format(resp.status, content))
 
 
-def send_trend_report(recipient, top_three_streams):
+def send_trend_report(recipient, top_three_stream_ids):
     http = httplib2.Http()
     http.add_credentials('api', API_KEY)
     message = "See links below for the top three most popular streams"
-
-    top_three_stream_ids = []
-    for stream in top_three_streams:
-        top_three_stream_ids.append(stream.key.id())
 
     url = 'https://api.mailgun.net/v3/{}/messages'.format(DOMAIN_NAME)
     data = {
@@ -62,14 +58,14 @@ def send_trend_report(recipient, top_three_streams):
         'to': recipient,
         'subject': 'Subscribe to my Connex.us Stream',
         'text': 'Test message from Mailgun',
-        'html': '<p>' + message + '</p><br><a href="connexus-pink.appspot.com/view/{}/"> '
-                'Most Trending Stream </a>'
-                '<a href="connexus-pink.appspot.com/view/{}/"> '
-                'Second Most Trending Stream </a>'
-                '<a href="connexus-pink.appspot.com/view/{}/"> '
-                'Third Most Trending Stream </a>'.format(top_three_stream_ids[0],
-                                                         top_three_stream_ids[3],
-                                                         top_three_stream_ids[2])
+        'html': '<p>' + message + '</p><br><a href="connexus-pink.appspot.com/view/{}"> '
+                'Most Popular Stream </a><br>'
+                '<a href="connexus-pink.appspot.com/view/{}"> '
+                'Second Most Popular Stream </a><br>'
+                '<a href="connexus-pink.appspot.com/view/{}"> '
+                'Third Most Popular Stream </a><br>'.format(top_three_stream_ids[0],
+                                                            top_three_stream_ids[1],
+                                                            top_three_stream_ids[2])
     }
 
     resp, content = http.request(
