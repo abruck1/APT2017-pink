@@ -42,12 +42,6 @@ class Trending(webapp2.RequestHandler):
         checked = "never"
         if report_setting:
             checked = report_setting[0].trendEmailSend
-        try:
-            user = users.get_current_user().email()
-        except:
-            # todo raise error message to user?
-            self.redirect('/')
-            return
 
         # testing the streamview logic
         streamviews = StreamView.query().fetch()

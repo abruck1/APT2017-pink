@@ -16,33 +16,19 @@ class Manage(webapp2.RequestHandler):
 
     def get(self):
 
-        user = users.get_current_user()
-        if user:
-            user = user.email()
-
         try:
             user = users.get_current_user().email()
+            user_streams = Stream.query(Stream.owner == user).fetch()
+            user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
         except:
             # todo raise error message to user?
-            self.redirect('/')
-            return
-
-        user_streams = Stream.query(Stream.owner == user).fetch()
-        for u in user_streams:
-            print("u={}".format(u))
-
-
-        user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
-
-        print("USER_STREAMS={0} USER_SUBSCRIPTIONS={1}".format(user_streams, user_subscriptions))
-
-        for s in user_subscriptions:
-            print("stream.user={0}".format(s.user))
+            user_streams = None
+            user_subscriptions = None
 
         template_values = {
             'user_streams': user_streams,
             'subscribe': user_subscriptions,
-            'page': 'Manage',
+            'page': 'Connex.us',
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url
