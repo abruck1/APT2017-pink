@@ -7,7 +7,7 @@ class Stream(ndb.Model):
     createDate = ndb.DateTimeProperty(auto_now_add=True)
     coverImageURL = ndb.StringProperty()
     viewCount = ndb.IntegerProperty()
-    imgCount = ndb.IntegerProperty()
+    imageCount = ndb.IntegerProperty()
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
     imageCount = ndb.IntegerProperty()

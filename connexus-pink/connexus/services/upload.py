@@ -12,7 +12,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         streamid = self.request.get('streamid')
-        imagefile = self.get_uploads()[0]
+
+        try:
+            imagefile = self.get_uploads()[0]
+        except:
+            # todo raise error message to user?
+            self.redirect(str(self.request.referer))
+            return
 
         # todo error handling
 
@@ -28,10 +34,7 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
 
         #update the stream
         stream.lastPicDate = stream_image.createDate
-        if stream.imageCount:
-            stream.imageCount += 1
-        else:
-            stream.imageCount = 0
+        stream.imageCount += 1
 
         # need to subtract one due to the redirect increasing viewCount by one
         if stream.viewCount > 0:

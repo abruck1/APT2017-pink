@@ -16,6 +16,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class ViewAll(webapp2.RequestHandler):
     def get(self):
 
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
+
         # todo paging, check out .fetch_page
         streams = Stream.query().order(Stream.createDate).fetch(8)
 

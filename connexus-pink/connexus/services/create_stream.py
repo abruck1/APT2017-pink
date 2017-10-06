@@ -51,7 +51,14 @@ class CreateStream(webapp2.RequestHandler):
             self.redirect('/manage')
     
     def get(self):
-    
+
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
+
         template_values = {
             'page': 'Create',
         }

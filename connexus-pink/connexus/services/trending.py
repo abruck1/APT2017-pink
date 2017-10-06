@@ -26,7 +26,6 @@ class Trending(webapp2.RequestHandler):
 
         self.redirect('/trending')
     def get(self):
-
         # # testing the streamview logic
         # streamviews = StreamView.query().fetch()
         # trends = {}
@@ -43,6 +42,25 @@ class Trending(webapp2.RequestHandler):
         checked = "never"
         if report_setting:
             checked = report_setting[0].trendEmailSend
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
+
+        # testing the streamview logic
+        streamviews = StreamView.query().fetch()
+        trends = {}
+
+        for view in streamviews:
+            if view.key.parent().id() not in trends:
+                trends[view.key.parent().id()] = 1
+            else:
+                trends[view.key.parent().id()] += 1
+
+        for stream, view_count in trends.items():
+            print(stream, view_count)
 
         labels = ["never", "minutes", "hour", "day"]
         labels_text = ["No Reports", "Every 5 minutes", "Every Hour", "Every Day"]

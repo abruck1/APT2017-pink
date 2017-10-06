@@ -14,9 +14,13 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class Error(webapp2.RequestHandler):
 
     def get(self):
-        
+       
+        errorMessage = 'You tried to create a new stream<br> '\
+                       'whose name is the same as an<br>' \
+                       'existing stream; operation did not complete.'
         template_values = {
             'page': "Connex.us",
+            'errorMessage': errorMessage,
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url

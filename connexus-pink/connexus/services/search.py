@@ -25,6 +25,14 @@ class Search(webapp2.RequestHandler):
 
 
     def get(self):
+       
+        try:
+            user = users.get_current_user().email()
+        except:
+            # todo raise error message to user?
+            self.redirect('/')
+            return
+
         search_string = urllib2.unquote(self.request.query_string).lower()
 
         index = search.Index(name='connexus_search')
