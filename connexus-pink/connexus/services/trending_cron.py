@@ -51,17 +51,20 @@ class TrendingCron(webapp2.RequestHandler):
                 "wey.matt@utexas.edu"
             ]
             top_three_streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
+            top_three_stream_ids = []
+            for stream in top_three_streams:
+                top_three_stream_ids.append(stream.key.id())
             if report_email == 'minutes':
                 for recipient in send_reports_to:
-                    send_trend_report(recipient, top_three_streams)
+                    send_trend_report(recipient, top_three_stream_ids)
             if report_email == 'hour':
                 timestamp = time()
                 if 0 <= timestamp % 3600 < 300:
                     for recipient in send_reports_to:
-                        send_trend_report(recipient, top_three_streams)
+                        send_trend_report(recipient, top_three_stream_ids)
             if report_email == 'day':
                 if datetime.time(hour=0, minute=0) <= datetime.now() < datetime.time(hour=0, minute=5):
                     for recipient in send_reports_to:
-                        send_trend_report(recipient, top_three_streams)
+                        send_trend_report(recipient, top_three_stream_ids)
 
         self.response.status = 204

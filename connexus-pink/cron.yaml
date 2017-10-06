@@ -1,4 +1,4 @@
 cron:
 - description: trending job
-  url: /connexus/templates/trending_cron.html
+  url: /trendingcron
   schedule: every 5 minutes

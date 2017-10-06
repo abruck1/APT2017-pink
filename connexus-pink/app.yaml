@@ -14,9 +14,10 @@ handlers:
 - url: /.*
   script: main.app
 
-- url: /connexus/templates/trending_cron.html
+- url: /trendingcron
   script: trending_cron.py
   login: admin
+
 # [END handlers]
 
 # [START libraries]
