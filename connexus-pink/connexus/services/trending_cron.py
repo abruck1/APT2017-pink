@@ -35,7 +35,9 @@ class TrendingCron(webapp2.RequestHandler):
 
         # update stream table for counts in the past hour
         for key, count in trending_dict.iteritems():
-            Stream.get_by_id(int(key)).viewsInPastHour = count
+            stream = Stream.get_by_id(int(key))
+            stream.viewsInPastHour = count
+            stream.put()
         # ************************************************************************************
 
         # **************************check email report setting and send email if necessary****
@@ -52,8 +54,9 @@ class TrendingCron(webapp2.RequestHandler):
             ]
             top_three_streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
             top_three_stream_ids = []
-            for stream in top_three_streams:
-                top_three_stream_ids.append(stream.key.id())
+            if top_three_streams:
+                for stream in top_three_streams:
+                    top_three_stream_ids.append(stream.key.id())
             if report_email == 'minutes':
                 for recipient in send_reports_to:
                     send_trend_report(recipient, top_three_stream_ids)
@@ -63,7 +66,8 @@ class TrendingCron(webapp2.RequestHandler):
                     for recipient in send_reports_to:
                         send_trend_report(recipient, top_three_stream_ids)
             if report_email == 'day':
-                if datetime.time(hour=0, minute=0) <= datetime.now() < datetime.time(hour=0, minute=5):
+                timestamp = time()
+                if 18000 <= timestamp % 86400 < 18300:
                     for recipient in send_reports_to:
                         send_trend_report(recipient, top_three_stream_ids)
 
