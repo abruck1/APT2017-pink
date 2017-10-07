@@ -59,12 +59,12 @@
             <tr>
                 <td align="left">
                     {% if prev %}
-                        <a href="/view/{{ stream.key.id() }}?prev_cursor={{ prev_cursor }}"><< Back</a>
+                        <input type="button" onclick="location.href='/view/{{ stream.key.id() }}?prev_cursor={{ prev_cursor }}';" value="<< Back" />
                     {% endif %}
                 </td>
                 <td colspan="2" align="right">
                     {% if next %}
-                        <a href="/view/{{ stream.key.id() }}?next_cursor={{ next_cursor }}">More >></a>
+                        <input type="button" onclick="location.href='/view/{{ stream.key.id() }}?next_cursor={{ next_cursor }}';" value="More pictures >>" />
                     {% endif %}
                 </td>
             </tr>
