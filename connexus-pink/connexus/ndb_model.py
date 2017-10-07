@@ -51,7 +51,7 @@ class StreamImage(ndb.Model):
             print("option 3")
 
             cursor = Cursor(urlsafe=prev_cursor_str)
-            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(-cls.createDate).fetch_page(STREAM_IMAGES_PER_PAGE, start_cursor=cursor)
+            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(cls.createDate).fetch_page(STREAM_IMAGES_PER_PAGE, start_cursor=cursor)
             objects.reverse()
             next_cursor_str = prev_cursor_str
             prev_cursor_str = next_cursor.urlsafe()
