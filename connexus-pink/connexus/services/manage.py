@@ -1,8 +1,5 @@
-import os
-
 import jinja2
 import webapp2
-
 from connexus.common import *
 from connexus.ndb_model import *
 
@@ -11,11 +8,10 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-# [START manage_page]
+
+# [START Manage]
 class Manage(webapp2.RequestHandler):
-
     def get(self):
-
         try:
             user = users.get_current_user().email()
             user_streams = Stream.query(Stream.owner == user).fetch()
@@ -37,5 +33,4 @@ class Manage(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('manage.html')
         self.response.write(template.render(template_values))
-
-# [END manage_page]
+# [END Manage]

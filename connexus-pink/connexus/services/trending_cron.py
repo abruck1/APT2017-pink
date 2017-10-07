@@ -5,6 +5,7 @@ from connexus.ndb_model import *
 from time import time
 
 
+# [START TrendingCron]
 class TrendingCron(webapp2.RequestHandler):
     def get(self):
         # ************************** update past hour views for each stream ********************
@@ -44,9 +45,6 @@ class TrendingCron(webapp2.RequestHandler):
                 "wey.matt@utexas.edu",
                 "ee382vta@gmail.com"
             ]
-            # send_reports_to = [
-            #     "wey.matt@utexas.edu"
-            # ]
             top_three_streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
             top_three_stream_ids = []
             if top_three_streams:
@@ -67,3 +65,4 @@ class TrendingCron(webapp2.RequestHandler):
                         send_trend_report(recipient, top_three_stream_ids)
 
         self.response.status = 204
+# [END TrendingCron]

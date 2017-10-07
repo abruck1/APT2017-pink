@@ -1,8 +1,5 @@
-import os
-
 import jinja2
 import webapp2
-
 from connexus.common import *
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -10,11 +7,10 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+
 # [START social_page]
 class Social(webapp2.RequestHandler):
-
     def get(self):
-        
         email = 'youremail@gmail.com'
         template_values = {
             'page': "Connex.us",
@@ -27,5 +23,4 @@ class Social(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('social.html')
         self.response.write(template.render(template_values))
-
 # [END social_page]

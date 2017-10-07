@@ -1,10 +1,7 @@
-import os
-
 import jinja2
 import webapp2
-from connexus.ndb_model import *
-
 from connexus.common import *
+from connexus.ndb_model import *
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.PackageLoader('connexus', 'templates'),
@@ -12,7 +9,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 
 
-# [START trending_page]
+# [START Trending]
 class Trending(webapp2.RequestHandler):
     def post(self):
         report_setting = self.request.get('reportfreq')
@@ -51,5 +48,4 @@ class Trending(webapp2.RequestHandler):
 
         template = JINJA_ENVIRONMENT.get_template('trending.html')
         self.response.write(template.render(template_values))
-
-# [END trending_page]
+# [END Trending]

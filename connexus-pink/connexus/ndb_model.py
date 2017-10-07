@@ -1,7 +1,8 @@
-from google.appengine.ext import ndb
 from google.appengine.datastore.datastore_query import Cursor
+from google.appengine.ext import ndb
 
 STREAM_IMAGES_PER_PAGE = 3
+
 
 class Stream(ndb.Model):
     owner = ndb.StringProperty()
@@ -12,7 +13,6 @@ class Stream(ndb.Model):
     imageCount = ndb.IntegerProperty()
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
-    imageCount = ndb.IntegerProperty()
     viewsInPastHour = ndb.IntegerProperty()
 
 

@@ -1,9 +1,5 @@
-import os
-import re
-
 import jinja2
 import webapp2
-
 from connexus.common import *
 from connexus.ndb_model import *
 
@@ -16,7 +12,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [START SubscribeStream]
 class SubscribeStream(webapp2.RequestHandler):
     def post(self, streamid):
-
         try:
             user = users.get_current_user().email()
         except:
@@ -27,10 +22,8 @@ class SubscribeStream(webapp2.RequestHandler):
         if user is not None:
             stream = ndb.Key(Stream, int(streamid)).get()
             if not StreamSubscriber.query(StreamSubscriber.stream == stream.key).filter(StreamSubscriber.user == user).get():
-                newStreamSubscriber = StreamSubscriber(stream=stream.key,
-                                                       user=user
-                                                       )
-                newStreamSubscriber.put()
+                new_stream_subscriber = StreamSubscriber(stream=stream.key, user=user)
+                new_stream_subscriber.put()
             else:
                 # todo pop up saying subscribed?
                 pass            
@@ -43,14 +36,13 @@ class SubscribeStream(webapp2.RequestHandler):
             pass
 
         # Redirect to /view for this stream
-        self.redirect('/view/' + streamid )
-
+        self.redirect('/view/' + streamid)
 # [END SubscribeStream]
+
 
 # [START UnSubscribeStream]
 class UnSubscribeStream(webapp2.RequestHandler):
     def post(self):
-
         url = self.request.referer
         try:
             user = users.get_current_user().email()
@@ -62,7 +54,6 @@ class UnSubscribeStream(webapp2.RequestHandler):
         subscriber_stream_list = self.request.params.getall('unsub')
 
         for sub_stream_id in subscriber_stream_list:
-            
             print("unsub_stream={}".format(sub_stream_id))
             if user is not None:
                 stream_sub = ndb.Key(StreamSubscriber, int(sub_stream_id))
@@ -75,13 +66,12 @@ class UnSubscribeStream(webapp2.RequestHandler):
 
         # Redirect to /view for this stream
         self.redirect('/manage')
-
 # [END UnSubscribeStream]
+
 
 # [START DeleteStream]
 class DeleteStream(webapp2.RequestHandler):
     def post(self):
-
         url = self.request.referer
         try:
             user = users.get_current_user().email()
@@ -113,5 +103,4 @@ class DeleteStream(webapp2.RequestHandler):
 
         # Redirect to /view for this stream
         self.redirect('/manage')
-
 # [END DeleteStream]
