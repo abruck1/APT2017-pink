@@ -4,4 +4,4 @@ Ari Bruck
 Matt Wey
 Taylor Autry
 
-See "mysite" directory for finished django tutorial project
+See "connexus-pink" directory for finished mini project phase1
