@@ -4,6 +4,7 @@
 
 
 {% block content %}
+
 <head>
 <style>
 table {
@@ -22,18 +23,28 @@ tr:nth-child(even) {
     background-color: #dddddd;
 }
 </style>
+
+    <script>
+    $(document).ready(function() { 
+        $("#t01").tablesorter(); 
+    } ); 
+    </script>
+
 </head>
 <h1>Manage</h1>
 
     <b><u>Streams I own:</u></b><br>
-        <table id="t01">
+        <table id="t01" class="tablesorter">
+        <thead>
         <tr>
             <th>Name</th>
             <th>Last New Picture</th> 
             <th>Number of Pictures</th>
             <th>Delete</th>
         </tr>
-    	{% for stream in user_streams %}
+        </thead>
+    	<tbody>
+        {% for stream in user_streams %}
             <form action="/delete" method="post">
             <tr>
                 <td><a href="/view/{{ stream.key.id() }}">{{ stream.name }}</a></td>
@@ -44,6 +55,7 @@ tr:nth-child(even) {
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
         </table>
                 {% if user_streams %}
                     <input type="submit" value="Delete Checked Streams">
