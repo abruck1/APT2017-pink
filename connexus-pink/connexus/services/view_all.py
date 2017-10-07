@@ -17,7 +17,7 @@ class ViewAll(webapp2.RequestHandler):
     def get(self):
 
         # todo paging, check out .fetch_page
-        streams = Stream.query().order(Stream.createDate).fetch(8)
+        streams = Stream.query().order(Stream.createDate).fetch()
 
         template_values = {
             'streams': streams,
