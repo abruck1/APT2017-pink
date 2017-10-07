@@ -1,12 +1,13 @@
 import jinja2
 from connexus.ndb_model import *
-from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import images
+from google.appengine.ext.webapp import blobstore_handlers
 
 JINJA_ENVIRONMENT = jinja2.Environment(
   loader=jinja2.PackageLoader('connexus', 'templates'),
   extensions=['jinja2.ext.autoescape'],
   autoescape=True)
+
 
 # [START UploadImage]
 class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
@@ -16,11 +17,8 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
         try:
             imagefile = self.get_uploads()[0]
         except:
-            # todo raise error message to user?
             self.redirect(str(self.request.referer))
             return
-
-        # todo error handling
 
         # get the stream, todo test for error
         stream = (ndb.Key('Stream', int(streamid))).get()
@@ -29,10 +27,10 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
             parent=stream.key,
             imageBlobKey=imagefile.key())
 
-        #store the image
+        # store the image
         stream_image.put()
 
-        #update the stream
+        # update the stream
         stream.lastPicDate = stream_image.createDate
         stream.imageCount += 1
 
@@ -42,7 +40,6 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
 
         if stream.coverImageURL == "":
             stream.coverImageURL = images.get_serving_url(stream_image.imageBlobKey)
-            # print("url={}".format(images.get_serving_url(stream_image.imageBlobKey)))
         stream.put()
 
         # todo what to do with comments?

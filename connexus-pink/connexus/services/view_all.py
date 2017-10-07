@@ -1,8 +1,5 @@
-import os
-
 import jinja2
 import webapp2
-
 from connexus.common import *
 from connexus.ndb_model import *
 
@@ -15,8 +12,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [START ViewAll]
 class ViewAll(webapp2.RequestHandler):
     def get(self):
-
-        # todo paging, check out .fetch_page
         streams = Stream.query().order(Stream.createDate).fetch()
 
         template_values = {

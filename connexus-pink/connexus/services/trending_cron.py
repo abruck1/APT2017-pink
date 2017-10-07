@@ -1,26 +1,22 @@
-import webapp2
 import datetime
-
-from connexus.ndb_model import *
+import webapp2
 from connexus.common import *
+from connexus.ndb_model import *
 from time import time
 
 
 class TrendingCron(webapp2.RequestHandler):
-
     def get(self):
-
-        # **************************update past hour views for each stream********************
+        # ************************** update past hour views for each stream ********************
         # load stream view items and delete all items with timestamp older than 1 hour
         streamviews = StreamView.query().order(StreamView.viewDate)
         if streamviews is None:
-            print("streamviews is empty")
+            pass
         else:
             for streamview in streamviews:
                 print("{}, {}".format(streamview.viewDate, datetime.datetime.now() - datetime.timedelta(hours=1)))
                 if streamview.viewDate < datetime.datetime.now() - datetime.timedelta(hours=1):
                     streamview.key.delete()
-                    print("streamview deleted")
 
         # get id from stream view parent for each item in stream view
         # loop through results and store count for each id in a dictionary with id as key and count as value
@@ -40,7 +36,7 @@ class TrendingCron(webapp2.RequestHandler):
             stream.put()
         # ************************************************************************************
 
-        # **************************check email report setting and send email if necessary****
+        # ************************** check email report setting and send email if necessary ****
         report_email = AppConfig.query().fetch(1)
         if report_email:
             report_email = report_email[0].trendEmailSend
