@@ -44,14 +44,13 @@ class TrendingCron(webapp2.RequestHandler):
         report_email = AppConfig.query().fetch(1)
         if report_email:
             report_email = report_email[0].trendEmailSend
-            # todo: update email addresses after finalized to send emails to instructors
-            # send_reports_to = [
-            #     "wey.matt@utexas.edu",
-            #     "ee382vta@gmail.com"
-            # ]
             send_reports_to = [
-                "wey.matt@utexas.edu"
+                "wey.matt@utexas.edu",
+                "ee382vta@gmail.com"
             ]
+            # send_reports_to = [
+            #     "wey.matt@utexas.edu"
+            # ]
             top_three_streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
             top_three_stream_ids = []
             if top_three_streams:
