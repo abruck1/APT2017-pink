@@ -6,57 +6,93 @@
 {% block content %}
 <head>
 <style>
-.stream_name {
+.image {
     position: relative;
-    text-align: center;
-    color: white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-    font-size: 30px;
+    width: 256px;
+    height: 256px;
+    float: left;
+    border: 5px;
+    border-style: solid;
+    border-color: black;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
-/* Centered text */
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+h2 {
+   position: absolute;
+   top: 200px;
+   left: 0;
+   width: 100%;
 }
+h2 span {
+   color: white;
+   font: bold 24px/45px Helvetica, Sans-Serif;
+   letter-spacing: -1px;
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
+   padding: 10px;
+}
+td form{
+    display : table-cell;
+    vertical-align : middle;
+    margin : 0;
+    padding : 0;
+}
+
 </style>
 </head>
 
 <h1> Top 3 Trending Streams</h1>
 <div class="streams">
+    <table>
+        <tbody>
+        <tr>
     {% for s in streams %}
-        <table class="container">
-            <a href="/view/{{ s.key.id() }}">
+            <td>
+                <a href="/view/{{ s.key.id() }}">
                     {% if s.coverImageURL %}
-                        <div class="stream_name">
-                        <div class="centered"> {{ s.name }}</div>
-                        <img src = "{{ s.coverImageURL }}"  style="width:160px;height:160px;">
+                        <div class="image">
+                            <img src = "{{ s.coverImageURL }}"  alt=""/>
+                            <h2><span>{{ s.name }}</span></h2>
                         </div>
                     {% else %}
-                        {{ s.name }}
+                        <div class="image">
+                            <img src = "/bootstrap/img/empty_cover_image.png" alt=""/>
+                            <h2><span>{{ s.name }}</span></h2>
+                        </div>
                     {% endif %}
-            </a>
-            <caption align="center">
-            {% if s.viewsInPastHour == "" %}
-                0 views in past hour
-            {% else %}
-                {{ s.viewsInPastHour }} views in past hour
-            {% endif %}
-            </caption>
-        </table>
+                </a>
+            </td>
     {% endfor %}
-    <form action="/trending" method="post">
-        {% for i in range(0,4) %}
-        <input type="radio" name="reportfreq" value="{{ labels[i] }}"
-        {% if property_checked == labels[i] %}
-            checked
-        {% endif %}>
-        {{ labels_text[i]}}<br>
-        {% endfor %}
-        <caption align="center|bottom">Email Trending Report</caption> <br>
-        <input type="submit" value="Update Rate">
-    </form>
+            <td style="width: 500px;px;" valign="top">
+                <form action="/trending" method="post">
+                    {% for i in range(0,4) %}
+                    <input type="radio" name="reportfreq" value="{{ labels[i] }}"
+                    {% if property_checked == labels[i] %}
+                        checked
+                    {% endif %}>
+                    {{ labels_text[i]}}<br>
+                    {% endfor %}
+                    Email Trending Report
+                    <input type="submit" value="Update Rate">
+                </form>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            {% for s in streams %}
+            <td align="center">
+                {% if s.viewsInPastHour == "" %}
+                    0 views in past hour
+                {% else %}
+                    {{ s.viewsInPastHour }} views in past hour
+                {% endif %}
+            </td>
+            {% endfor %}
+            <td>&nbsp;</td>
+        </tr>
+        </tfoot>
+    </table>
 </div>
 
 {% endblock  %}
