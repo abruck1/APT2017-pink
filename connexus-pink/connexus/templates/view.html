@@ -5,6 +5,10 @@
 {% block content %}
 
 <head>
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<script src="/bootstrap/js/dropzone.js"></script>
+
+
 <style>
        .image {
         position: relative;
@@ -44,6 +48,12 @@
 
 	<div>
         <h1>{{ stream.name }}</h1>
+        <form action="/subscribe/{{ stream.key.id() }}" method="post">
+            <input type="submit" value="Subscribe">
+        </form>
+        {% if error == "1" %}
+            <span>User needs to be logged in in order to subscribe!</span>
+        {% endif %}
 
         <table>
             <tbody>
@@ -70,22 +80,18 @@
             </tr>
             </tfoot>
         </table>
-
-        <form class="upload-form" action="{{ upload_url }}" method="post" enctype="multipart/form-data">
+<!--
+        <form class="dropzone" id="upload-dropzone" action="{{ upload_url }}" method="post" enctype="multipart/form-data">
             <input type="file" name="image" id="image">&nbsp;&nbsp;
-            <input type="text" name="comments" placeholder="Comments"><br>
             <input type="hidden" name="streamid" value="{{ stream.key.id() }}">
             <input style="float: left; margin-right: 100px;" type="submit" value="Upload file">
             <p class="form-label">Add an image</p>
 
         </form>
         <br>
-        <form action="/subscribe/{{ stream.key.id() }}" method="post">
-            <input type="submit" value="Subscribe">
-        </form>
-        {% if error == "1" %}
-            <span>User needs to be logged in in order to subscribe!</span>
-        {% endif %}
+-->
+    {% include 'snippets/dropzone.html' %}
+
     </div>
 
 {% endblock  %}
