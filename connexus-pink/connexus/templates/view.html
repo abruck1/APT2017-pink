@@ -192,14 +192,14 @@
           <i class="glyphicon glyphicon-upload"></i>
           <span>Start</span>
       </button>
-      <button data-dz-remove class="btn btn-warning cancel">
-          <i class="glyphicon glyphicon-ban-circle"></i>
-          <span>Cancel</span>
+      <button data-dz-remove class="btn btn-danger cancel">
+          <i class="glyphicon glyphicon-trash"></i>
+          <span>Remove</span>
       </button>
-      <button data-dz-remove class="btn btn-danger delete">
-        <i class="glyphicon glyphicon-trash"></i>
-        <span>Delete</span>
-      </button>
+{#      <button data-dz-remove class="btn btn-danger delete">#}
+{#        <i class="glyphicon glyphicon-trash"></i>#}
+{#        <span>Remove</span>#}
+{#      </button>#}
     </div>
   </div>
 </div>
@@ -265,6 +265,8 @@
 
         // Hookup the start button
       file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
+      //hide the individual start buttons
+      file.previewElement.querySelector(".start").style.opacity = "0";
     });
 
     // Update the total progress bar
