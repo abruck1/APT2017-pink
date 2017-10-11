@@ -41,28 +41,27 @@
     }
 </style>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
           <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
          rel = "stylesheet">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-  $( function() {
+  $(function() {
     $( "#slider-range" ).slider({
-      disabled: false,
       range: true,
-      min: 0,
-      max: 500,
-      values: [ 75, 300 ],
+      min: new Date('January 1 2016').getTime() / 1000,
+      max: new Date('January 1 2017').getTime() / 1000,
+      step: 86400,
+      values: [ new Date('January 1 2016').getTime() / 1000, new Date('February 1 2016').getTime() / 1000 ],
       slide: function( event, ui ) {
-        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+        $( "#amount" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
       }
     });
-    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
-      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-  } );
+    $( "#amount" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
+      " - " + (new Date($( "#slider-range" ).slider( "values", 1 )*1000)).toDateString());
+});
   </script>
 </head>
 <body>
@@ -81,12 +80,12 @@
 
     <p>
       <label for="amount">Price range:</label>
-      <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+      <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; width: 30%">
     </p>
 
-    <div id="slider-range"></div>
+
+
+    <div style="width: 600px;" id="slider-range"></div>
 </body>
-
-
 
 {% endblock  %}
