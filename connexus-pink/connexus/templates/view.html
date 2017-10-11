@@ -95,9 +95,6 @@
 {% endblock head_include %}
 
 {% block content %}
-{% endblock head_include %}
-
-{% block content %}
 	<div>
         <h1>{{ stream.name }}</h1>
         <form action="/subscribe/{{ stream.key.id() }}" method="post">
@@ -216,29 +213,32 @@
 
 {% block javascript %}
 
-    <script>
-       $(document).ready(function(){
-         if (jQuery) {
-           // jQuery is loaded
-           alert("Yeah!");
-         } else {
-           // jQuery is not loaded
-           alert("Doesn't Work");
-         }
-
-
-            $.ajax({
-                url: "/getuploadurl",
-                type: 'GET',
-                dataype: 'html',
-                success: function(res) {
-                    alert(res);
-                }
-            });
-
-
-      });
-   </script>
+{#    <script>#}
+{#       $(document).ready(function(){#}
+{#         if (jQuery) {#}
+{#           // jQuery is loaded#}
+{#           alert("Yeah!");#}
+{#         } else {#}
+{#           // jQuery is not loaded#}
+{#           alert("Doesn't Work");#}
+{#         }#}
+{##}
+{##}
+{#            $.ajax({#}
+{#                url: "/getuploadurl",#}
+{#                type: 'GET',#}
+{#                dataype: 'html',#}
+{#                success: function(res) {#}
+{#                    alert(res);#}
+{#                },#}
+{#                error: function(){#}
+{#                    alert("Error retrieving upload URL")#}
+{#                }#}
+{#            });#}
+{##}
+{##}
+{#      });#}
+{#   </script>#}
 
     <script>
 
@@ -249,7 +249,7 @@
     previewNode.parentNode.removeChild(previewNode);
 
     var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-      url: "/upload", // Set the url
+      url: "/this_url_should_change", // Set the url
       thumbnailWidth: 80,
       thumbnailHeight: 80,
       parallelUploads: 20,
@@ -259,30 +259,11 @@
       clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
     });
 
-    Dropzone.options.myDropzone = {
-      init: function() {
-        this.on("processing", function(file) {
-
-
-
-            var uploadURL;
-
-            $.ajax({
-                url: "/getuploadurl",
-                type: 'GET',
-                dataype: 'html',
-                success: function(res) {
-                    uploadURL = res;
-                }
-            });
-
-          this.options.url = uploadURL; // todo how to populate this with ajax call to getuploadurl?
-        });
-      }
-    };
-
     myDropzone.on("addedfile", function(file) {
-      // Hookup the start button
+        //change the URL here
+        this.options.url = $.getUploadURL();
+
+        // Hookup the start button
       file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
     });
 
@@ -305,7 +286,18 @@
     // Hide the total progress bar when nothing's uploading anymore
     myDropzone.on("queuecomplete", function(progress) {
       document.querySelector("#total-progress").style.opacity = "0";
+      //force a page refresh
+        location.reload();
+
     });
+
+{#    //reload page when uploads are completed#}
+{#    myDropzone.on("successmultiple", function () {#}
+{#            location.reload();#}
+{#    });#}
+{#    myDropzone.on("success", function () {#}
+{#            location.reload();#}
+{#    });#}
 
     // Setup the buttons for all transfers
     // The "add files" button doesn't need to be setup because the config
@@ -316,6 +308,24 @@
     document.querySelector("#actions .cancel").onclick = function() {
       myDropzone.removeAllFiles(true);
     };
+
+    $.extend({
+        getUploadURL: function() {
+            var uploadURL = null;
+            $.ajax({
+                url: "/getuploadurl",
+                type: 'GET',
+                dataype: 'html',
+                async: false, //not sure if this is needed
+                success: function(res) {
+                    uploadURL = res;
+                }
+            });
+            // Return the response text
+            return uploadURL;
+        }
+    });
+
 </script>
 
 {% endblock javascript %}
