@@ -56,10 +56,10 @@
       step: 86400,
       values: [ new Date('January 1 2016').getTime() / 1000, new Date('February 1 2016').getTime() / 1000 ],
       slide: function( event, ui ) {
-        $( "#amount" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
+        $( "#date_range" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
       }
     });
-    $( "#amount" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
+    $( "#date_range" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
       " - " + (new Date($( "#slider-range" ).slider( "values", 1 )*1000)).toDateString());
 });
   </script>
@@ -79,11 +79,9 @@
     </iframe>
 
     <p>
-      <label for="amount">Price range:</label>
-      <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold; width: 30%">
+      <label for="date_range">Date range:</label>
+      <input type="text" id="date_range" readonly style="border:0; color:#f6931f; font-weight:bold; width: 30%">
     </p>
-
-
 
     <div style="width: 600px;" id="slider-range"></div>
 </body>
