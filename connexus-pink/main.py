@@ -1,5 +1,6 @@
 # [START imports]
 from connexus.services.create_stream import *
+from connexus.services.get_upload_url import *
 from connexus.services.error import *
 from connexus.services.login import *
 from connexus.services.manage import *
@@ -29,6 +30,7 @@ app = webapp2.WSGIApplication([
     ('/error', Error),
     ('/manage', Manage),
     ('/upload', UploadImage),
-    ('/trendingcron', TrendingCron)
+    ('/trendingcron', TrendingCron),
+    ('/getuploadurl', GetUploadURL),
 ], debug=True)
 # [END app]

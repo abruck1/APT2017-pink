@@ -3,6 +3,7 @@
 
   <div id="template" class="file-row">
     <!-- This is used as the file preview template -->
+
     <div>
         <span class="preview"><img data-dz-thumbnail /></span>
     </div>
@@ -34,7 +35,8 @@
 
 </div>
 <script>
-    // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+
+    // Get the template HTML and remove it from the document
     var previewNode = document.querySelector("#template");
     previewNode.id = "";
     var previewTemplate = previewNode.parentNode.innerHTML;
@@ -51,6 +53,28 @@
       clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
     });
 
+    Dropzone.options.myDropzone = {
+      init: function() {
+        this.on("processing", function(file) {
+
+
+
+            var uploadURL
+
+            $.ajax({
+                url: "/getuploadurl",
+                type: 'GET',
+                dataype: 'html',
+                success: function(res) {
+                    uploadURL = res;
+                }
+            });
+
+          this.options.url = uploadURL; // todo how to populate this with ajax call to getuploadurl?
+        });
+      }
+    };
+
     myDropzone.on("addedfile", function(file) {
       // Hookup the start button
       file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
@@ -61,11 +85,15 @@
       document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
     });
 
-    myDropzone.on("sending", function(file) {
+    myDropzone.on("sending", function(file, xhr, formData) {
       // Show the total progress bar when upload starts
       document.querySelector("#total-progress").style.opacity = "1";
       // And disable the start button
       file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+
+      //pass the streamid
+      formData.append('streamid', '{{ stream.key.id() }}');
+
     });
 
     // Hide the total progress bar when nothing's uploading anymore

@@ -2,105 +2,105 @@
 
 {% block head_title %}View || {{ page }}{% endblock head_title %}
 
+{% block head_include %}
+    <script src="/bootstrap/js/dropzone.js"></script>
+    <script>
+        Dropzone.autoDiscover = false;
+    </script>
+
+    <style>
+        html, body {
+          height: 100%;
+        }
+        #actions {
+          margin: 2em 0;
+        }
+
+
+        /* Mimic table appearance */
+        div.table {
+          display: table;
+        }
+        div.table .file-row {
+          display: table-row;
+        }
+        div.table .file-row > div {
+          display: table-cell;
+          vertical-align: top;
+          border-top: 1px solid #ddd;
+          padding: 8px;
+        }
+        div.table .file-row:nth-child(odd) {
+          background: #f9f9f9;
+        }
+
+
+
+        /* The total progress gets shown by event listeners */
+        #total-progress {
+          opacity: 0;
+          transition: opacity 0.3s linear;
+        }
+
+        /* Hide the progress bar when finished */
+        #previews .file-row.dz-success .progress {
+          opacity: 0;
+          transition: opacity 0.3s linear;
+        }
+
+        /* Hide the delete button initially */
+        #previews .file-row .delete {
+          display: none;
+        }
+
+        /* Hide the start and cancel buttons and show the delete button */
+
+        #previews .file-row.dz-success .start,
+        #previews .file-row.dz-success .cancel {
+          display: none;
+        }
+        #previews .file-row.dz-success .delete {
+          display: block;
+        }
+
+           .image {
+            position: relative;
+            width: 256px;
+            height: 256px;
+            float: left;
+            border: 5px;
+            border-style: solid;
+            border-color: black;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .stream_name {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        /* Centered text */
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .upload-form {
+            border-style: solid;
+            border-color: black;
+            padding: 10px;
+            width: 500px;
+        }
+        .form-label {
+            font-size: x-large;
+
+        }
+    </style>
+{% endblock head_include %}
+
 {% block content %}
 
-<head>
-<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-<script src="/bootstrap/js/dropzone.js"></script>
-<script>
-    Dropzone.autoDiscover = false;
-</script>
-
-<style>
-    html, body {
-      height: 100%;
-    }
-    #actions {
-      margin: 2em 0;
-    }
-
-
-    /* Mimic table appearance */
-    div.table {
-      display: table;
-    }
-    div.table .file-row {
-      display: table-row;
-    }
-    div.table .file-row > div {
-      display: table-cell;
-      vertical-align: top;
-      border-top: 1px solid #ddd;
-      padding: 8px;
-    }
-    div.table .file-row:nth-child(odd) {
-      background: #f9f9f9;
-    }
-
-
-
-    /* The total progress gets shown by event listeners */
-    #total-progress {
-      opacity: 0;
-      transition: opacity 0.3s linear;
-    }
-
-    /* Hide the progress bar when finished */
-    #previews .file-row.dz-success .progress {
-      opacity: 0;
-      transition: opacity 0.3s linear;
-    }
-
-    /* Hide the delete button initially */
-    #previews .file-row .delete {
-      display: none;
-    }
-
-    /* Hide the start and cancel buttons and show the delete button */
-
-    #previews .file-row.dz-success .start,
-    #previews .file-row.dz-success .cancel {
-      display: none;
-    }
-    #previews .file-row.dz-success .delete {
-      display: block;
-    }
-
-       .image {
-        position: relative;
-        width: 256px;
-        height: 256px;
-        float: left;
-        border: 5px;
-        border-style: solid;
-        border-color: black;
-        margin-right: 5px;
-        margin-bottom: 5px;
-    }
-    .stream_name {
-        position: relative;
-        text-align: center;
-        color: white;
-    }
-    /* Centered text */
-    .centered {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .upload-form {
-        border-style: solid;
-        border-color: black;
-        padding: 10px;
-        width: 500px;
-    }
-    .form-label {
-        font-size: x-large;
-
-    }
-</style>
-</head>
 
 	<div>
         <h1>{{ stream.name }}</h1>
@@ -174,8 +174,146 @@
       </div>
 
     </div>
-    {% include 'snippets/dropzone.html' %}
+
+    <!-- HTML heavily inspired by http://blueimp.github.io/jQuery-File-Upload/ -->
+    <div class="table table-striped" class="files" id="previews">
+
+  <div id="template" class="file-row">
+    <!-- This is used as the file preview template -->
+
+    <div>
+        <span class="preview"><img data-dz-thumbnail /></span>
+    </div>
+    <div>
+        <p class="name" data-dz-name></p>
+        <strong class="error text-danger" data-dz-errormessage></strong>
+    </div>
+    <div>
+        <p class="size" data-dz-size></p>
+        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+        </div>
+    </div>
+    <div>
+      <button class="btn btn-primary start">
+          <i class="glyphicon glyphicon-upload"></i>
+          <span>Start</span>
+      </button>
+      <button data-dz-remove class="btn btn-warning cancel">
+          <i class="glyphicon glyphicon-ban-circle"></i>
+          <span>Cancel</span>
+      </button>
+      <button data-dz-remove class="btn btn-danger delete">
+        <i class="glyphicon glyphicon-trash"></i>
+        <span>Delete</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
 
     </div>
+<script>
+   $(document).ready(function(){
+         if (jQuery) {
+           // jQuery is loaded
+           alert("Yeah!");
+         } else {
+           // jQuery is not loaded
+           alert("Doesn't Work");
+         }
 
+
+            $.ajax({
+                url: "/getuploadurl",
+                type: 'GET',
+                dataype: 'html',
+                success: function(res) {
+                    alert(res);
+                }
+            });
+
+
+      });
+   </script>
+
+    <script>
+
+    // Get the template HTML and remove it from the document
+    var previewNode = document.querySelector("#template");
+    previewNode.id = "";
+    var previewTemplate = previewNode.parentNode.innerHTML;
+    previewNode.parentNode.removeChild(previewNode);
+
+    var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+      url: "/upload", // Set the url
+      thumbnailWidth: 80,
+      thumbnailHeight: 80,
+      parallelUploads: 20,
+      previewTemplate: previewTemplate,
+      autoQueue: false, // Make sure the files aren't queued until manually added
+      previewsContainer: "#previews", // Define the container to display the previews
+      clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+    });
+
+    Dropzone.options.myDropzone = {
+      init: function() {
+        this.on("processing", function(file) {
+
+
+
+            var uploadURL;
+
+            $.ajax({
+                url: "/getuploadurl",
+                type: 'GET',
+                dataype: 'html',
+                success: function(res) {
+                    uploadURL = res;
+                }
+            });
+
+          this.options.url = uploadURL; // todo how to populate this with ajax call to getuploadurl?
+        });
+      }
+    };
+
+    myDropzone.on("addedfile", function(file) {
+      // Hookup the start button
+      file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file); };
+    });
+
+    // Update the total progress bar
+    myDropzone.on("totaluploadprogress", function(progress) {
+      document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+    });
+
+    myDropzone.on("sending", function(file, xhr, formData) {
+      // Show the total progress bar when upload starts
+      document.querySelector("#total-progress").style.opacity = "1";
+      // And disable the start button
+      file.previewElement.querySelector(".start").setAttribute("disabled", "disabled");
+
+      //pass the streamid
+      formData.append('streamid', '{{ stream.key.id() }}');
+
+    });
+
+    // Hide the total progress bar when nothing's uploading anymore
+    myDropzone.on("queuecomplete", function(progress) {
+      document.querySelector("#total-progress").style.opacity = "0";
+    });
+
+    // Setup the buttons for all transfers
+    // The "add files" button doesn't need to be setup because the config
+    // `clickable` has already been specified.
+    document.querySelector("#actions .start").onclick = function() {
+      myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+    };
+    document.querySelector("#actions .cancel").onclick = function() {
+      myDropzone.removeAllFiles(true);
+    };
+</script>
 {% endblock  %}
