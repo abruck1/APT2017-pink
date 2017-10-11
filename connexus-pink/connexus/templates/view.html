@@ -2,9 +2,7 @@
 
 {% block head_title %}View || {{ page }}{% endblock head_title %}
 
-{% block content %}
-
-<head>
+{% block head_include %}
 <style>
        .image {
         position: relative;
@@ -40,7 +38,9 @@
 
     }
 </style>
-</head>
+{% endblock head_include %}
+
+{% block content %}
 
 	<div>
         <h1>{{ stream.name }}</h1>
@@ -88,4 +88,6 @@
         {% endif %}
     </div>
 
-{% endblock  %}
+{% endblock content %}
+
+{% block javascript %}{% endblock javascript %}
