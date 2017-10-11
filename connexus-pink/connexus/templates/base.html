@@ -2,28 +2,19 @@
 <html lang=en>
 
 <head>
-    <title>{% block head_title %}Connex.us{% endblock head_title %}</title>
-
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
-    {% block head_include %}{% endblock head_include %}
-
+<title>{% block head_title %}Connex.us{% endblock head_title %}</title>
+{% include 'snippets/css.html' %}
+{% block head_include %}{% endblock head_include %}
 </head>
 <body>
-    <div class='container'>
-        <h1>Connex.us (Phase 2)</h1>
-        <a href='/manage'>Manage</a>&nbsp;|&nbsp;
-        <a href='/create'>Create</a>&nbsp;|&nbsp;
-        <a href='/view'>View</a>&nbsp;|&nbsp;
-        <a href='/search'>Search</a>&nbsp;|&nbsp;
-        <a href='/trending'>Trending</a>&nbsp;|&nbsp;
-        <a href='/social'>Social</a>
-        <!--<a href='/contact'>Contact</a>-->
-    </div>
+{% include 'snippets/nav.html' %}
 
-    <div class='container'>
-    {% block content %}{% endblock content %}
-    </div>
+<div class='container'>
+{% block content %}{% endblock content %}
+</div>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+
+{% block javascript %}{% endblock javascript %}
 
 </body>
 </html>
