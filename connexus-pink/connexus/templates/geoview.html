@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block head_title %}GeoView || {{ page }}{% endblock head_title %}
+
+{% block content %}
+
+<head>
+<style>
+       .image {
+        position: relative;
+        width: 256px;
+        height: 256px;
+        float: left;
+        border: 5px;
+        border-style: solid;
+        border-color: black;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    .stream_name {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+    /* Centered text */
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .upload-form {
+        border-style: solid;
+        border-color: black;
+        padding: 10px;
+        width: 500px;
+    }
+    .form-label {
+        font-size: x-large;
+
+    }
+</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+          <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#slider-range" ).slider({
+      disabled: false,
+      range: true,
+      min: 0,
+      max: 500,
+      values: [ 75, 300 ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+  } );
+  </script>
+</head>
+<body>
+	<div>
+        <h1>{{ stream.name }}</h1>
+    </div>
+
+    <iframe
+      width="600"
+      height="450"
+      frameborder="0" style="border:0"
+      src="https://www.google.com/maps/embed/v1/view?key={{ maps_key }}
+        &center=0,0
+        &zoom=1">
+    </iframe>
+
+    <p>
+      <label for="amount">Price range:</label>
+      <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+    </p>
+
+    <div id="slider-range"></div>
+</body>
+
+
+
+{% endblock  %}

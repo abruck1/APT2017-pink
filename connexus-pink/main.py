@@ -11,6 +11,7 @@ from connexus.services.trending_cron import *
 from connexus.services.upload import *
 from connexus.services.view_all import *
 from connexus.services.view_stream import *
+from connexus.services.geo_view import *
 # [END imports]
 
 
@@ -18,6 +19,7 @@ from connexus.services.view_stream import *
 app = webapp2.WSGIApplication([
     ('/', Login),
     ('/create', CreateStream),
+    (r'/view/(\d+)/geoview', GeoView),
     (r'/view/(\d+)', ViewStream),
     ('/view', ViewAll),
     (r'/subscribe/(\d+)', SubscribeStream),
