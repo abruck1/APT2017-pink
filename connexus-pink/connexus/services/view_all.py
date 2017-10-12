@@ -16,7 +16,7 @@ class ViewAll(webapp2.RequestHandler):
 
         template_values = {
             'streams': streams,
-            'page': 'Connex.us',
+            'page': 'View',
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url

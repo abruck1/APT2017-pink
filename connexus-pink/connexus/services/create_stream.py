@@ -65,7 +65,7 @@ class CreateStream(webapp2.RequestHandler):
             show_error = 0
 
         template_values = {
-            'page': 'Connex.us',
+            'page': 'Create',
             'error': show_error,
         }
         url, url_linktext, user = logout_func(self)

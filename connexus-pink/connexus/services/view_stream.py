@@ -55,7 +55,7 @@ class ViewStream(webapp2.RequestHandler):
             'stream': stream,
             'image_urls': image_urls,
             'upload_url': upload_url,
-            'page': 'Connex.us',
+            'page': 'View',
             'error': show_error,
             'already_subscribed': show_success,
             'prev_cursor': stream_images['prev_cursor'],

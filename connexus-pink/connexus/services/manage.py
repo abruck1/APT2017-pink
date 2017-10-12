@@ -24,7 +24,7 @@ class Manage(webapp2.RequestHandler):
         template_values = {
             'user_streams': user_streams,
             'subscribe': user_subscriptions,
-            'page': 'Connex.us',
+            'page': 'Manage',
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url
