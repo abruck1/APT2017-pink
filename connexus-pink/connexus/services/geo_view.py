@@ -1,4 +1,5 @@
 import jinja2
+import random
 import webapp2
 from connexus.common import *
 from connexus.ndb_model import *
@@ -9,34 +10,34 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-maps_key = 'AIzaSyB_YJf1f86wHvCj3fA7OsSmsuuXkV691r4'
+maps_key = 'AIzaSyBK8sbPvE14mSYYebJDKofJ4Edw-fBIzq4'
 
 
 # [START ViewStream]
 class GeoView(webapp2.RequestHandler):
     def get(self, streamid):
-        show_error = self.request.get('e')
-        if show_error == "":
-            show_error = 0
-
         stream = ndb.Key(Stream, int(streamid)).get()
 
         if stream is None:
             # todo error
-            pass
-
-        stream_view = StreamView(parent=stream.key)
-
-        # load images, use pagination
-        prev_cursor = self.request.get('prev_cursor', '')
-        next_cursor = self.request.get('next_cursor', '')
+            return
 
         # todo this could be none
-        stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor)
+        stream_images = StreamImage.query().fetch()
 
         image_urls = []
-        for stream_image in stream_images['objects']:
+        image_create_date = []
+        image_longitude = []
+        image_lat = []
+        number_of_images = 0
+        for stream_image in stream_images:
             image_urls.append(get_stream_image_url(stream_image.imageBlobKey))
+            image_create_date.append(str(stream_image.createDate.date()))
+            image_longitude.append(random.uniform(-180, 180))
+            image_lat.append(random.uniform(-85, 85))
+            number_of_images += 1
+
+        print("dates {}".format(image_create_date))
 
         # generate upload URL
         # todo this needs to be generated closer to the actual upload, jquery maybe?
@@ -46,13 +47,11 @@ class GeoView(webapp2.RequestHandler):
         template_values = {
             'stream': stream,
             'image_urls': image_urls,
-            'upload_url': upload_url,
+            'image_create_date': image_create_date,
+            'image_longitude': image_longitude,
+            'image_lat': image_lat,
             'page': 'Connex.us',
-            'error': show_error,
-            'prev_cursor': stream_images['prev_cursor'],
-            'next_cursor': stream_images['next_cursor'],
-            'prev': stream_images['prev'],
-            'next': stream_images['next'],
+            'number_of_images': number_of_images,
             'maps_key': maps_key,
         }
         url, url_linktext, user = logout_func(self)

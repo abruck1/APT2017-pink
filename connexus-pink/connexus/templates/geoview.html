@@ -40,6 +40,8 @@
 
     }
 </style>
+    <!--slider header-->
+    <!---->
   <meta charset="utf-8">
   <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -47,36 +49,115 @@
           <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
          rel = "stylesheet">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-  $(function() {
-    $( "#slider-range" ).slider({
-      range: true,
-      min: new Date('January 1 2016').getTime() / 1000,
-      max: new Date('January 1 2017').getTime() / 1000,
-      step: 86400,
-      values: [ new Date('January 1 2016').getTime() / 1000, new Date('February 1 2016').getTime() / 1000 ],
-      slide: function( event, ui ) {
-        $( "#date_range" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
+
+    <!---->
+    <!--end slider header-->
+
+    <!--map header-->
+    <!---->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Marker Clustering</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 450px;
+          width: 600px;
       }
-    });
-    $( "#date_range" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
-      " - " + (new Date($( "#slider-range" ).slider( "values", 1 )*1000)).toDateString());
-});
-  </script>
+      /* Optional: Makes the sample page fill the window. */
+    </style>
+    <!---->
+    <!--end map header-->
+
 </head>
 <body>
+    <script>
+
+      var date_times_strings = {{ image_create_date|safe }};
+//      var date_times_strings = ['2017-10-12', '2016-10-12'];
+      var date_times_arr = date_times_strings.map(function(x) { return new Date(x); });
+      var maxDate=new Date(Math.max.apply(null,date_times_arr));
+      var minDate=new Date(Math.min.apply(null,date_times_arr));
+      console.log(maxDate.toDateString());
+      var steps = (maxDate.getTime() - minDate.getTime())/1000/60/60/24;
+      console.log(steps);
+
+      $(function() {
+        $( "#slider-range" ).slider({
+          range: true,
+          min: minDate.getTime() / 1000,
+          max: maxDate.getTime() / 1000,
+          step: steps,
+          values: [ minDate.getTime() / 1000, maxDate.getTime() / 1000 ],
+          slide: function( event, ui ) {
+            $( "#date_range" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
+          }
+        });
+        $( "#date_range" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
+          " - " + (new Date($( "#slider-range" ).slider( "values", 1 )*1000)).toDateString());
+      });
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 1,
+          center: {lat: 0, lng: 0}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        var infowindow =  new google.maps.InfoWindow();
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          var marker = new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+          var image_urls = {{ image_urls|safe }}
+          var url_tag = "<img src=\"" + image_urls[i] + "\" style='max-width: 100px; max-height: 100px'/>";
+          bindInfoWindow(marker, map, infowindow, url_tag);
+          return marker;
+        });
+
+        function bindInfoWindow(marker, map, infowindow, html) {
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                infowindow.setContent(html);
+                infowindow.open(map, marker);
+            });
+
+            google.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
+        }
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+
+//      var locations = [
+//        {lat: -31.563910, lng: 147.154312},
+//        {lat: -33.718234, lng: 150.363181},
+//        {lat: -33.727111, lng: 150.371124},
+//        {lat: -33.848588, lng: 151.209834},
+
+//      ]
+        var locations = []
+        for(var i=0; i<{{ number_of_images }}; i++){
+          locations.push({'lat': {{ image_lat }}[i], 'lng': {{ image_longitude }}[i] });
+      }
+    </script>
 	<div>
         <h1>{{ stream.name }}</h1>
     </div>
 
-    <iframe
-      width="600"
-      height="450"
-      frameborder="0" style="border:0"
-      src="https://www.google.com/maps/embed/v1/view?key={{ maps_key }}
-        &center=0,0
-        &zoom=1">
-    </iframe>
+    <div id="map"></div>
 
     <p>
       <label for="date_range">Date range:</label>
@@ -84,6 +165,12 @@
     </p>
 
     <div style="width: 600px;" id="slider-range"></div>
+
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap">
+    </script>
 </body>
 
 {% endblock  %}
