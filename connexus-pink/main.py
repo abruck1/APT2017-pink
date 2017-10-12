@@ -25,6 +25,7 @@ app = webapp2.WSGIApplication([
     ('/unsubscribe', UnSubscribeStream),
     ('/delete', DeleteStream),
     (r'/search', Search),
+    (r'/autocomplete_search', AutocompleteSearch),
     ('/trending', Trending),
     ('/social', Social),
     ('/error', Error),

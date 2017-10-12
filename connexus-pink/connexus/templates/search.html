@@ -35,12 +35,6 @@
 
 {% block content %}
 
-<h1>Search</h1>
-<form action="/search" method="post">
-        <input type="text" name="search_string" placeholder="Search Streams"><br>
-        <input type="submit" value="Search">
-</form>
-
 {% if search_string %}
 	<h4>Search for <b><u>"{{ search_string }}"</u></b> found {{ num_results }} results:</h4>
 	{% if num_results > 5 %}
@@ -66,4 +60,7 @@
 
 {% endblock content %}
 
-{% block javascript %}{% endblock javascript %}
+{% block javascript %}
+
+
+{% endblock javascript %}
