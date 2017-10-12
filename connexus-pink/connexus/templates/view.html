@@ -100,9 +100,52 @@
         <form action="/subscribe/{{ stream.key.id() }}" method="post">
             <input type="submit" value="Subscribe">
         </form>
-        {% if error == "1" %}
-            <span>User needs to be logged in in order to subscribe!</span>
-        {% endif %}
+          <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+          <script type="text/javascript">
+            $(document).ready(function() {
+            {% if error == "1" %}
+              toastr.warning('You must log in to subscribe to a stream', 'User Not Logged In', 
+              {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              });
+            {% endif %}
+            {% if already_subscribed == "1" %}
+              toastr.success('You are now subscribed to {{ stream.name|safe }}', 'Success!', 
+              {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              });
+            {% endif %}
+            });
+          </script>
 
         <table>
             <tbody>

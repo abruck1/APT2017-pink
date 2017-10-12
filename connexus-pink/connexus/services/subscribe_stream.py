@@ -36,7 +36,7 @@ class SubscribeStream(webapp2.RequestHandler):
             pass
 
         # Redirect to /view for this stream
-        self.redirect('/view/' + streamid)
+        self.redirect('/view/' + streamid + '?s=1')
 # [END SubscribeStream]
 
 

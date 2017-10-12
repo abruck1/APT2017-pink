@@ -28,7 +28,8 @@ class CreateStream(webapp2.RequestHandler):
             print("Stream exists")
 
             # Redirect to manage page as per spec
-            self.redirect('/error')
+            #self.redirect('/error')
+            self.redirect('/create' + '?e=1')
         else:
             # Create a new Stream entity then redirect to /view the new stream
             new_stream = Stream(name=stream_name,
@@ -36,7 +37,7 @@ class CreateStream(webapp2.RequestHandler):
                                 coverImageURL=cover_image,
                                 viewCount=0,
                                 imageCount=0,
-                                tags=tags.split(",") ) # todo trim after split
+                                tags=tags.strip().replace(" ", "").split(",") )
             new_stream.put()
 
             # todo send invite emails
@@ -58,8 +59,14 @@ class CreateStream(webapp2.RequestHandler):
             self.redirect('/')
             return
 
+        show_error = self.request.get('e')
+        print("show_error={}".format(show_error))
+        if show_error == "":
+            show_error = 0
+
         template_values = {
             'page': 'Connex.us',
+            'error': show_error,
         }
         url, url_linktext, user = logout_func(self)
         template_values['url'] = url

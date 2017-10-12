@@ -17,7 +17,11 @@ class ViewStream(webapp2.RequestHandler):
         print("show_error={}".format(show_error))
         if show_error == "":
             show_error = 0
-
+        show_success = self.request.get('s')
+        print("show_success={}".format(show_success))
+        if show_success == "":
+            show_success = 0
+        
         stream = ndb.Key(Stream, int(streamid)).get()
 
         if stream is None:
@@ -53,6 +57,7 @@ class ViewStream(webapp2.RequestHandler):
             'upload_url': upload_url,
             'page': 'Connex.us',
             'error': show_error,
+            'already_subscribed': show_success,
             'prev_cursor': stream_images['prev_cursor'],
             'next_cursor': stream_images['next_cursor'],
             'prev': stream_images['prev'],

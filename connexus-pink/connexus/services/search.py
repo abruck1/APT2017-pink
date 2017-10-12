@@ -126,14 +126,17 @@ def get_json_streams_from_search(search_string):
             for stream in search_results:
                 print("Stream_n={0} string={1} tags={2}".format(stream.name, search_string, stream.tags))
                 for tag in stream.tags:
-                    if search_string.lower() in tag.lower() and not tag.lower() in found_matches:
-                        found_matches.append(tag.lower())
+                    if search_string.lower() in tag.lower().strip() and not tag.lower().strip() in found_matches:
+                        found_matches.append(tag)
 
                 if search_string.lower() in stream.name.lower():
                     if not stream.name.lower() in found_matches:
                         found_matches.append(stream.name)
+            print("before sort={}".format(found_matches))
 
-            return json.dumps(found_matches)
+            found_matches.sort() # sort alphabetically as per spec
+            print("after sort={}".format(found_matches))
+            return json.dumps(found_matches[:20]) # only get first 20 matches as per spec
 
         except search.Error:
             # todo add error handler

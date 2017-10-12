@@ -3,7 +3,6 @@
 {% block head_title %}Manage || {{ page }}{% endblock head_title %}
 
 {% block head_include %}
-    <script type="text/javascript" src="/bootstrap/js/jquery.tablesorter.min.js"></script>
     <style>
         table {
             font-family: arial, sans-serif;
@@ -25,7 +24,13 @@
 
 {% block content %}
 
-
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src='/bootstrap/js/jquery.tablesorter.js'></script>
+<script>
+    $(document).ready(function() {
+        $("#t01").tablesorter();
+    } );
+</script>
 
 <h1>Manage</h1>
 
@@ -92,9 +97,4 @@
 {% endblock  %}
 
 {% block javascript %}
-    <script>
-    $(document).ready(function() {
-        $("#t01").tablesorter();
-    } );
-    </script>
 {% endblock javascript %}
