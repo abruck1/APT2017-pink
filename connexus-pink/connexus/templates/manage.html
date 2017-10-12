@@ -2,37 +2,31 @@
 
 {% block head_title %}Manage || {{ page }}{% endblock head_title %}
 
+{% block head_include %}
+    <script type="text/javascript" src="/bootstrap/js/jquery.tablesorter.min.js"></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+{% endblock head_include %}
 
 {% block content %}
 
-<head>
-<script type="text/javascript" src="/bootstrap/js/jquery.tablesorter.min.js"></script>
-    
-<style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
 
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
-
-    <script>
-    $(document).ready(function() { 
-        $("#t01").tablesorter(); 
-    } ); 
-    </script>
-
-</head>
 <h1>Manage</h1>
 
     <b><u>Streams I own:</u></b><br>
@@ -95,7 +89,12 @@ tr:nth-child(even) {
                 {% endif %}
             </form>
 
-
-
-
 {% endblock  %}
+
+{% block javascript %}
+    <script>
+    $(document).ready(function() {
+        $("#t01").tablesorter();
+    } );
+    </script>
+{% endblock javascript %}

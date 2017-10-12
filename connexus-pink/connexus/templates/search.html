@@ -2,39 +2,38 @@
 
 {% block head_title %}Search || {{ page }}{% endblock head_title %}
 
+{% block head_include %}
+    <style>
+        .image {
+            position: relative;
+            width: 256px;
+            height: 256px;
+            float: left;
+            border: 5px;
+            border-style: solid;
+            border-color: black;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        h2 {
+           position: absolute;
+           top: 200px;
+           left: 0;
+           width: 100%;
+        }
+        h2 span {
+           color: white;
+           font: bold 24px/45px Helvetica, Sans-Serif;
+           letter-spacing: -1px;
+           background: rgb(0, 0, 0); /* fallback color */
+           background: rgba(0, 0, 0, 0.7);
+           padding: 10px;
+        }
+
+    </style>
+{% endblock head_include %}
 
 {% block content %}
-
-<head>
-<style>
-.image {
-    position: relative;
-    width: 256px;
-    height: 256px;
-    float: left;
-    border: 5px;
-    border-style: solid;
-    border-color: black;
-    margin-right: 5px;
-    margin-bottom: 5px;
-}
-h2 {
-   position: absolute;
-   top: 200px;
-   left: 0;
-   width: 100%;
-}
-h2 span {
-   color: white;
-   font: bold 24px/45px Helvetica, Sans-Serif;
-   letter-spacing: -1px;
-   background: rgb(0, 0, 0); /* fallback color */
-   background: rgba(0, 0, 0, 0.7);
-   padding: 10px;
-}
-
-</style>
-</head>
 
 <h1>Search</h1>
 <form action="/search" method="post">
@@ -65,5 +64,6 @@ h2 span {
 	{% endfor %}	
 {% endif %}
 
+{% endblock content %}
 
-{% endblock  %}
+{% block javascript %}{% endblock javascript %}
