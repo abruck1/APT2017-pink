@@ -24,14 +24,6 @@
 
 {% block content %}
 
-<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
-<script src='/bootstrap/js/jquery.tablesorter.js'></script>
-<script>
-    $(document).ready(function() {
-        $("#t01").tablesorter();
-    } );
-</script>
-
 <h1>Manage</h1>
 
     <b><u>Streams I own:</u></b><br>
@@ -68,7 +60,8 @@
 <br>
 
     <b><u>Streams I subscribe to:</u></b><br>
-        <table id="t02">
+        <table id="t02" class="tablesorter">
+        <thead>
         <tr>
             <th>Name</th>
             <th>Last New Picture</th> 
@@ -76,6 +69,8 @@
             <th>Views</th>
             <th>Unsubscribe</th>
         </tr>
+        </thead>
+        <tbody>
         {% for stream in subscribe %}
             <form action="/unsubscribe" method="post">
             <tr>
@@ -88,6 +83,7 @@
                 </td>
             </tr>
         {% endfor %}
+        </tbody>
         </table>
                 {% if subscribe %}
                     <input type="submit" value="Unsubscribe Checked Streams">
@@ -97,4 +93,14 @@
 {% endblock  %}
 
 {% block javascript %}
+<script src='/bootstrap/js/jquery.tablesorter.js'></script>
+
+<script>
+    $(document).ready(function() {
+        $("#t01").tablesorter();
+    } );
+    $(document).ready(function() {
+        $("#t02").tablesorter();
+    } );
+</script>
 {% endblock javascript %}

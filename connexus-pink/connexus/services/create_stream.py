@@ -23,16 +23,16 @@ class CreateStream(webapp2.RequestHandler):
         tags = self.request.get('tags')
         cover_image = self.request.get('coverUrl')
 
-        existing_stream_name = Stream.query(Stream.name == stream_name).get()
-        if existing_stream_name:
-            print("Stream exists")
-
+        existing_stream_name = Stream.query(Stream.name == stream_name.strip()).get()
+        if existing_stream_name or stream_name == "":
             # Redirect to manage page as per spec
-            #self.redirect('/error')
-            self.redirect('/create' + '?e=1')
+            if stream_name == "":
+                self.redirect('/create' + '?e=2')
+            else:
+                self.redirect('/create' + '?e=1')
         else:
             # Create a new Stream entity then redirect to /view the new stream
-            new_stream = Stream(name=stream_name,
+            new_stream = Stream(name=stream_name.strip(),
                                 owner=user,
                                 coverImageURL=cover_image,
                                 viewCount=0,

@@ -18,11 +18,11 @@
         <input type="submit" value="Create">
     </form>
 
-  {% if error == "1" %}
       <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
       <script type="text/javascript">
       $(document).ready(function() {
+      {% if error == "1" %}
         toastr.error('You tried to create a new stream whose name is the same as an existing stream. Operation did not complete.<br/><br/><button type="button" class="btn clear">I\'m Sorry</button>', 'Duplicate Stream Names!', 
            {"debug": false,
             "newestOnTop": true,
@@ -40,9 +40,29 @@
             "hideMethod": "fadeOut",
            });
 
-      });
+        window.history.replaceState(null, null, window.location.pathname);
+      {% endif %}
+      {% if error == "2" %}
+        toastr.error('Stream name cannot be empty!<br/><br/><button type="button" class="btn clear">I won\'t do it again</button>', 'Empty Stream Name', 
+           {"debug": false,
+            "newestOnTop": true,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": 0,
+            "extendedTimeOut": 0,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+           });
+
+        window.history.replaceState(null, null, window.location.pathname);
+      {% endif %}});
       </script>
-  {% endif %}
 
 {% endblock  %}
 

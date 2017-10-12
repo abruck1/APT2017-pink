@@ -111,7 +111,7 @@
                 "debug": false,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-center",
+                "positionClass": "toast-top-right",
                 "preventDuplicates": false,
                 "onclick": null,
                 "showDuration": "300",
@@ -123,6 +123,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
+              window.history.replaceState(null, null, window.location.pathname);
             {% endif %}
             {% if already_subscribed == "1" %}
               toastr.success('You are now subscribed to {{ stream.name|safe }}', 'Success!', 
@@ -131,7 +132,7 @@
                 "debug": false,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-center",
+                "positionClass": "toast-top-right",
                 "preventDuplicates": false,
                 "onclick": null,
                 "showDuration": "300",
@@ -143,6 +144,28 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
+              window.history.replaceState(null, null, window.location.pathname);
+            {% endif %}
+            {% if already_subscribed == "2" %}
+              toastr.info('You are already subscribed to {{ stream.name|safe }}', 
+              {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              });
+              window.history.replaceState(null, null, window.location.pathname);
             {% endif %}
             });
           </script>
