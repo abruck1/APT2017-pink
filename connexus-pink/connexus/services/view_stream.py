@@ -13,6 +13,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [START ViewStream]
 class ViewStream(webapp2.RequestHandler):
     def get(self, streamid):
+        prev_cursor = self.request.get('prev_cursor', '')
+        next_cursor = self.request.get('next_cursor', '')
+
         show_error = self.request.get('e')
         print("show_error={}".format(show_error))
         if show_error == "":
@@ -29,15 +32,16 @@ class ViewStream(webapp2.RequestHandler):
             pass
 
         # increment view count and add view to trending queue
-        stream.viewCount += 1
+        if prev_cursor == '' and next_cursor == '':
+            stream.viewCount += 1
+
         stream.put()
 
         stream_view = StreamView(parent=stream.key)
         stream_view.put()
 
         # load images, use pagination
-        prev_cursor = self.request.get('prev_cursor', '')
-        next_cursor = self.request.get('next_cursor', '')
+
 
         # todo this could be none
         stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor)
