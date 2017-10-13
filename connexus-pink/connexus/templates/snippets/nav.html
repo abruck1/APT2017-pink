@@ -1,14 +1,27 @@
 <div class='container'>
 <h1>Connex.us (Phase 2)</h1>
 
-<a href='/manage'>Manage</a>&nbsp;|&nbsp;
-<a href='/create'>Create</a>&nbsp;|&nbsp;
-<a href='/view'>View</a>&nbsp;|&nbsp;
-<!--<a href='/search'>Search</a>&nbsp;|&nbsp;-->
-<a href='/trending'>Trending</a>&nbsp;|&nbsp;
-<a href='/social'>Social</a>
-<!--<a href='/contact'>Contact</a>-->
+<ul class="nav nav-tabs navbar-default">
+	{% if page == "Manage" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/manage'>Manage</a></li>
+	
+	{% if page == "Create" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/create'>Create</a></li>
+	
+	{% if page == "View" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/view'>View</a></li>
 
-    {% include "search_box.html" %}
+<!--<a href='/search'>Search</a>&nbsp;|&nbsp;-->
+
+	{% if page == "Trending" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/trending'>Trending</a></li>
+
+	{% if page == "Social" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/social'>Social</a></li>
+<!--<a href='/contact'>Contact</a>-->
+	<li>
+    	{% include "search_box.html" %}
+	</li>
+</ul>
 
 </div>

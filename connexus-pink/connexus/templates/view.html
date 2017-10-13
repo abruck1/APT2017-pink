@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block head_title %}View || {{ page }}{% endblock head_title %}
+{% block head_title %}{{ page }} || Connex.us{% endblock head_title %}
 
 {% block head_include %}
     <script src="/bootstrap/js/dropzone.js"></script>
@@ -111,7 +111,7 @@
                 "debug": false,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-center",
+                "positionClass": "toast-top-right",
                 "preventDuplicates": false,
                 "onclick": null,
                 "showDuration": "300",
@@ -123,6 +123,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
+              window.history.replaceState(null, null, window.location.href.replace(/[\?&]e=1/g, ''));
             {% endif %}
             {% if already_subscribed == "1" %}
               toastr.success('You are now subscribed to {{ stream.name|safe }}', 'Success!', 
@@ -131,7 +132,7 @@
                 "debug": false,
                 "newestOnTop": false,
                 "progressBar": false,
-                "positionClass": "toast-top-center",
+                "positionClass": "toast-top-right",
                 "preventDuplicates": false,
                 "onclick": null,
                 "showDuration": "300",
@@ -143,6 +144,28 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
+              window.history.replaceState(null, null, window.location.href.replace(/[\?&]s=1/g, ''));
+            {% endif %}
+            {% if already_subscribed == "2" %}
+              toastr.info('You are already subscribed to {{ stream.name|safe }}', 
+              {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+              });
+              window.history.replaceState(null, null, window.location.href.replace(/[\?&]s=2/g, ''));
             {% endif %}
             });
           </script>
@@ -168,6 +191,11 @@
                     {% if next %}
                         <input type="button" onclick="location.href='/view/{{ stream.key.id() }}?next_cursor={{ next_cursor }}';" value="More pictures >>" />
                     {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    <input type="button" onclick="location.href='/view/{{ stream.key.id() }}/geoview';" value="GeoView">
                 </td>
             </tr>
             </tfoot>

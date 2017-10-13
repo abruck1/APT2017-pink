@@ -35,7 +35,7 @@ class Trending(webapp2.RequestHandler):
         streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
 
         template_values = {
-            'page': "Connex.us",
+            'page': "Trending",
             'streams': streams,
             'labels': labels,
             'labels_text': labels_text,

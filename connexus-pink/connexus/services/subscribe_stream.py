@@ -16,27 +16,38 @@ class SubscribeStream(webapp2.RequestHandler):
             user = users.get_current_user().email()
         except:
             # todo raise error message to user?
-            self.redirect('/view/' + streamid + '?e=1')
+            return_code = "e=1"
+            referer = str(self.request.referer)
+            if "?" in referer:
+                self.redirect(referer + "&" + return_code)
+            else:
+                self.redirect(referer + "?" + return_code)
             return
 
+        return_code = ""
         if user is not None:
             stream = ndb.Key(Stream, int(streamid)).get()
             if not StreamSubscriber.query(StreamSubscriber.stream == stream.key).filter(StreamSubscriber.user == user).get():
                 new_stream_subscriber = StreamSubscriber(stream=stream.key, user=user)
                 new_stream_subscriber.put()
+                return_code = 's=1'
             else:
-                # todo pop up saying subscribed?
-                pass            
+                return_code = 's=2'
    
             # subtract 1 due to redirect to view will increase the view by one
             stream.viewCount -= 1
             stream.put()
         else:
-            # todo pop up message saying not logged in
+            # should never get here due to the try/except above
             pass
 
         # Redirect to /view for this stream
-        self.redirect('/view/' + streamid + '?s=1')
+        print("referer={}".format(str(self.request.referer)))
+        referer = str(self.request.referer)
+        if "?" in referer:
+            self.redirect(referer + "&" + return_code)
+        else:
+            self.redirect(referer + "?" + return_code)
 # [END SubscribeStream]
 
 

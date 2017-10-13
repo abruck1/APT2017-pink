@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block head_title %}GeoView || {{ page }}{% endblock head_title %}
+
+{% block content %}
+
+<head>
+<style>
+       .image {
+        position: relative;
+        width: 256px;
+        height: 256px;
+        float: left;
+        border: 5px;
+        border-style: solid;
+        border-color: black;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    .stream_name {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+    /* Centered text */
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .upload-form {
+        border-style: solid;
+        border-color: black;
+        padding: 10px;
+        width: 500px;
+    }
+    .form-label {
+        font-size: x-large;
+
+    }
+</style>
+    <!--slider header-->
+    <!---->
+  <meta charset="utf-8">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+          <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!---->
+    <!--end slider header-->
+
+    <!--map header-->
+    <!---->
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Marker Clustering</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 450px;
+          width: 600px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+    </style>
+    <!---->
+    <!--end map header-->
+
+</head>
+<body>
+    <script>
+      var date_times_strings = {{ image_create_date|safe }};
+      console.log(date_times_strings);
+//      var date_times_strings = ['2017-10-12', '2016-10-12'];
+      var date_times_arr = date_times_strings.map(function(x) { return new Date(x); });
+      var maxDate=new Date(Math.max.apply(null,date_times_arr));
+      var minDate=new Date(Math.min.apply(null,date_times_arr));
+      var first_visible_index = 0;
+      var last_visible_index = {{ number_of_images }}-1;
+      console.log(maxDate.toDateString());
+      var steps = (maxDate.getTime() - minDate.getTime())/1000/60/60/24;
+      console.log(steps);
+
+      $(function() {
+        $( "#slider-range" ).slider({
+          range: true,
+          min: minDate.getTime() / 1000,
+          max: maxDate.getTime() / 1000,
+          step: steps,
+          values: [ minDate.getTime() / 1000, maxDate.getTime() / 1000 ],
+          slide: function( event, ui ) {
+            var minDateRange = new Date(ui.values[ 0 ] *1000);
+            var maxDateRange = new Date(ui.values[ 1 ] *1000);
+            $( "#date_range" ).val( minDateRange.toDateString() + " - " + maxDateRange.toDateString() );
+            for(var i=0; i<{{ number_of_images }}; i++){
+                if(date_times_arr[i] >= minDateRange){
+                    first_visible_index = i;
+                    break;
+                }
+            }
+            for(var i={{ number_of_images }}-1; i>=0 ; i--){
+                if(date_times_arr[i] <= maxDateRange){
+                    last_visible_index = i;
+                    break;
+                }
+            }
+            console.log("broke out of for loop");
+            console.log(first_visible_index);
+            console.log(last_visible_index)
+              create_locations();
+              initMap();
+          }
+        });
+        $( "#date_range" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
+          " - " + (new Date($( "#slider-range" ).slider( "values", 1 )*1000)).toDateString());
+      });
+
+      var map;
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var locations = [];
+
+      function create_locations() {
+          console.log("create locations call");
+          locations = [];
+                  for(var i=first_visible_index; i<last_visible_index+1; i++){
+            locations.push({'lat': {{ image_lat }}[i], 'lng': {{ image_longitude }}[i] });
+        }
+      }
+
+      function initMap() {
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 1,
+          center: {lat: 0, lng: 0}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+
+
+        var infowindow =  new google.maps.InfoWindow();
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          var marker = new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+          var image_urls = {{ image_urls|safe }}
+          var url_tag = "<img src=\"" + image_urls[i] + "\" style='max-width: 100px; max-height: 100px'/>";
+          bindInfoWindow(marker, map, infowindow, url_tag);
+          return marker;
+        });
+
+
+        function bindInfoWindow(marker, map, infowindow, html) {
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                infowindow.setContent(html);
+                infowindow.open(map, marker);
+            });
+
+            google.maps.event.addListener(marker, 'mouseout', function() {
+                infowindow.close();
+            });
+        }
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+      }
+
+//      var locations = [
+//        {lat: -31.563910, lng: 147.154312},
+//        {lat: -33.718234, lng: 150.363181},
+//        {lat: -33.727111, lng: 150.371124},
+//        {lat: -33.848588, lng: 151.209834},
+
+//      ]
+
+      create_locations();
+
+
+    </script>
+	<div>
+        <h1>{{ stream.name }}</h1>
+    </div>
+
+    <div id="map"></div>
+
+    <p>
+      <label for="date_range">Date range:</label>
+      <input type="text" id="date_range" readonly style="border:0; color:#f6931f; font-weight:bold; width: 30%">
+    </p>
+
+    <div style="width: 600px;" id="slider-range"></div>
+
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ maps_key }}&callback=initMap">
+    </script>
+</body>
+
+{% endblock  %}
