@@ -16,10 +16,11 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class Search(webapp2.RequestHandler):
     def post(self):
         search_string = self.request.get('search_string')
-
+        search_string = search_string.replace('#', '')
         self.redirect('/search?' + search_string)
 
     def get(self):
+        original_search_string = urllib2.unquote(self.request.query_string)
         search_string = urllib2.unquote(self.request.query_string).lower()
 
         index = search.Index(name='connexus_search')
@@ -35,10 +36,9 @@ class Search(webapp2.RequestHandler):
                 # if there are more than 5 then do not display them as per spec
                 if index == 4:
                     break
-
         template_values = {
             'page': 'Connex.us',
-            'search_string': search_string,
+            'search_string': original_search_string,
             'num_results': num_results,
             'found_streams': found_streams,
         }
