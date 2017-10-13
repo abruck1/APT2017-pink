@@ -23,7 +23,7 @@ class GeoView(webapp2.RequestHandler):
             return
 
         # todo this could be none
-        stream_images = StreamImage.query().fetch()
+        stream_images = StreamImage.query().order(StreamImage.createDate).fetch()
 
         image_urls = []
         image_create_date = []
