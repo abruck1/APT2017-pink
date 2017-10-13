@@ -36,7 +36,7 @@ class CreateStream(webapp2.RequestHandler):
                                 owner=user,
                                 coverImageURL=cover_image,
                                 viewCount=0,
-                                imageCount=0,
+                                # imageCount=0,
                                 tags=tags.strip().replace(" ", "").split(",") )
             new_stream.put()
 
