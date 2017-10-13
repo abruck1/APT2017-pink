@@ -15,7 +15,7 @@ $(document).ready(function(){
           return;
         }
  
-        $.getJSON( "/autocomplete_search", request.term, function( data ) {
+        $.getJSON( "/autocomplete_search", encodeURIComponent(request.term), function( data ) {
           console.log(data.toString())
           console.log(request.term)
           cache[ term ] = data;
