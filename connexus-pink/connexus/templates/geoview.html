@@ -73,12 +73,14 @@
 </head>
 <body>
     <script>
-
       var date_times_strings = {{ image_create_date|safe }};
+      console.log(date_times_strings);
 //      var date_times_strings = ['2017-10-12', '2016-10-12'];
       var date_times_arr = date_times_strings.map(function(x) { return new Date(x); });
       var maxDate=new Date(Math.max.apply(null,date_times_arr));
       var minDate=new Date(Math.min.apply(null,date_times_arr));
+      var first_visible_index = 0;
+      var last_visible_index = {{ number_of_images }}-1;
       console.log(maxDate.toDateString());
       var steps = (maxDate.getTime() - minDate.getTime())/1000/60/60/24;
       console.log(steps);
@@ -91,22 +93,53 @@
           step: steps,
           values: [ minDate.getTime() / 1000, maxDate.getTime() / 1000 ],
           slide: function( event, ui ) {
-            $( "#date_range" ).val( (new Date(ui.values[ 0 ] *1000).toDateString() ) + " - " + (new Date(ui.values[ 1 ] *1000)).toDateString() );
+            var minDateRange = new Date(ui.values[ 0 ] *1000);
+            var maxDateRange = new Date(ui.values[ 1 ] *1000);
+            $( "#date_range" ).val( minDateRange.toDateString() + " - " + maxDateRange.toDateString() );
+            for(var i=0; i<{{ number_of_images }}; i++){
+                if(date_times_arr[i] >= minDateRange){
+                    first_visible_index = i;
+                    break;
+                }
+            }
+            for(var i={{ number_of_images }}-1; i>=0 ; i--){
+                if(date_times_arr[i] <= maxDateRange){
+                    last_visible_index = i;
+                    break;
+                }
+            }
+            console.log("broke out of for loop");
+            console.log(first_visible_index);
+            console.log(last_visible_index)
+              create_locations();
+              initMap();
           }
         });
         $( "#date_range" ).val( (new Date($( "#slider-range" ).slider( "values", 0 )*1000).toDateString()) +
           " - " + (new Date($( "#slider-range" ).slider( "values", 1 )*1000)).toDateString());
       });
 
+      var map;
+      var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var locations = [];
+
+      function create_locations() {
+          console.log("create locations call");
+          locations = [];
+                  for(var i=first_visible_index; i<last_visible_index+1; i++){
+            locations.push({'lat': {{ image_lat }}[i], 'lng': {{ image_longitude }}[i] });
+        }
+      }
+
       function initMap() {
 
-        var map = new google.maps.Map(document.getElementById('map'), {
+        map = new google.maps.Map(document.getElementById('map'), {
           zoom: 1,
           center: {lat: 0, lng: 0}
         });
 
         // Create an array of alphabetical characters used to label the markers.
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
 
         var infowindow =  new google.maps.InfoWindow();
 
@@ -125,6 +158,7 @@
           return marker;
         });
 
+
         function bindInfoWindow(marker, map, infowindow, html) {
             google.maps.event.addListener(marker, 'mouseover', function() {
                 infowindow.setContent(html);
@@ -139,6 +173,7 @@
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
       }
 
 //      var locations = [
@@ -148,10 +183,10 @@
 //        {lat: -33.848588, lng: 151.209834},
 
 //      ]
-        var locations = []
-        for(var i=0; i<{{ number_of_images }}; i++){
-          locations.push({'lat': {{ image_lat }}[i], 'lng': {{ image_longitude }}[i] });
-      }
+
+      create_locations();
+
+
     </script>
 	<div>
         <h1>{{ stream.name }}</h1>
