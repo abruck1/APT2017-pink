@@ -10,10 +10,12 @@ class Stream(ndb.Model):
     createDate = ndb.DateTimeProperty(auto_now_add=True)
     coverImageURL = ndb.StringProperty()
     viewCount = ndb.IntegerProperty()
-    imageCount = ndb.IntegerProperty()
+    # imageCount = ndb.IntegerProperty()
     lastPicDate = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
     viewsInPastHour = ndb.IntegerProperty()
+    imageCount = ndb.ComputedProperty(lambda self: StreamImage.get_image_count(self.key))
+
 
 
 class StreamSubscriber(ndb.Model):
@@ -25,6 +27,11 @@ class StreamSubscriber(ndb.Model):
 class StreamImage(ndb.Model):
     imageBlobKey = ndb.BlobKeyProperty()
     createDate = ndb.DateTimeProperty(auto_now_add=True)
+
+    @classmethod
+    def get_image_count(cls, ancestor_key):
+        return cls.query(ancestor=ancestor_key).count()
+
 
     # adapted from https://github.com/zdenulo/gae-ndb-pagination
     @classmethod

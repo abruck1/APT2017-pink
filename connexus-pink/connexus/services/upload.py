@@ -14,35 +14,43 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
     def post(self):
         streamid = self.request.get('streamid')
 
-        # get the stream, todo test for error
-        stream = (ndb.Key('Stream', int(streamid))).get()
-
         try:
-            for imagefile in self.get_uploads():
-                # imagefile = self.get_uploads()[0]
+            # retrieve the stream's key for storing with the image, makes the update to the stream faster
+            stream_key = ndb.Key(Stream, int(streamid))
 
-                stream_image = StreamImage(
-                    parent=stream.key,
-                    imageBlobKey=imagefile.key())
+            # UploadImage is only called once per upload, don't need to use a for loop
+            imagefile = self.get_uploads()[0]
 
-                # store the image
-                stream_image.put()
+            stream_image = StreamImage(
+                parent=stream_key,
+                imageBlobKey=imagefile.key())
 
-                # update the stream
-                stream.lastPicDate = stream_image.createDate
-                stream.imageCount += 1
+            # store the image
+            stream_image.put()
 
-                # need to subtract one due to the redirect increasing viewCount by one
-                if stream.viewCount > 0:
-                    stream.viewCount -= 1
+            # update the stream here, should be fast
+            # get the stream
+            stream = stream_key.get()
 
-                if stream.coverImageURL == "":
-                    stream.coverImageURL = images.get_serving_url(stream_image.imageBlobKey)
-                stream.put()
+            # update the stream
+            if stream.coverImageURL == "":
+                stream.coverImageURL = images.get_serving_url(stream_image.imageBlobKey)
+
+            stream.lastPicDate = stream_image.createDate
+            # stream.imageCount = StreamImage.get_image_count(stream_key)
+
+            # need to subtract one due to the redirect increasing viewCount by one
+            # shouldn't need to do this with the redirect disabled
+            # if stream.viewCount > 0:
+            #     stream.viewCount -= 1
+
+
+
+            stream.put()
 
         except:
             self.redirect(str(self.request.referer))
             return
 
-        self.redirect('/view/' + streamid)
+        # self.redirect('/view/' + streamid)
 # [END UploadImage]
