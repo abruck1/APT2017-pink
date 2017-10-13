@@ -17,7 +17,7 @@ class CreateStream(webapp2.RequestHandler):
     def post(self):
 
         user = users.get_current_user().email()
-        stream_name = self.request.get('streamname')
+        stream_name = self.request.get('streamname').strip()
         subscribers = self.request.get('subs')
         subs_msg = self.request.get('subs_msg')
         tags = self.request.get('tags')
