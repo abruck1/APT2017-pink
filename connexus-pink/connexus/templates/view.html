@@ -123,7 +123,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
-              window.history.replaceState(null, null, window.location.pathname);
+              window.history.replaceState(null, null, window.location.href.replace(/[\?&]e=1/g, ''));
             {% endif %}
             {% if already_subscribed == "1" %}
               toastr.success('You are now subscribed to {{ stream.name|safe }}', 'Success!', 
@@ -144,7 +144,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
-              window.history.replaceState(null, null, window.location.pathname);
+              window.history.replaceState(null, null, window.location.href.replace(/[\?&]s=1/g, ''));
             {% endif %}
             {% if already_subscribed == "2" %}
               toastr.info('You are already subscribed to {{ stream.name|safe }}', 
@@ -165,7 +165,7 @@
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
               });
-              window.history.replaceState(null, null, window.location.pathname);
+              window.history.replaceState(null, null, window.location.href.replace(/[\?&]s=2/g, ''));
             {% endif %}
             });
           </script>

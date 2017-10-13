@@ -13,7 +13,7 @@ class Social(webapp2.RequestHandler):
     def get(self):
         email = 'youremail@gmail.com'
         template_values = {
-            'page': "Connex.us",
+            'page': "Social",
             'email': email,
         }
         url, url_linktext, user = logout_func(self)

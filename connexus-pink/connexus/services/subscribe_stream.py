@@ -16,7 +16,12 @@ class SubscribeStream(webapp2.RequestHandler):
             user = users.get_current_user().email()
         except:
             # todo raise error message to user?
-            self.redirect('/view/' + streamid + '?e=1')
+            return_code = "e=1"
+            referer = str(self.request.referer)
+            if "?" in referer:
+                self.redirect(referer + "&" + return_code)
+            else:
+                self.redirect(referer + "?" + return_code)
             return
 
         return_code = ""
@@ -25,9 +30,9 @@ class SubscribeStream(webapp2.RequestHandler):
             if not StreamSubscriber.query(StreamSubscriber.stream == stream.key).filter(StreamSubscriber.user == user).get():
                 new_stream_subscriber = StreamSubscriber(stream=stream.key, user=user)
                 new_stream_subscriber.put()
-                return_code = '?s=1'
+                return_code = 's=1'
             else:
-                return_code = '?s=2'
+                return_code = 's=2'
    
             # subtract 1 due to redirect to view will increase the view by one
             stream.viewCount -= 1
@@ -37,7 +42,12 @@ class SubscribeStream(webapp2.RequestHandler):
             pass
 
         # Redirect to /view for this stream
-        self.redirect('/view/' + streamid + return_code)
+        print("referer={}".format(str(self.request.referer)))
+        referer = str(self.request.referer)
+        if "?" in referer:
+            self.redirect(referer + "&" + return_code)
+        else:
+            self.redirect(referer + "?" + return_code)
 # [END SubscribeStream]
 
 

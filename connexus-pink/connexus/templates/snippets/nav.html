@@ -1,38 +1,27 @@
 <div class='container'>
 <h1>Connex.us (Phase 2)</h1>
 
-<nav class="navbar navbar-inverse">
-<ul class="nav navbar-nav navbar-default">
-	{% if page == "Manage" %}<li class="active">{% endif %}
-			<li><a href='/manage'>Manage</a></li>
-	{% if page == "Manage" %}</li>{% endif %}
+<ul class="nav nav-tabs navbar-default">
+	{% if page == "Manage" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/manage'>Manage</a></li>
 	
-	{% if page == "Create" %}<li class="active">{% endif %}
-		<li class="active">
-			<li><a href='/create'>Create</a></li>
-	{% if page == "Create" %}</li>{% endif %}
+	{% if page == "Create" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/create'>Create</a></li>
 	
-	{% if page == "View" %}<li class="active">{% endif %}
-		<li class="active">
-			<li><a href='/view'>View</a></li>
-	{% if page == "View" %}</li>{% endif %}
+	{% if page == "View" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/view'>View</a></li>
 
 <!--<a href='/search'>Search</a>&nbsp;|&nbsp;-->
 
-	{% if page == "Trending" %}<li class="active">{% endif %}
-		<li class="active">
-			<li><a href='/trending'>Trending</a></li>
-	{% if page == "Trending" %}</li>{% endif %}
+	{% if page == "Trending" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/trending'>Trending</a></li>
 
-	{% if page == "Social" %}<li class="active">{% endif %}
-		<li class="active">
-			<li><a href='/social'>Social</a></li>
-	{% if page == "Social" %}</li>{% endif %}
+	{% if page == "Social" %}<li class="active">{% else %}<li>{% endif %}
+			<a href='/social'>Social</a></li>
 <!--<a href='/contact'>Contact</a>-->
 	<li>
     	{% include "search_box.html" %}
 	</li>
 </ul>
-</nav>
 
 </div>
