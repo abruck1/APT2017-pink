@@ -54,5 +54,6 @@
     <string name="msg_contacts_failed">Get contacts failed.</string>
 
     <string name="view_streams_button_text">View Streams</string>
+    <string name="sign_in_extra_text">The World\'s Greatest\nPhoto Sharing App (TM).\nBy APT Pink Team</string>
 
 </resources>
