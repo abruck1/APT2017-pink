@@ -1,4 +1,5 @@
 import jinja2
+import json
 import webapp2
 from connexus.common import *
 from connexus.ndb_model import *
@@ -55,23 +56,39 @@ class ViewStream(webapp2.RequestHandler):
         # it will work as is, but there's a 10 min timeout on the blob key
         upload_url = blobstore.create_upload_url('/upload', )
 
-        template_values = {
-            'stream': stream,
-            'image_urls': image_urls,
-            'upload_url': upload_url,
-            'page': 'View',
-            'error': show_error,
-            'already_subscribed': show_success,
-            'prev_cursor': stream_images['prev_cursor'],
-            'next_cursor': stream_images['next_cursor'],
-            'prev': stream_images['prev'],
-            'next': stream_images['next'],
-        }
-        url, url_linktext, user = logout_func(self)
-        template_values['url'] = url
-        template_values['url_linktext'] = url_linktext
-        template_values['user'] = user
+        # build json for return
+        data = {}
+        data["page"] = 'View'
+        data["stream"] = stream
+        data["image_urls"] = image_urls
+        data["upload_url"] = upload_url
+        data["error"] = show_error
+        data["already_subscribed"] = show_success
+        data["prev_cursor"] = stream_images['prev_cursor']
+        data["next_cursor"] = stream_images['next_cursor']
+        data["prev"] = stream_images['prev']
+        data["next"] = stream_images['next']
 
-        template = JINJA_ENVIRONMENT.get_template('view.html')
-        self.response.write(template.render(template_values))
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(data, separators=(',', ':')))
+
+        # template_values = {
+        #     'stream': stream,
+        #     'image_urls': image_urls,
+        #     'upload_url': upload_url,
+        #     'page': 'View',
+        #     'error': show_error,
+        #     'already_subscribed': show_success,
+        #     'prev_cursor': stream_images['prev_cursor'],
+        #     'next_cursor': stream_images['next_cursor'],
+        #     'prev': stream_images['prev'],
+        #     'next': stream_images['next'],
+        # }
+        # url, url_linktext, user = logout_func(self)
+        # template_values['url'] = url
+        # template_values['url_linktext'] = url_linktext
+        # template_values['user'] = user
+        #
+        # template = JINJA_ENVIRONMENT.get_template('view.html')
+        # self.response.write(template.render(template_values))
 # [END ViewStream]
