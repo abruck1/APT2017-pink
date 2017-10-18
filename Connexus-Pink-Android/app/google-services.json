@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "475475708929",
+    "project_id": "connexus-pink"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475475708929:android:830b7160dfcad4e8",
+        "android_client_info": {
+          "package_name": "com.pink.apt.connexus_pink_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "475475708929-1jkp9i0g9tfdes6743ru2cr6p4komjg2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "475475708929-avgd2hl9rtmipltdb8h0pkpulrgt9lfd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pink.apt.connexus_pink_android",
+            "certificate_hash": "8a4169406c90e9e89c55abefa05391aa90a2c2eb"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgdGOolst_jKR3D8WUIL6sn12ZRQtmn8c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
