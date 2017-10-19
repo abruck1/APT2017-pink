@@ -23,6 +23,7 @@ app = webapp2.WSGIApplication([
     (r'/view/(\d+)/geoview', GeoView),
     (r'/view/(\d+)', ViewStream),
     ('/view', ViewAll),
+    ('/m_view', ViewAllMobile),
     (r'/subscribe/(\d+)', SubscribeStream),
     ('/unsubscribe', UnSubscribeStream),
     ('/delete', DeleteStream),

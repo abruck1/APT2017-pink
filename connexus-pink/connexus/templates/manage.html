@@ -29,7 +29,7 @@
 
     <b><u>Streams I own:</u></b><br>
         <table id="t01" class="tablesorter">
-        <thead>
+        <thead class="thread-inverse">
         <tr>
             <th>Name</th>
             <th>Last New Picture</th> 
@@ -52,7 +52,9 @@
         </tbody>
         </table>
                 {% if user_streams %}
-                    <input type="submit" value="Delete Checked Streams">
+                    <button type="submit" class="btn btn-primary start">
+                        <span>Delete Checked Streams</span>
+                    </button>
                 {% endif %}
             </form>
 
@@ -87,7 +89,9 @@
         </tbody>
         </table>
                 {% if subscribe %}
-                    <input type="submit" value="Unsubscribe Checked Streams">
+                    <button type="submit" class="btn btn-primary start">
+                        <span>Unsubscribe Checked Streams</span>
+                    </button>
                 {% endif %}
             </form>
 
