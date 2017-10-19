@@ -4,7 +4,9 @@
 
 {% block head_include %}{% endblock head_include %}
 
+
 {% block content %}
+
 <h1>Create</h1>
  Create Stream!<br>
     <p>
@@ -15,7 +17,10 @@
         <input type="text" name="subs_msg" style="width:300px;height:100px" placeholder="Optional message for the invite"><br><br>
         <input type="text" name="tags" style="width:300px" placeholder="Tag your stream (comma delimited)"><br><br>
         <input type="text" name="coverUrl" style="width:300px" placeholder="URL to cover image (can be empty)"><br><br>
-        <input type="submit" value="Create">
+            <button type="submit" class="btn btn-primary start">
+                <span>Create</span>
+            </button>
+         
     </form>
 
       <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>

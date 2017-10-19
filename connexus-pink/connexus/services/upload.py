@@ -1,4 +1,5 @@
 import jinja2
+import random
 from connexus.ndb_model import *
 from google.appengine.api import images
 from google.appengine.ext.webapp import blobstore_handlers
@@ -24,6 +25,9 @@ class UploadImage(blobstore_handlers.BlobstoreUploadHandler):
             stream_image = StreamImage(
                 parent=stream_key,
                 imageBlobKey=imagefile.key())
+
+            stream_image.longitude = random.uniform(-180, 180)
+            stream_image.latitude = random.uniform(-85, 85)
 
             # store the image
             stream_image.put()

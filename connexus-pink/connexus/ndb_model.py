@@ -27,6 +27,8 @@ class StreamSubscriber(ndb.Model):
 class StreamImage(ndb.Model):
     imageBlobKey = ndb.BlobKeyProperty()
     createDate = ndb.DateTimeProperty(auto_now_add=True)
+    latitude = ndb.FloatProperty()
+    longitude = ndb.FloatProperty()
 
     @classmethod
     def get_image_count(cls, ancestor_key):

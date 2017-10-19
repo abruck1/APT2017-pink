@@ -1,4 +1,5 @@
 import jinja2
+import json
 import webapp2
 from connexus.common import *
 from connexus.ndb_model import *
@@ -34,18 +35,29 @@ class Trending(webapp2.RequestHandler):
         # get trends as stream objects to pass to html page
         streams = Stream.query().order(-Stream.viewsInPastHour).fetch(3)
 
-        template_values = {
-            'page': "Trending",
-            'streams': streams,
-            'labels': labels,
-            'labels_text': labels_text,
-            'property_checked': checked,
-        }
-        url, url_linktext, user = logout_func(self)
-        template_values['url'] = url
-        template_values['url_linktext'] = url_linktext
-        template_values['user'] = user
+        # build json for return
+        data = {}
+        data["page"] = 'Trending'
+        data["streams"] = streams
+        data["labels"] = labels
+        data["labels_text"] = labels_text
+        data["property_checked"] = checked
 
-        template = JINJA_ENVIRONMENT.get_template('trending.html')
-        self.response.write(template.render(template_values))
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(data, separators=(',', ':')))
+
+        # template_values = {
+        #     'page': "Trending",
+        #     'streams': streams,
+        #     'labels': labels,
+        #     'labels_text': labels_text,
+        #     'property_checked': checked,
+        # }
+        # url, url_linktext, user = logout_func(self)
+        # template_values['url'] = url
+        # template_values['url_linktext'] = url_linktext
+        # template_values['user'] = user
+        #
+        # template = JINJA_ENVIRONMENT.get_template('trending.html')
+        # self.response.write(template.render(template_values))
 # [END Trending]
