@@ -33,13 +33,13 @@ class ViewAllMobile(webapp2.RequestHandler):
     def get(self):
         streams = Stream.query().order(Stream.createDate).fetch()
 
-        stream = {}
+        stream = []
         for s in streams:
-            stream[s.name] = {
+            stream.append({
                 'name': s.name,
                 'id': s.key.id(),
                 'coverImageURL': s.coverImageURL,
-            }
+                })
 
 
         # build json for return
