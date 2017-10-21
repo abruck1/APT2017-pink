@@ -51,6 +51,43 @@ class Search(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 # [END Search]
 
+# [START MobileSearch]
+class MobileSearch(webapp2.RequestHandler):
+    def post(self):
+        search_string = self.request.get('search_string')
+        search_string = search_string.replace('#', '')
+        self.redirect('/search?' + search_string)
+
+    def get(self):
+        original_search_string = urllib2.unquote(self.request.query_string)
+        search_string = urllib2.unquote(self.request.query_string).lower()
+
+        index = search.Index(name='connexus_search')
+        num_results = 0
+        found_streams = []
+        if search_string:
+            search_results = get_streams_from_search(search_string)
+            num_results = search_results.number_found
+            for index, doc in enumerate(search_results):
+                doc_id = doc.doc_id
+                stream = ndb.Key(Stream, int(doc_id)).get()
+                found_streams.append(stream)
+                # if there are more than 5 then do not display them as per spec
+                if index == 4:
+                    break
+        template_values = {
+            'page': 'Connex.us',
+            'search_string': original_search_string,
+            'num_results': num_results,
+            'found_streams': found_streams,
+        }
+        url, url_linktext, user = logout_func(self)
+        template_values['url'] = url
+        template_values['url_linktext'] = url_linktext
+        template_values['user'] = user
+       
+        self.response.write(json.dumps(template_values, cls=MyJsonEncoder))
+# [END MobileSearch]
 
 class AutocompleteSearch(webapp2.RequestHandler):
     def get(self):

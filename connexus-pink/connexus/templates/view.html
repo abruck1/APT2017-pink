@@ -98,7 +98,9 @@
 	<div>
         <h1>{{ stream.name }}</h1>
         <form action="/subscribe/{{ stream.key.id() }}" method="post">
-            <input type="submit" value="Subscribe">
+          <button type="submit" class="btn btn-primary start">
+            <span>Subscribe</span>
+          </button>
         </form>
           <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
@@ -180,26 +182,25 @@
                 {% endfor %}
                 </tr>
             </tbody>
-            <tfoot>
-            <tr>
-                <td align="left">
-                    {% if prev %}
-                        <input type="button" onclick="location.href='/view/{{ stream.key.id() }}?prev_cursor={{ prev_cursor }}';" value="<< Back" />
-                    {% endif %}
-                </td>
-                <td colspan="2" align="right">
-                    {% if next %}
-                        <input type="button" onclick="location.href='/view/{{ stream.key.id() }}?next_cursor={{ next_cursor }}';" value="More pictures >>" />
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td align="right">
-                    <input type="button" onclick="location.href='/view/{{ stream.key.id() }}/geoview';" value="GeoView">
-                </td>
-            </tr>
-            </tfoot>
         </table>
+            <ul class="pager">
+        {% if prev %}
+              <li>
+                <a onclick="location.href='/view/{{ stream.key.id() }}?prev_cursor={{ prev_cursor }}';">Back</a>
+              </li>
+        {% endif %}
+        {% if next %}
+              <li>
+                <a onclick="location.href='/view/{{ stream.key.id() }}?next_cursor={{ next_cursor }}';">Next</a>
+              </li>
+        {% endif %}
+            </ul>
+            <div class="col-md-4 text-center"> 
+              <button type="button" class="btn btn-primary start" onclick="location.href='/view/{{ stream.key.id() }}/geoview';">
+                <span>GeoView</span>
+              </button>
+            </div>
+
 <!--
         <form class="dropzone" id="upload-dropzone" action="{{ upload_url }}" method="post" enctype="multipart/form-data">
             <input type="file" name="image" id="image">&nbsp;&nbsp;

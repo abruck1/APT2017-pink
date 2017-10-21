@@ -28,8 +28,8 @@ class ViewAll(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 # [END ViewAll]
 
-# [START ViewAllMobile]
-class ViewAllMobile(webapp2.RequestHandler):
+# [START MobileViewAll]
+class MobileViewAll(webapp2.RequestHandler):
     def get(self):
         streams = Stream.query().order(Stream.createDate).fetch()
 
@@ -48,6 +48,6 @@ class ViewAllMobile(webapp2.RequestHandler):
         data["streams"] = stream
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(data))
+        self.response.write(json.dumps(stream))
 
-# [END ViewAllMobile]
+# [END MobileViewAll]

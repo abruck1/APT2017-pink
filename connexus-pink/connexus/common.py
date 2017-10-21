@@ -1,7 +1,11 @@
 import httplib2
+import json
 from google.appengine.api import images
 from google.appengine.api import users
 from urllib import urlencode
+
+from datetime import datetime
+from google.appengine.ext import ndb
 
 # mailgun auth
 DOMAIN_NAME = 'sandbox53d25b427601433298c59606e4d513a8.mailgun.org'
@@ -83,3 +87,20 @@ def get_stream_image_url(image_blobkey):
     return images.get_serving_url(image_blobkey) + '=s256'
 
 
+class MyJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            # format however you like/need
+            return obj.strftime("%Y-%m-%d")
+        if isinstance(obj, ndb.Key):
+            return obj.id()
+        if isinstance(obj, ndb.Model):
+            single_stream = {
+                'stream_id': obj.key.id(),
+                'stream_coverImageURL': obj.coverImageURL,
+                'stream_name': obj.name,
+            }
+            return single_stream
+        # pass any other unknown types to the base class handler, probably
+        # to raise a TypeError.   
+        return json.JSONEncoder.default(self, obj)

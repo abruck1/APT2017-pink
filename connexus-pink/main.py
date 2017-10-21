@@ -23,7 +23,6 @@ app = webapp2.WSGIApplication([
     (r'/view/(\d+)/geoview', GeoView),
     (r'/view/(\d+)', ViewStream),
     ('/view', ViewAll),
-    ('/m_view', ViewAllMobile),
     (r'/subscribe/(\d+)', SubscribeStream),
     ('/unsubscribe', UnSubscribeStream),
     ('/delete', DeleteStream),
@@ -36,5 +35,10 @@ app = webapp2.WSGIApplication([
     ('/upload', UploadImage),
     ('/trendingcron', TrendingCron),
     ('/getuploadurl', GetUploadURL),
+
+    ('/m_view', MobileViewAll),
+    (r'/m_view/(\d+)', MobileViewStream),
+    (r'/m_search', MobileSearch),
+
 ], debug=True)
 # [END app]
