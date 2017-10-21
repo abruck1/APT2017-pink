@@ -2,6 +2,7 @@ import os
 
 import jinja2
 import webapp2
+import re
 
 from connexus.common import *
 from connexus.ndb_model import *
@@ -15,7 +16,6 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class CreateStream(webapp2.RequestHandler):
 
     def post(self):
-
         user = users.get_current_user().email()
         stream_name = self.request.get('streamname').strip()
         subscribers = self.request.get('subs')
@@ -30,6 +30,7 @@ class CreateStream(webapp2.RequestHandler):
                 self.redirect('/create' + '?e=2')
             else:
                 self.redirect('/create' + '?e=1')
+            return
         else:
             # Create a new Stream entity then redirect to /view the new stream
             new_stream = Stream(name=stream_name.strip(),
@@ -45,7 +46,12 @@ class CreateStream(webapp2.RequestHandler):
             # print("len={0} subscriber_array{1}".format(len(subscriber_array), subscriber_array))
             for subscriber in subscriber_array:
                 if subscriber != "":
-                    send_simple_message(subscriber, subs_msg, new_stream)
+                    print("Before Email match")
+                    if re.match("[^@]+@[^@]+\.[^@]+", subscriber):
+                        send_simple_message(subscriber, subs_msg, new_stream)
+                    else:
+                        self.redirect('/create' + '?e=3')
+                        return
 
             # Redirect to manage page as per spec
             self.redirect('/manage')
