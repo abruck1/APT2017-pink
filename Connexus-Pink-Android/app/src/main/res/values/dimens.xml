@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="H1_text">64dp</dimen>
+    <dimen name="edge_padding">30dp</dimen>
+    <dimen name="h1_text">64sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="g_top_margin">100dp</dimen>
+    <dimen name="h2_text">35sp</dimen>
+    <dimen name="h3_text">20sp</dimen>
+
+
 </resources>

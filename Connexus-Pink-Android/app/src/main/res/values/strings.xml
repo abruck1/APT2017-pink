@@ -57,5 +57,8 @@
     <string name="sign_in_extra_text">The World\'s Greatest\nPhoto Sharing App (TM).\nBy APT Pink Team</string>
     <string name="view_all_title_text">Connexus</string>
     <string name="view_all_streams_text">Streams</string>
+    <string name="view_all_search_text_hint">Search</string>
+    <string name="view_all_nearby_button_text">Nearby</string>
+    <string name="view_subscribed_stream_text">View Subscribed Streams</string>
 
 </resources>

@@ -1,28 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--android:id="@+id/recycler_parent">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/view_all_title"-->
+            <!--android:text="@string/view_all_title_text"-->
+            <!--android:textSize="@dimen/h1_text"/>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/view_all_streams"-->
+            <!--android:text="@string/view_all_streams_text"-->
+            <!--android:textSize="@dimen/h1_text"/>-->
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/imagegallery"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:textSize="@dimen/h1_text"-->
+        <!--android:layout_below="@id/recycler_parent"-->
+        <!--android:text="test"/>-->
+
+<!--</RelativeLayout>-->
+
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.pink.apt.connexus_pink_android.ViewAllStreams">
+    android:padding="@dimen/edge_padding"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.pink.apt.connexus_pink_android.ViewAllStreams"
+    tools:showIn="@layout/recycler_layout">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/view_all_title"
-        android:text="@string/view_all_title_text" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/view_all_streams"
-        android:text="@string/view_all_streams_text" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/imagegallery"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_all_streams"
+            android:paddingBottom="@dimen/edge_padding"
+            android:text="@string/view_all_streams_text"
+            android:textSize="@dimen/h1_text"/>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:fillViewport="true"
+            android:layout_below="@id/view_all_streams"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:id="@+id/nested_scroll_view_all_streams">
 
 
-</RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/imagegallery"
+                android:layout_width="match_parent"
+                android:layout_below="@id/view_all_streams"
+                android:layout_height="match_parent" />
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/search_nearby_ll"
+            android:paddingTop="@dimen/edge_padding"
+            android:paddingBottom="@dimen/edge_padding"
+            android:layout_below="@id/nested_scroll_view_all_streams">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:hint="@string/view_all_search_text_hint"
+                android:id="@+id/view_all_search_text_field"
+                android:textSize="@dimen/h2_text"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nearby_button"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                android:text="@string/view_all_nearby_button_text"/>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_subscribed_stream_text"
+            android:layout_below="@id/search_nearby_ll"
+            android:textSize="@dimen/h3_text"/>
+
+    </RelativeLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

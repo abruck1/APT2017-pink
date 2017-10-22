@@ -2,10 +2,15 @@ package com.pink.apt.connexus_pink_android;
 
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.EditText;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -85,13 +90,39 @@ public class ViewAllStreams extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_all_streams);
+        setContentView(R.layout.recycler_layout);
         queue = Volley.newRequestQueue(this);
         queue.start();
 
-
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        final EditText editText = findViewById(R.id.view_all_search_text_field);
+
+        final NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nested_scroll_view_all_streams);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int a = (displaymetrics.heightPixels * 40) / 100;
+        nsv.getLayoutParams().height = a;
+
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                nsv.smoothScrollTo(0, editText.getBottom());
+                nsv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        editText.requestFocus();
+                    }
+                }
+                );
+                return false;
+            }
+        }
+        );
+        int b = (displaymetrics.widthPixels * 45) / 100;
+        editText.getLayoutParams().width = b;
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);
