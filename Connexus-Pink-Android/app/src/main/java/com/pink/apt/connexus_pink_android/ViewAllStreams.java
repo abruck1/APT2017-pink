@@ -1,5 +1,6 @@
 package com.pink.apt.connexus_pink_android;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -129,6 +130,15 @@ public class ViewAllStreams extends AppCompatActivity {
         ArrayList<CreateList> createLists = prepareData();
         MyAdapter adapter = new MyAdapter(this, createLists);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View view, int position){
+                Intent intent = new Intent(getApplicationContext(), ViewStream.class);
+//                intent.putExtra(Intent.EXTRA_TEXT, id);
+                startActivity(intent);
+            }
+        });
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

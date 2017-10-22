@@ -28,10 +28,21 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<CreateList> galleryList;
     private Context context;
+    OnItemClickListener mItemClickListener;
 
     public MyAdapter(Context context, ArrayList<CreateList> galleryList) {
         this.galleryList = galleryList;
         this.context = context;
+    }
+
+    public interface OnItemClickListener
+    {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener)
+    {
+        this.mItemClickListener = mItemClickListener;
     }
 
     @Override
@@ -45,14 +56,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         viewHolder.title.setText(galleryList.get(i).getImage_title());
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         Picasso.with(context).load(galleryList.get(i).getImage_ID()).resize(75, 75).into(viewHolder.img);
-        viewHolder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent;
-                intent = new Intent(context, ViewStream.class);
-                context.startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -68,6 +71,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             title = (TextView)view.findViewById(R.id.title);
             img = (ImageView) view.findViewById(R.id.img);
+            view.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    mItemClickListener.onItemClick(view, getAdapterPosition());
+                }
+            });
 
         }
     }
