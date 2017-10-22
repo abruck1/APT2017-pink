@@ -2,21 +2,14 @@ package com.pink.apt.connexus_pink_android;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.pink.apt.connexus_pink_android.activities.ViewStreamActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -49,7 +42,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 final Intent intent;
-                intent = new Intent(context, ViewStream.class);
+                intent = new Intent(context, ViewStreamActivity.class);
                 context.startActivity(intent);
             }
         });

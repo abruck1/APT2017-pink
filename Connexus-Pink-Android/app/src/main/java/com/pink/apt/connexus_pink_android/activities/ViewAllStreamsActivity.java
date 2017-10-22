@@ -1,4 +1,4 @@
-package com.pink.apt.connexus_pink_android;
+package com.pink.apt.connexus_pink_android.activities;
 
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -14,12 +14,16 @@ import android.widget.EditText;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.pink.apt.connexus_pink_android.CreateList;
+import com.pink.apt.connexus_pink_android.MultiStreamParser;
+import com.pink.apt.connexus_pink_android.MyAdapter;
+import com.pink.apt.connexus_pink_android.R;
 
 import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.*;
 
-public class ViewAllStreams extends AppCompatActivity {
+public class ViewAllStreamsActivity extends AppCompatActivity {
 
     private final String image_titles[] = {
             "Img1",

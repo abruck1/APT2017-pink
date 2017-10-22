@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.pink.apt.connexus_pink_android.ViewStream">
+    tools:context="com.pink.apt.connexus_pink_android.activities.ViewStreamActivity">
 
     <TextView
         android:layout_width="wrap_content"

@@ -61,4 +61,10 @@
     <string name="view_all_nearby_button_text">Nearby</string>
     <string name="view_subscribed_stream_text">View Subscribed Streams</string>
 
+    <!-- Camera Activity Strings  -->
+    <string name="take_picture">Take Picture</string>
+    <string name="use_picture">Use This Picture</string>
+
+    <!-- Upload Activity Strings  -->
+    <string name="upload_text_hint">Add a message and/or tags</string>
 </resources>

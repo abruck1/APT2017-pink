@@ -1,4 +1,4 @@
-package com.pink.apt.connexus_pink_android;
+package com.pink.apt.connexus_pink_android.backend;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
