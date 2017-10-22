@@ -51,7 +51,7 @@
     android:orientation="vertical"
     android:padding="@dimen/edge_padding"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pink.apt.connexus_pink_android.ViewAllStreams"
+    tools:context="com.pink.apt.connexus_pink_android.activities.ViewAllStreamsActivity"
     tools:showIn="@layout/recycler_layout">
 
     <RelativeLayout

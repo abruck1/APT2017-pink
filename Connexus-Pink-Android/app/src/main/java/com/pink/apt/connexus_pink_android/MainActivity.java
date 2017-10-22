@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,6 +18,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.pink.apt.connexus_pink_android.activities.ViewAllStreamsActivity;
 
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements
         viewStreamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent viewStreamsIntent = new Intent(MainActivity.this, ViewAllStreams.class);
+                Intent viewStreamsIntent = new Intent(MainActivity.this, ViewAllStreamsActivity.class);
                 startActivity(viewStreamsIntent);
 
             }

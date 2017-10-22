@@ -1,4 +1,4 @@
-package com.pink.apt.connexus_pink_android;
+package com.pink.apt.connexus_pink_android.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,10 +7,13 @@ import android.support.v7.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.pink.apt.connexus_pink_android.CreateList;
+import com.pink.apt.connexus_pink_android.MyAdapter;
+import com.pink.apt.connexus_pink_android.R;
 
 import java.util.ArrayList;
 
-public class ViewStream extends AppCompatActivity {
+public class ViewStreamActivity extends AppCompatActivity {
 
     private final String image_titles[] = {
             "Img1",

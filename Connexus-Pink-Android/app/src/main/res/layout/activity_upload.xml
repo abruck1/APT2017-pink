@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.UploadActivity">
+
+
+    <Button
+        android:id="@+id/uploadFromCameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use camera" />
+
+    <Button
+        android:id="@+id/uploadFromLibraryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose from your library" />
+
+    <EditText
+        android:id="@+id/uploadEditText"
+        android:layout_width="wrap_content"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_height="200dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="35dp"
+        android:hint="@string/upload_text_hint"
+        android:inputType="textMultiLine"
+        android:maxLength="255" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload" />
+
+    <EditText
+        android:id="@+id/streamName"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="streamName" />
+
+</LinearLayout>
