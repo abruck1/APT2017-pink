@@ -61,6 +61,11 @@
     <string name="view_all_nearby_button_text">Nearby</string>
     <string name="view_subscribed_stream_text">View Subscribed Streams</string>
 
+    <!--Strings for Single Stream activity-->
+    <string name="view_stream_text">Stream</string>
+    <string name="upload_button_text">Upload</string>
+    <string name="back_to_view_all_text">Streams</string>
+
     <!-- Camera Activity Strings  -->
     <string name="take_picture">Take Picture</string>
     <string name="use_picture">Use This Picture</string>

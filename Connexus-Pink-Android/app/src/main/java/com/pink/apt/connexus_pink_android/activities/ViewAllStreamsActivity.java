@@ -138,7 +138,7 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new MyAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(View view, int position){
-                Intent intent = new Intent(getApplicationContext(), ViewStream.class);
+                Intent intent = new Intent(getApplicationContext(), ViewStreamActivity.class);
 //                intent.putExtra(Intent.EXTRA_TEXT, id);
                 startActivity(intent);
             }

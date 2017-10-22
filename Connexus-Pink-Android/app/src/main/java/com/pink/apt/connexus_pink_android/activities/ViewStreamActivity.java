@@ -1,9 +1,12 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -37,14 +40,24 @@ public class ViewStreamActivity extends AppCompatActivity {
             "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK"
     };
 
-    RequestQueue queue = Volley.newRequestQueue(this);
+//    RequestQueue queue = Volley.newRequestQueue(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_stream);
+
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
+
+        Button uploadButton = (Button) findViewById(R.id.upload_image);
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                startActivity(intent);
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);

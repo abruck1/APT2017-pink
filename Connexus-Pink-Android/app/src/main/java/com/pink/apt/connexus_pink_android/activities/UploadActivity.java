@@ -1,8 +1,11 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.pink.apt.connexus_pink_android.R;
@@ -23,6 +26,15 @@ public class UploadActivity extends AppCompatActivity {
         uploadHint = (EditText) findViewById(R.id.uploadEditText);
         uploadHint.setHint("Add a message and/or tags");
         uploadHint.setGravity(Gravity.TOP);
+
+        Button cameraButton = (Button) findViewById(R.id.uploadFromCameraButton);
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //TODO set stream name edit text

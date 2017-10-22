@@ -4,8 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:fitsSystemWindows="true"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.ViewStreamActivity">
 
-    <include layout="@layout/activity_view_all_streams" />
+    <include layout="@layout/activity_view_stream" />
 
 </android.support.design.widget.CoordinatorLayout>
