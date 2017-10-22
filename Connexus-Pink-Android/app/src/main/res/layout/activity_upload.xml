@@ -27,6 +27,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="35dp"
+        android:background="@drawable/upload_edit_box"
         android:hint="@string/upload_text_hint"
         android:inputType="textMultiLine"
         android:maxLength="255" />
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content"
         android:text="Upload" />
 
-    <EditText
+    <TextView
         android:id="@+id/streamName"
         android:layout_width="200dp"
         android:layout_height="wrap_content"

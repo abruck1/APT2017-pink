@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.pink.apt.connexus_pink_android.R;
 
@@ -38,7 +39,7 @@ public class UploadActivity extends AppCompatActivity {
 
 
         //TODO set stream name edit text
-        EditText streamName = (EditText) findViewById(R.id.streamName);
+        TextView streamName = (TextView) findViewById(R.id.streamName);
         streamName.setEnabled(false);
 
     }

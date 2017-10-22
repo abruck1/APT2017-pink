@@ -48,6 +48,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.5"
                 app:srcCompat="@mipmap/camera_icon" />
 
             <TextView
@@ -67,6 +68,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.5"
                 app:srcCompat="@mipmap/thumbs_up" />
 
             <TextView

@@ -92,13 +92,14 @@
             android:paddingBottom="@dimen/edge_padding"
             android:layout_below="@id/nested_scroll_view_all_streams">
 
-            <EditText
+            <SearchView
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                android:hint="@string/view_all_search_text_hint"
+                android:title="@string/view_all_search_text_hint"
                 android:id="@+id/view_all_search_text_field"
+                android:actionViewClass="android.widget.SearchView"
                 android:textSize="@dimen/h2_text"/>
 
             <Button
