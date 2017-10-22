@@ -6,7 +6,7 @@ package com.pink.apt.connexus_pink_android;
 
 public class CreateList {
     private String image_title;
-    private Integer image_id;
+    private String imageUrl;
 
     public String getImage_title() {
         return image_title;
@@ -16,11 +16,11 @@ public class CreateList {
         this.image_title = android_version_name;
     }
 
-    public Integer getImage_ID() {
-        return image_id;
+    public String getImage_ID() {
+        return imageUrl;
     }
 
-    public void setImage_ID(Integer android_image_url) {
-        this.image_id = android_image_url;
+    public void setImage_ID(String android_image_url) {
+        this.imageUrl = android_image_url;
     }
 }

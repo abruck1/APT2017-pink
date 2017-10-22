@@ -23,15 +23,15 @@ public class ViewStream extends AppCompatActivity {
             "Img8",
     };
 
-    private final Integer image_ids[] = {
-            R.drawable.img1,
-            R.drawable.img2,
-            R.drawable.img3,
-            R.drawable.img4,
-            R.drawable.img5,
-            R.drawable.img6,
-            R.drawable.img7,
-            R.drawable.img8,
+    private final String imageUrls[] = {
+            "https://imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK"
     };
 
     RequestQueue queue = Volley.newRequestQueue(this);
@@ -56,7 +56,7 @@ public class ViewStream extends AppCompatActivity {
         for(int i = 0; i< image_titles.length; i++){
             CreateList createList = new CreateList();
             createList.setImage_title(image_titles[i]);
-            createList.setImage_ID(image_ids[i]);
+            createList.setImage_ID(imageUrls[i]);
             theimage.add(createList);
         }
         return theimage;

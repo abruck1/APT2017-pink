@@ -16,9 +16,69 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.*;
 
 public class ViewAllStreams extends AppCompatActivity {
 
-    private String image_titles[];
+    private final String image_titles[] = {
+            "Img1",
+            "Img2",
+            "Img3",
+            "Img4",
+            "Img5",
+            "Img6",
+            "Img7",
+            "Img8",
+            "Img1",
+            "Img2",
+            "Img3",
+            "Img4",
+            "Img5",
+            "Img6",
+            "Img7",
+            "Img1",
+            "Img2",
+            "Img3",
+            "Img4",
+            "Img5",
+            "Img6",
+            "Img7",
+            "Img1",
+            "Img2",
+            "Img3",
+            "Img4",
+            "Img5",
+            "Img6",
+            "Img7"
+    };
 
-    private Integer image_ids[];
+    private final String imageUrls[] = {
+            "https://imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "https://imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "https://imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "https://imagejournal.org/wp-content/uploads/bb-plugin/cache/23466317216_b99485ba14_o-panorama.jpg",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK",
+            "http://lh3.googleusercontent.com/La6izW4cf6HQJ5WweEm4FI93zSXGJ2qd58TGWhXL5dy3GlRt2Ng52Jaxg1LZ668Lpm5QGsH2o-42bxIXH5-RYBHK"
+    };
 
     RequestQueue queue;
 
@@ -33,7 +93,7 @@ public class ViewAllStreams extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<CreateList> createLists = prepareData();
         MyAdapter adapter = new MyAdapter(this, createLists);
@@ -70,7 +130,7 @@ public class ViewAllStreams extends AppCompatActivity {
         for(int i = 0; i< image_titles.length; i++){
             CreateList createList = new CreateList();
             createList.setImage_title(image_titles[i]);
-            createList.setImage_ID(image_ids[i]);
+            createList.setImage_ID(imageUrls[i]);
             theimage.add(createList);
         }
         return theimage;

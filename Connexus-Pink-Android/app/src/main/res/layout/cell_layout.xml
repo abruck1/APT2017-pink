@@ -8,7 +8,12 @@
         android:id="@+id/img"
         android:adjustViewBounds="true"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:maxWidth="50dp"
+        android:maxHeight="50dp"
+        android:layout_height="75dp"
+        android:padding="5dp"/>
+        <!--android:background="@drawable/rounded_border"-->
+
     <TextView
         android:id="@+id/title"
         android:layout_gravity="center"
