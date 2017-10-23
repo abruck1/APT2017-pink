@@ -5,18 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.pink.apt.connexus_pink_android.CreateList;
-import com.pink.apt.connexus_pink_android.MyAdapter;
+import com.pink.apt.connexus_pink_android.RecyclerAdapter;
 import com.pink.apt.connexus_pink_android.R;
 
 import java.util.ArrayList;
 
 public class ViewStreamActivity extends AppCompatActivity {
+    String TAG = "ViewStreamActivity";
 
     private final String image_titles[] = {
             "Img1",
@@ -47,6 +47,10 @@ public class ViewStreamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_stream);
 
+        Bundle extras = this.getIntent().getExtras();
+        String streamId = extras.getString(Intent.EXTRA_TEXT);
+        Log.d(TAG, "**********Stream id" + streamId);
+
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
 
@@ -62,7 +66,7 @@ public class ViewStreamActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<CreateList> createLists = prepareData();
-        MyAdapter adapter = new MyAdapter(this, createLists);
+        RecyclerAdapter adapter = new RecyclerAdapter(this, createLists);
         recyclerView.setAdapter(adapter);
     }
 
@@ -71,8 +75,8 @@ public class ViewStreamActivity extends AppCompatActivity {
         ArrayList<CreateList> theimage = new ArrayList<>();
         for(int i = 0; i< image_titles.length; i++){
             CreateList createList = new CreateList();
-            createList.setImage_title(image_titles[i]);
-            createList.setImage_ID(imageUrls[i]);
+            createList.setStreamName(image_titles[i]);
+            createList.setStreamUrl(imageUrls[i]);
             theimage.add(createList);
         }
         return theimage;

@@ -1,46 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:orientation="vertical"-->
-        <!--android:id="@+id/recycler_parent">-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/view_all_title"-->
-            <!--android:text="@string/view_all_title_text"-->
-            <!--android:textSize="@dimen/h1_text"/>-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/view_all_streams"-->
-            <!--android:text="@string/view_all_streams_text"-->
-            <!--android:textSize="@dimen/h1_text"/>-->
-
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:id="@+id/imagegallery"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
-
-    <!--</LinearLayout>-->
-
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:textSize="@dimen/h1_text"-->
-        <!--android:layout_below="@id/recycler_parent"-->
-        <!--android:text="test"/>-->
-
-<!--</RelativeLayout>-->
 
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -92,7 +50,7 @@
             android:paddingBottom="@dimen/edge_padding"
             android:layout_below="@id/nested_scroll_view_all_streams">
 
-            <SearchView
+            <android.support.v7.widget.SearchView
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"

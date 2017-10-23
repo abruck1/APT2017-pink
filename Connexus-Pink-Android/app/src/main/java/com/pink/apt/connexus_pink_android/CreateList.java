@@ -5,22 +5,31 @@ package com.pink.apt.connexus_pink_android;
  */
 
 public class CreateList {
-    private String image_title;
-    private String imageUrl;
+    private String streamName;
+    private String streamUrl;
+    private String id;
 
-    public String getImage_title() {
-        return image_title;
+    public String getId() {
+        return id;
     }
 
-    public void setImage_title(String android_version_name) {
-        this.image_title = android_version_name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getImage_ID() {
-        return imageUrl;
+    public String getStreamName() {
+        return streamName;
     }
 
-    public void setImage_ID(String android_image_url) {
-        this.imageUrl = android_image_url;
+    public void setStreamName(String android_version_name) {
+        this.streamName = android_version_name;
+    }
+
+    public String getStreamUrl() {
+        return streamUrl;
+    }
+
+    public void setStreamUrl(String android_image_url) {
+        this.streamUrl = android_image_url;
     }
 }

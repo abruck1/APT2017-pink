@@ -18,12 +18,12 @@ import java.util.ArrayList;
  * Created by matt on 10/18/17.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private ArrayList<CreateList> galleryList;
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    public ArrayList<CreateList> galleryList;
     private Context context;
     OnItemClickListener mItemClickListener;
 
-    public MyAdapter(Context context, ArrayList<CreateList> galleryList) {
+    public RecyclerAdapter(Context context, ArrayList<CreateList> galleryList) {
         this.galleryList = galleryList;
         this.context = context;
     }
@@ -39,21 +39,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_layout, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.title.setText(galleryList.get(i).getImage_title());
+    public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, final int i) {
+        viewHolder.title.setText(galleryList.get(i).getStreamName());
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Picasso.with(context).load(galleryList.get(i).getImage_ID()).resize(75, 75).into(viewHolder.img);
+        Picasso.with(context).load(galleryList.get(i).getStreamUrl()).resize(75, 75).into(viewHolder.img);
         viewHolder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent;
                 intent = new Intent(context, ViewStreamActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, galleryList.get(i).getId());
                 context.startActivity(intent);
             }
         });
@@ -72,13 +73,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             title = (TextView)view.findViewById(R.id.title);
             img = (ImageView) view.findViewById(R.id.img);
-            view.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    mItemClickListener.onItemClick(view, getAdapterPosition());
-                }
-            });
-
         }
     }
 }

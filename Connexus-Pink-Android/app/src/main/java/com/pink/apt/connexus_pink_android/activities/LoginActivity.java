@@ -24,7 +24,7 @@ import com.pink.apt.connexus_pink_android.R;
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
  * profile.
  */
-public class MainActivity extends AppCompatActivity implements
+public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements
         viewStreamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent viewStreamsIntent = new Intent(MainActivity.this, ViewAllStreamsActivity.class);
+                Intent viewStreamsIntent = new Intent(LoginActivity.this, ViewAllStreamsActivity.class);
                 startActivity(viewStreamsIntent);
 
             }
