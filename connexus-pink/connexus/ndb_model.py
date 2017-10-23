@@ -1,8 +1,6 @@
 from google.appengine.datastore.datastore_query import Cursor
 from google.appengine.ext import ndb
 
-STREAM_IMAGES_PER_PAGE = 3
-
 
 class Stream(ndb.Model):
     owner = ndb.StringProperty()
@@ -37,9 +35,9 @@ class StreamImage(ndb.Model):
 
     # adapted from https://github.com/zdenulo/gae-ndb-pagination
     @classmethod
-    def cursor_pagination(cls, ancestor_key, prev_cursor_str, next_cursor_str):
+    def cursor_pagination(cls, ancestor_key, prev_cursor_str, next_cursor_str, page_count):
         if not prev_cursor_str and not next_cursor_str:
-            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(-cls.createDate).fetch_page(STREAM_IMAGES_PER_PAGE)
+            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(-cls.createDate).fetch_page(page_count)
             prev_cursor_str = ''
             if next_cursor:
                 next_cursor_str = next_cursor.urlsafe()
@@ -49,14 +47,14 @@ class StreamImage(ndb.Model):
             prev = False
         elif next_cursor_str:
             cursor = Cursor(urlsafe=next_cursor_str)
-            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(-cls.createDate).fetch_page(STREAM_IMAGES_PER_PAGE, start_cursor=cursor)
+            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(-cls.createDate).fetch_page(page_count, start_cursor=cursor)
             prev_cursor_str = next_cursor_str
             next_cursor_str = next_cursor.urlsafe()
             prev = True
             next_ = True if more else False
         elif prev_cursor_str:
             cursor = Cursor(urlsafe=prev_cursor_str)
-            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(cls.createDate).fetch_page(STREAM_IMAGES_PER_PAGE, start_cursor=cursor)
+            objects, next_cursor, more = cls.query(ancestor=ancestor_key).order(cls.createDate).fetch_page(page_count, start_cursor=cursor)
             objects.reverse()
             next_cursor_str = prev_cursor_str
             prev_cursor_str = next_cursor.urlsafe()

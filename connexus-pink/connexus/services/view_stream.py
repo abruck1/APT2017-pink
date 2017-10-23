@@ -45,7 +45,7 @@ class ViewStream(webapp2.RequestHandler):
 
 
         # todo this could be none
-        stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor)
+        stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor, 3)
 
         image_urls = []
         for stream_image in stream_images['objects']:
@@ -111,7 +111,7 @@ class MobileViewStream(webapp2.RequestHandler):
 
 
         # todo this could be none
-        stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor)
+        stream_images = StreamImage.cursor_pagination(stream.key, prev_cursor, next_cursor, 16)
 
         image_urls = []
         for stream_image in stream_images['objects']:
