@@ -6,29 +6,25 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.pink.apt.connexus_pink_android.CreateList;
 import com.pink.apt.connexus_pink_android.RecyclerAdapter;
+import com.pink.apt.connexus_pink_android.models.StreamModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.pink.apt.connexus_pink_android.GlobalVars.EMPTY_COVER_IMAGE_URL;
+/**
+ * Created by matt on 10/22/17.
+ */
 
-public class RequestJSONObjectHandler {
-
+public abstract class RequestJSONArrayHandler {
     String url;
     RequestQueue queue;
     String jsonResponse;
     JSONObject response;
     String TAG = "JSONObjectHandler";
 
-    private RequestJSONObjectHandler() {};
-
-    public RequestJSONObjectHandler(String url, RequestQueue queue) {
-        this.url = url;
-        this.queue = queue;
-    }
+    protected RequestJSONArrayHandler() {};
 
     public void getJSONObject(final RecyclerAdapter adapter) {
         JsonArrayRequest req = new JsonArrayRequest(this.url,
@@ -38,7 +34,7 @@ public class RequestJSONObjectHandler {
                         Log.d(TAG, response.toString());
                         Log.d(TAG, Integer.toString(response.length()));
 
-                        adapter.galleryList.clear();
+                        clearAdapter(adapter);
                         //make an array of createlists
                         //pass the array of createlists to adapter
                         //notify adapter to update
@@ -46,38 +42,17 @@ public class RequestJSONObjectHandler {
                         try {
                             // Parsing json array response
                             // loop through each json object
-                            jsonResponse = "";
                             for (int i = 0; i < response.length(); i++) {
 
                                 JSONObject stream = (JSONObject) response.get(i);
 
-                                String name = stream.getString("name");
-                                String coverImageURL = stream.getString("coverImageURL");
-                                String id = stream.getString("id");
-
-                                CreateList newList = new CreateList();
-
-                                newList.setId(id);
-                                newList.setStreamName(name);
-                                if(coverImageURL.isEmpty()){
-                                    Log.d(TAG, "Name" + name +  " was empty");
-                                    newList.setStreamUrl(EMPTY_COVER_IMAGE_URL);
-                                } else {
-                                    newList.setStreamUrl(coverImageURL);
-                                }
-
-                                adapter.galleryList.add(newList);
-
-                                jsonResponse += "Name: " + name + "\n\n";
-                                jsonResponse += "coverImageURL: " + coverImageURL + "\n\n";
-                                jsonResponse += "id: " + id + "\n\n";
-
+                                StreamModel streamModel = processJSONObject(adapter, stream);
+                                addAdapter(adapter, streamModel);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         adapter.notifyDataSetChanged();
-                        Log.d(TAG,jsonResponse);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -88,4 +63,11 @@ public class RequestJSONObjectHandler {
         Log.d("getJSONObject","request sent");
         this.queue.add(req);
     }
+
+    public abstract StreamModel processJSONObject(RecyclerAdapter adapter, JSONObject stream);
+
+    public abstract void clearAdapter(RecyclerAdapter adapter);
+
+    public abstract void addAdapter(RecyclerAdapter adapter, StreamModel streamModel);
+
 }

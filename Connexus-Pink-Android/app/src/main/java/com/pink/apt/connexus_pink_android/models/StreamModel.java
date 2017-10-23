@@ -1,13 +1,12 @@
-package com.pink.apt.connexus_pink_android;
+package com.pink.apt.connexus_pink_android.models;
 
 /**
  * Created by matt on 10/18/17.
  */
 
-public class CreateList {
-    private String streamName;
-    private String streamUrl;
-    private String id;
+public abstract class StreamModel {
+    protected String streamName;
+    protected String id;
 
     public String getId() {
         return id;
@@ -25,11 +24,5 @@ public class CreateList {
         this.streamName = android_version_name;
     }
 
-    public String getStreamUrl() {
-        return streamUrl;
-    }
 
-    public void setStreamUrl(String android_image_url) {
-        this.streamUrl = android_image_url;
-    }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pink.apt.connexus_pink_android.activities.ViewStreamActivity;
+import com.pink.apt.connexus_pink_android.models.StreamModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,25 +19,8 @@ import java.util.ArrayList;
  * Created by matt on 10/18/17.
  */
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    public ArrayList<CreateList> galleryList;
-    private Context context;
-    OnItemClickListener mItemClickListener;
-
-    public RecyclerAdapter(Context context, ArrayList<CreateList> galleryList) {
-        this.galleryList = galleryList;
-        this.context = context;
-    }
-
-    public interface OnItemClickListener
-    {
-        void onItemClick(View view, int position);
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener mItemClickListener)
-    {
-        this.mItemClickListener = mItemClickListener;
-    }
+public abstract class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    protected Context context;
 
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -45,29 +29,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, final int i) {
-        viewHolder.title.setText(galleryList.get(i).getStreamName());
-        viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        Picasso.with(context).load(galleryList.get(i).getStreamUrl()).resize(75, 75).into(viewHolder.img);
-        viewHolder.img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent;
-                intent = new Intent(context, ViewStreamActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, galleryList.get(i).getId());
-                context.startActivity(intent);
-            }
-        });
-    }
+    public abstract void onBindViewHolder(RecyclerAdapter.ViewHolder viewHolder, final int i);
 
     @Override
-    public int getItemCount() {
-        return galleryList.size();
-    }
+    public abstract int getItemCount();
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView title;
-        private ImageView img;
+        protected TextView title;
+        protected ImageView img;
         public ViewHolder(View view) {
             super(view);
 

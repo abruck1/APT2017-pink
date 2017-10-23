@@ -1,6 +1,5 @@
 package com.pink.apt.connexus_pink_android.activities;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -15,10 +14,13 @@ import android.view.View;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.pink.apt.connexus_pink_android.CreateList;
+import com.pink.apt.connexus_pink_android.ViewAllRecyclerAdapter;
+import com.pink.apt.connexus_pink_android.ViewRecyclerAdapter;
+import com.pink.apt.connexus_pink_android.models.StreamModel;
 import com.pink.apt.connexus_pink_android.RecyclerAdapter;
 import com.pink.apt.connexus_pink_android.R;
-import com.pink.apt.connexus_pink_android.backend.RequestJSONObjectHandler;
+import com.pink.apt.connexus_pink_android.backend.ViewAllStreamsJSONHandler;
+import com.pink.apt.connexus_pink_android.models.ViewAllStreamData;
 
 import java.util.ArrayList;
 
@@ -68,14 +70,12 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);
-        ArrayList<CreateList> streamsList = new ArrayList<>();
+        ArrayList<ViewAllStreamData> streamsList = new ArrayList<>();
 
-        RecyclerAdapter adapter = new RecyclerAdapter(this, streamsList);
+        ViewAllRecyclerAdapter adapter = new ViewAllRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
-        RequestJSONObjectHandler returnedJson = new RequestJSONObjectHandler(VIEW_ALL_STREAMS_URL, queue);
+        ViewAllStreamsJSONHandler returnedJson = new ViewAllStreamsJSONHandler(VIEW_ALL_STREAMS_URL, queue);
         returnedJson.getJSONObject(adapter);
-
-
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
