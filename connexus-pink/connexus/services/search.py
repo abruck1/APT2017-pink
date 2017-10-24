@@ -17,11 +17,11 @@ class Search(webapp2.RequestHandler):
     def post(self):
         search_string = self.request.get('search_string')
         search_string = search_string.replace('#', '')
-        self.redirect('/search?' + search_string)
+        self.redirect('/search?search=' + search_string)
 
     def get(self):
-        original_search_string = urllib2.unquote(self.request.query_string)
-        search_string = urllib2.unquote(self.request.query_string).lower()
+        original_search_string = self.request.get('search')
+        search_string = self.request.get('search').lower()
 
         index = search.Index(name='connexus_search')
         num_results = 0
@@ -59,8 +59,9 @@ class MobileSearch(webapp2.RequestHandler):
         self.redirect('/search?' + search_string)
 
     def get(self):
-        original_search_string = urllib2.unquote(self.request.query_string)
-        search_string = urllib2.unquote(self.request.query_string).lower()
+        original_search_string = self.request.get('search')
+        search_string = self.request.get('search').lower()
+        search_page = int(self.request.get('p'))
 
         index = search.Index(name='connexus_search')
         num_results = 0
@@ -72,21 +73,16 @@ class MobileSearch(webapp2.RequestHandler):
                 doc_id = doc.doc_id
                 stream = ndb.Key(Stream, int(doc_id)).get()
                 found_streams.append(stream)
-                # if there are more than 5 then do not display them as per spec
-                if index == 4:
-                    break
+
+        MAX_SEARCH_RESULT_PER_PAGE = 8
         template_values = {
             'page': 'Connex.us',
             'search_string': original_search_string,
             'num_results': num_results,
-            'found_streams': found_streams,
+            'search_page': search_page,
+            'found_streams': found_streams[0 + MAX_SEARCH_RESULT_PER_PAGE*(search_page-1): MAX_SEARCH_RESULT_PER_PAGE + 2*(search_page-1)],
         }
-        url, url_linktext, user = logout_func(self)
-        template_values['url'] = url
-        template_values['url_linktext'] = url_linktext
-        template_values['user'] = user
-       
-        self.response.write(json.dumps(template_values, cls=MyJsonEncoder))
+        self.response.write(json.dumps([template_values], cls=MyJsonEncoder))
 # [END MobileSearch]
 
 class AutocompleteSearch(webapp2.RequestHandler):
