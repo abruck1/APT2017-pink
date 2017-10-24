@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.pink.apt.connexus_pink_android.activities.ViewStreamActivity;
 import com.pink.apt.connexus_pink_android.models.StreamModel;

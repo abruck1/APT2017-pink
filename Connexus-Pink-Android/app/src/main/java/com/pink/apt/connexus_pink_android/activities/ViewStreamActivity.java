@@ -9,23 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.pink.apt.connexus_pink_android.RecyclerAdapter;
+import com.pink.apt.connexus_pink_android.EndlessRecyclerViewScrollListener;
 import com.pink.apt.connexus_pink_android.R;
-import com.pink.apt.connexus_pink_android.ViewAllRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.ViewRecyclerAdapter;
-import com.pink.apt.connexus_pink_android.backend.ViewAllStreamsJSONHandler;
 import com.pink.apt.connexus_pink_android.backend.ViewStreamJSONHandler;
-import com.pink.apt.connexus_pink_android.models.StreamModel;
-import com.pink.apt.connexus_pink_android.models.ViewAllStreamData;
 import com.pink.apt.connexus_pink_android.models.ViewStreamData;
 
 import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.MY_PERMISSIONS_REQUEST_INTERNET;
-import static com.pink.apt.connexus_pink_android.GlobalVars.VIEW_ALL_STREAMS_URL;
 import static com.pink.apt.connexus_pink_android.GlobalVars.VIEW_STREAM_URL;
 
 public class ViewStreamActivity extends AppCompatActivity {
@@ -40,21 +36,36 @@ public class ViewStreamActivity extends AppCompatActivity {
         queue.start();
 
         Bundle extras = this.getIntent().getExtras();
-        String streamId = extras.getString(Intent.EXTRA_TEXT);
-        Log.d(TAG, "**********Stream id" + streamId);
+        final String streamId = extras.getString(Intent.EXTRA_TEXT);
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_stream);
+        progressBar.setVisibility(View.GONE);
+
+        final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
+//        recyclerView.setVisibility(View.GONE);
         recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
+        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<ViewStreamData> streamsImages = new ArrayList<>();
         Log.d(TAG, "length=" + streamsImages.size());
 
-        ViewRecyclerAdapter adapter = new ViewRecyclerAdapter(this, streamsImages);
+        final ViewRecyclerAdapter adapter = new ViewRecyclerAdapter(this, streamsImages);
         recyclerView.setAdapter(adapter);
         ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
-        returnedJson.getJSONObject(adapter);
+        returnedJson.getJSONObject(adapter);//, progressBar, recyclerView);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                String suffixUrl = adapter.galleryList.get(0).getNextCursorUrl();
+                String finalUrl = VIEW_STREAM_URL + streamId + "?next_cursor=" + suffixUrl;
+                ViewStreamJSONHandler returnedJSON = new ViewStreamJSONHandler(finalUrl, queue);
+                returnedJSON.getJSONObject(adapter);//, progressBar, recyclerView);
+            }
+        };
+
+        recyclerView.addOnScrollListener(scrollListener);
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -79,9 +90,6 @@ public class ViewStreamActivity extends AppCompatActivity {
         }
 
 
-
-
-
         Button uploadButton = (Button) findViewById(R.id.upload_image);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +99,14 @@ public class ViewStreamActivity extends AppCompatActivity {
             }
         });
 
+
+        Button streamsButton = (Button) findViewById(R.id.back_to_all_streams);
+        streamsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 }

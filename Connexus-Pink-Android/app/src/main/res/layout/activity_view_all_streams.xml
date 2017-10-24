@@ -32,7 +32,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/nested_scroll_view_all_streams">
 
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/imagegallery"
                 android:layout_width="match_parent"
@@ -40,6 +39,13 @@
                 android:layout_height="match_parent" />
 
         </android.support.v4.widget.NestedScrollView>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_bar_view_all_streams"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@id/view_all_streams"/>
 
         <LinearLayout
             android:layout_width="match_parent"

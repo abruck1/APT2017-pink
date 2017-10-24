@@ -1,6 +1,9 @@
 package com.pink.apt.connexus_pink_android.backend;
 
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,7 +29,7 @@ public abstract class RequestJSONArrayHandler {
 
     protected RequestJSONArrayHandler() {};
 
-    public void getJSONObject(final RecyclerAdapter adapter) {
+    public void getJSONObject(final RecyclerAdapter adapter){//, final ProgressBar progressBar, final RecyclerView recyclerView) {
         JsonArrayRequest req = new JsonArrayRequest(this.url,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -53,6 +56,8 @@ public abstract class RequestJSONArrayHandler {
                             e.printStackTrace();
                         }
                         adapter.notifyDataSetChanged();
+//                        progressBar.setVisibility(View.GONE);
+//                        recyclerView.setVisibility(View.VISIBLE);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -60,6 +65,7 @@ public abstract class RequestJSONArrayHandler {
                 Log.d(TAG, "Error: " + error.getMessage());
             }
         });
+        Log.d(TAG, "Requested to this url " + this.url);
         this.queue.add(req);
     }
 

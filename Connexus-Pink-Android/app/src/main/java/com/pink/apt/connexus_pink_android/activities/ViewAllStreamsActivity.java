@@ -11,6 +11,7 @@ import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -41,6 +42,10 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setVisibility(View.VISIBLE);
+
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_all_streams);
+        progressBar.setVisibility(View.GONE);
 
         final SearchView editText = findViewById(R.id.view_all_search_text_field);
 
@@ -75,7 +80,7 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         ViewAllRecyclerAdapter adapter = new ViewAllRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
         ViewAllStreamsJSONHandler returnedJson = new ViewAllStreamsJSONHandler(VIEW_ALL_STREAMS_URL, queue);
-        returnedJson.getJSONObject(adapter);
+        returnedJson.getJSONObject(adapter);//, progressBar, recyclerView);
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

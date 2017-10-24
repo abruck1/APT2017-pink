@@ -39,6 +39,7 @@ public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
         try {
             String name = stream.getString("stream_name");
             JSONArray coverImageURL = stream.getJSONArray("image_urls");
+            String nextCursorUrl = stream.getString("next_cursor");
             String[] arr = new String[coverImageURL.length()];
             for(int i = 0; i < coverImageURL.length(); i++) {
                 arr[i] = coverImageURL.getString(i);
@@ -50,6 +51,7 @@ public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
             streamModel.setId(id);
             streamModel.setStreamName(name);
             streamModel.setImageUrls(arr);
+            streamModel.setNextCursorUrl(nextCursorUrl);
         } catch (JSONException e) {
             e.printStackTrace();
         }
