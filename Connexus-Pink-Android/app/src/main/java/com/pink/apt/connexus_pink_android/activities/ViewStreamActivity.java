@@ -39,10 +39,10 @@ public class ViewStreamActivity extends AppCompatActivity {
         final String streamId = extras.getString(Intent.EXTRA_TEXT);
 
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_stream);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
         final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
-//        recyclerView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
         recyclerView.setHasFixedSize(true);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
@@ -53,7 +53,7 @@ public class ViewStreamActivity extends AppCompatActivity {
         final ViewRecyclerAdapter adapter = new ViewRecyclerAdapter(this, streamsImages);
         recyclerView.setAdapter(adapter);
         ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
-        returnedJson.getJSONObject(adapter);//, progressBar, recyclerView);
+        returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
@@ -61,7 +61,7 @@ public class ViewStreamActivity extends AppCompatActivity {
                 String suffixUrl = adapter.galleryList.get(0).getNextCursorUrl();
                 String finalUrl = VIEW_STREAM_URL + streamId + "?next_cursor=" + suffixUrl;
                 ViewStreamJSONHandler returnedJSON = new ViewStreamJSONHandler(finalUrl, queue);
-                returnedJSON.getJSONObject(adapter);//, progressBar, recyclerView);
+                returnedJSON.getJSONObject(adapter, progressBar, recyclerView);
             }
         };
 

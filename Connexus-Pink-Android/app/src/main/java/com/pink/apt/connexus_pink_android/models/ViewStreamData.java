@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class ViewStreamData extends StreamModel {
 
-    private String[] imageUrls;
+    private ArrayList<String> imageUrls = new ArrayList<>();
 
     private String nextCursorUrl;
 
-    public String[] getImageUrls() {
+    public ArrayList<String> getImageUrls() {
         return imageUrls;
     }
 
-    public void setImageUrls(String[] imageUrls) {
-        this.imageUrls = imageUrls;
+    public void appendImageUrls(ArrayList<String> imageUrls) {
+        this.imageUrls.addAll(imageUrls);
     }
 
     public String getNextCursorUrl() {

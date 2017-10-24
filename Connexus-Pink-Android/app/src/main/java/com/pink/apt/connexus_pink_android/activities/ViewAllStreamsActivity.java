@@ -42,10 +42,10 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_all_streams);
-        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
 
         final SearchView editText = findViewById(R.id.view_all_search_text_field);
 
@@ -80,7 +80,7 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         ViewAllRecyclerAdapter adapter = new ViewAllRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
         ViewAllStreamsJSONHandler returnedJson = new ViewAllStreamsJSONHandler(VIEW_ALL_STREAMS_URL, queue);
-        returnedJson.getJSONObject(adapter);//, progressBar, recyclerView);
+        returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

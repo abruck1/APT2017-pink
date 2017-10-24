@@ -4,17 +4,15 @@ import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.pink.apt.connexus_pink_android.RecyclerAdapter;
-import com.pink.apt.connexus_pink_android.ViewAllRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.ViewRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.models.StreamModel;
-import com.pink.apt.connexus_pink_android.models.ViewAllStreamData;
 import com.pink.apt.connexus_pink_android.models.ViewStreamData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.EMPTY_COVER_IMAGE_URL;
 
@@ -34,23 +32,32 @@ public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
     @Override
     public StreamModel processJSONObject(RecyclerAdapter adapter, JSONObject stream) {
 
-        ViewStreamData streamModel = new ViewStreamData();
+        ViewRecyclerAdapter myAdapter = (ViewRecyclerAdapter) adapter;
+        ViewStreamData streamModel;
+        if (myAdapter.galleryList.size() == 0) {
+            streamModel = new ViewStreamData();
+        } else {
+            streamModel = myAdapter.galleryList.get(0);
+        }
 
         try {
             String name = stream.getString("stream_name");
             JSONArray coverImageURL = stream.getJSONArray("image_urls");
             String nextCursorUrl = stream.getString("next_cursor");
-            String[] arr = new String[coverImageURL.length()];
+            ArrayList<String> arr = new ArrayList<>();
             for(int i = 0; i < coverImageURL.length(); i++) {
-                arr[i] = coverImageURL.getString(i);
-                if(arr[i].isEmpty()) arr[i] = EMPTY_COVER_IMAGE_URL;
+                if(coverImageURL.getString(i).isEmpty()) {
+                    arr.add(EMPTY_COVER_IMAGE_URL);
+                } else {
+                    arr.add(coverImageURL.getString(i));
+                }
             }
 
             String id = stream.getString("stream_id");
-
+            Log.d(TAG, arr.toString());
             streamModel.setId(id);
             streamModel.setStreamName(name);
-            streamModel.setImageUrls(arr);
+            streamModel.appendImageUrls(arr);
             streamModel.setNextCursorUrl(nextCursorUrl);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -29,7 +29,7 @@ public abstract class RequestJSONArrayHandler {
 
     protected RequestJSONArrayHandler() {};
 
-    public void getJSONObject(final RecyclerAdapter adapter){//, final ProgressBar progressBar, final RecyclerView recyclerView) {
+    public void getJSONObject(final RecyclerAdapter adapter, final ProgressBar progressBar, final RecyclerView recyclerView) {
         JsonArrayRequest req = new JsonArrayRequest(this.url,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -56,8 +56,8 @@ public abstract class RequestJSONArrayHandler {
                             e.printStackTrace();
                         }
                         adapter.notifyDataSetChanged();
-//                        progressBar.setVisibility(View.GONE);
-//                        recyclerView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
                     }
                 }, new Response.ErrorListener() {
             @Override

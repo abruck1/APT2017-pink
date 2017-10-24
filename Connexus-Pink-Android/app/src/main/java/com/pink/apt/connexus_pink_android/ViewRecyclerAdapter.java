@@ -33,12 +33,13 @@ public class ViewRecyclerAdapter extends RecyclerAdapter {
         if (this.galleryList.size() == 0) {
             return 0;
         } else {
-            return this.galleryList.get(0).getImageUrls().length;
+            Log.d(TAG, Integer.toString(galleryList.get(0).getImageUrls().size()));
+            return this.galleryList.get(0).getImageUrls().size();
         }
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
-        Picasso.with(context).load(galleryList.get(0).getImageUrls()[i]).resize(75, 75).into(viewHolder.img);
+        Picasso.with(context).load(galleryList.get(0).getImageUrls().get(i)).resize(75, 75).into(viewHolder.img);
     }
 }
