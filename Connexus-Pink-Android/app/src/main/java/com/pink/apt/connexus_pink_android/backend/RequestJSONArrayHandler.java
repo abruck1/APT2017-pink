@@ -60,7 +60,6 @@ public abstract class RequestJSONArrayHandler {
                 Log.d(TAG, "Error: " + error.getMessage());
             }
         });
-        Log.d("getJSONObject","request sent");
         this.queue.add(req);
     }
 

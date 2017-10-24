@@ -124,21 +124,24 @@ class MobileViewStream(webapp2.RequestHandler):
 
 
         # build json for return
-        data = {}
-        data["page"] = 'View'
-        data["stream_id"] = stream.key
-        data["stream_name"] = stream.name
-        data["image_urls"] = image_urls
-        data["upload_url"] = upload_url
-        data["error"] = show_error
-        data["already_subscribed"] = show_success
-        data["prev_cursor"] = stream_images['prev_cursor']
-        data["next_cursor"] = stream_images['next_cursor']
-        data["prev"] = stream_images['prev']
-        data["next"] = stream_images['next']
+        data = {
+            'page': 'View',
+            'stream_id': stream.key,
+            'stream_name': stream.name,
+            'image_urls': image_urls,
+            'upload_url': upload_url,
+            'error': show_error,
+            'already_subscribed': show_success,
+            'prev_cursor': stream_images['prev_cursor'],
+            'next_cursor': stream_images['next_cursor'],
+            'prev': stream_images['prev'],
+            'next': stream_images['next'],
+        }
 
+        json_array = []
+        json_array.append(data)
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(data, cls=MyJsonEncoder))
+        self.response.write(json.dumps(json_array, cls=MyJsonEncoder))
 
 # [END MobileViewStream]
 

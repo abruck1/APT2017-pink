@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 import static com.pink.apt.connexus_pink_android.GlobalVars.EMPTY_COVER_IMAGE_URL;
 
 /**
@@ -42,7 +44,8 @@ public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
                 arr[i] = coverImageURL.getString(i);
                 if(arr[i].isEmpty()) arr[i] = EMPTY_COVER_IMAGE_URL;
             }
-            String id = stream.getString("id");
+
+            String id = stream.getString("stream_id");
 
             streamModel.setId(id);
             streamModel.setStreamName(name);

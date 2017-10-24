@@ -5,6 +5,7 @@ package com.pink.apt.connexus_pink_android.models;
  */
 
 public class ViewAllStreamData extends StreamModel {
+
     private String streamUrl;
 
     public String getStreamUrl() {

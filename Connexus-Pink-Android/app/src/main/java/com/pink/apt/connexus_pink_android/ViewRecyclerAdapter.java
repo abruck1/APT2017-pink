@@ -2,6 +2,7 @@ package com.pink.apt.connexus_pink_android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 public class ViewRecyclerAdapter extends RecyclerAdapter {
 
+    private static final String TAG = "ViewRecyclerAdapter";
     public ArrayList<ViewStreamData> galleryList;
 
     public ViewRecyclerAdapter(Context context, ArrayList<ViewStreamData> galleryList) {
@@ -27,7 +29,11 @@ public class ViewRecyclerAdapter extends RecyclerAdapter {
 
     @Override
     public int getItemCount() {
-        return galleryList.get(0).getImageUrls().length;
+        if (this.galleryList.size() == 0) {
+            return 0;
+        } else {
+            return this.galleryList.get(0).getImageUrls().length;
+        }
     }
 
     @Override
