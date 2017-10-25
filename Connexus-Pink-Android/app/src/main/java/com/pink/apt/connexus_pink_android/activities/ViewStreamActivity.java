@@ -1,11 +1,14 @@
 package com.pink.apt.connexus_pink_android.activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,7 +16,6 @@ import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.pink.apt.connexus_pink_android.EndlessRecyclerViewScrollListener;
 import com.pink.apt.connexus_pink_android.R;
 import com.pink.apt.connexus_pink_android.ViewRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.backend.ViewStreamJSONHandler;
@@ -26,46 +28,53 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.VIEW_STREAM_URL;
 
 public class ViewStreamActivity extends AppCompatActivity {
     String TAG = "ViewStreamActivity";
+    String nextCursor;
+    String prevCursor;
     RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_stream);
+
+        // initialize volley queue
         queue = Volley.newRequestQueue(this);
         queue.start();
 
+        // get stream id from intent
         Bundle extras = this.getIntent().getExtras();
         final String streamId = extras.getString(Intent.EXTRA_TEXT);
 
+        // create and set progress bar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_stream);
         progressBar.setVisibility(View.VISIBLE);
 
+        // setup recyclerview
         final RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setVisibility(View.GONE);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
+        // setup nestedscrollview
+        final NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nested_scroll_view_stream);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int a = (displaymetrics.heightPixels * 40) / 100;
+        nsv.getLayoutParams().height = a;
+
+        // setup recycler layout manager
+        final GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<ViewStreamData> streamsImages = new ArrayList<>();
         Log.d(TAG, "length=" + streamsImages.size());
 
+        // set recycler view adapter
         final ViewRecyclerAdapter adapter = new ViewRecyclerAdapter(this, streamsImages);
         recyclerView.setAdapter(adapter);
+
+        // make JSON call to get stream images
         ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
-
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                String suffixUrl = adapter.galleryList.get(0).getNextCursorUrl();
-                String finalUrl = VIEW_STREAM_URL + streamId + "?next_cursor=" + suffixUrl;
-                ViewStreamJSONHandler returnedJSON = new ViewStreamJSONHandler(finalUrl, queue);
-                returnedJSON.getJSONObject(adapter, progressBar, recyclerView);
-            }
-        };
-
-        recyclerView.addOnScrollListener(scrollListener);
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -90,6 +99,7 @@ public class ViewStreamActivity extends AppCompatActivity {
         }
 
 
+        // setup button onclicklisteners
         Button uploadButton = (Button) findViewById(R.id.upload_image);
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +109,6 @@ public class ViewStreamActivity extends AppCompatActivity {
             }
         });
 
-
         Button streamsButton = (Button) findViewById(R.id.back_to_all_streams);
         streamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +116,33 @@ public class ViewStreamActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button prevButton = (Button) findViewById(R.id.prev_button);
+        prevButton.setVisibility(View.INVISIBLE);
+        prevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
+                returnedJson.getJSONObject(adapter, progressBar, recyclerView);
+            }
+        });
+
+        Button nextButton = (Button) findViewById(R.id.next_button);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
+                returnedJson.getJSONObject(adapter, progressBar, recyclerView);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter(ViewStreamJSONHandler.FINISHED_JSON);
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.pink.apt.connexus_pink_android.activities;
 
 import android.content.pm.PackageManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -55,21 +56,6 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         int a = (displaymetrics.heightPixels * 40) / 100;
         nsv.getLayoutParams().height = a;
 
-        editText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                nsv.smoothScrollTo(0, editText.getBottom());
-                nsv.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        editText.requestFocus();
-                    }
-                }
-                );
-                return false;
-            }
-        }
-        );
         int b = (displaymetrics.widthPixels * 45) / 100;
         editText.getLayoutParams().width = b;
 
