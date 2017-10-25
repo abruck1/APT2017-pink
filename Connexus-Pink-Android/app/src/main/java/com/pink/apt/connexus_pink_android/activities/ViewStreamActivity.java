@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -35,6 +36,7 @@ public class ViewStreamActivity extends AppCompatActivity {
     String completePrevUrl;
     String completeNextUrl;
     String streamId;
+    String streamName;
     Button prevButton;
     Button nextButton;
     RequestQueue queue;
@@ -51,8 +53,12 @@ public class ViewStreamActivity extends AppCompatActivity {
 
         // get stream id from intent
         Bundle extras = this.getIntent().getExtras();
-        streamId = extras.getString(Intent.EXTRA_TEXT);
+        streamId = extras.getString("STREAM_ID");
+        streamName = extras.getString("STREAM_NAME");
 
+        TextView streamNameTitle = findViewById(R.id.view_stream);
+        streamNameTitle.setText(streamName);
+        
         // create and set progress bar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_stream);
         progressBar.setVisibility(View.VISIBLE);
