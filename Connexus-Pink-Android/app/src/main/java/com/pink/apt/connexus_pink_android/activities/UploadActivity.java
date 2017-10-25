@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -11,9 +12,25 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.pink.apt.connexus_pink_android.R;
+
+import java.io.File;
+import java.io.IOException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+
+
+import static com.pink.apt.connexus_pink_android.GlobalVars.GET_UPLOADURL_URL;
 
 
 public class UploadActivity extends AppCompatActivity {
@@ -29,6 +46,8 @@ public class UploadActivity extends AppCompatActivity {
     private Button uploadButton;
     private String streamID;
     private String streamName;
+    private String uploadURL;
+    private Uri imageUri;
 
 
     @Override
@@ -49,9 +68,9 @@ public class UploadActivity extends AppCompatActivity {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo use StartActivityForResult and pass the USE_CAMERA resultcode
+                //todo how to get the image URI when this returns
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, USE_CAMERA);
             }
         });
 
@@ -74,11 +93,70 @@ public class UploadActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Intent intent = new Intent();
                 // todo how to call startActivity to upload the image
+
+                //try upload from here
+                try {
+                    UploadImage();
+                    uploadImageView.setVisibility(View.INVISIBLE);
+                    uploadButton.setEnabled(false);
+
+                } catch (IOException e) {
+                    Log.d(TAG, "uploadButton.onClick: " + e.toString());
+                }
+
             }
         });
 
         TextView streamNameTextView = (TextView) findViewById(R.id.streamNameTextView);
         streamNameTextView.setText(streamNameTextView.getText() + streamName);
+
+    }
+
+    private void GetUploadURL() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GET_UPLOADURL_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        uploadURL = response;
+                        Log.d(TAG, "GetUploadURL onResponse: " + uploadURL);
+
+                        //enable the upload button here to make sure this async call is complete
+                        uploadButton.setEnabled(true);
+
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "GetUploadURL onErrorResponse: " + error.toString());
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
+    private void UploadImage() throws IOException {
+
+        OkHttpClient client = new OkHttpClient();
+        File file = new File(imageUri.getPath());
+
+        RequestBody formBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", "image.jpg",
+                        RequestBody.create(MediaType.parse("image/jpg"), file))
+                .build();
+
+        okhttp3.Request request = new okhttp3.Request.Builder().url(uploadURL).post(formBody).build();
+
+        okhttp3.Response response = client.newCall(request).execute();
+        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+        Log.d(TAG, "UploadImage: " + response.toString());
+
 
     }
 
@@ -89,27 +167,40 @@ public class UploadActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case PICK_IMAGE:
-                    //get the upload URL here
-                    RequestQueue queue = Volley.newRequestQueue(this);
-
-                    //get the image URI
-                    Uri imageUri = data.getData();
+                    imageUri = data.getData();
 
                     //display the selected image
                     uploadImageView.setImageURI(imageUri);
                     uploadImageView.setVisibility(View.VISIBLE);
 
-                    //enable the upload button
-                    uploadButton.setEnabled(true);
+                    //get an upload URL, calling here since it is asynchronous
+                    //the upload button is enabled in the callback
+                    GetUploadURL();
 
                     break;
 
                 case USE_CAMERA:
-                    //do stuff
+                    //todo will this be same code as above?
+                    imageUri = data.getData();
+
+                    //display the selected image
+                    uploadImageView.setImageURI(imageUri);
+                    uploadImageView.setVisibility(View.VISIBLE);
+
+                    //get an upload URL, calling here since it is asynchronous
+                    //the upload button is enabled in the callback
+                    GetUploadURL();
+
                     break;
 
                 case UPLOAD:
-                    //do stuff
+                    //do post
+                    try {
+                        UploadImage();
+                    } catch (IOException e) {
+                        Log.d(TAG, "onActivityResult: UPLOAD: " + e.toString());
+                    }
+
                     break;
 
                 default:
@@ -118,30 +209,6 @@ public class UploadActivity extends AppCompatActivity {
             }
         }
 
-
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url ="/getuploadurl";
-//
-//        // Request a string response from the provided URL.
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // Display the first 500 characters of the response string.
-//                        mTextView.setText("Response is: "+ response.substring(0,500));
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-//            }
-//        });
-//        // Add the request to the RequestQueue.
-//        queue.add(stringRequest);
-//
-
-
-        //todo add camera and upload code
     }
 
 }
