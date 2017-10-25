@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.pink.apt.connexus_pink_android.R;
 
 
@@ -40,6 +42,7 @@ public class UploadActivity extends AppCompatActivity {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //todo use StartActivityForResult and pass the USE_CAMERA resultcode
                 Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
                 startActivity(intent);
             }
@@ -77,18 +80,60 @@ public class UploadActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            //get the image URI
-            Uri imageUri = data.getData();
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PICK_IMAGE:
+                    //get the upload URL here
+                    RequestQueue queue = Volley.newRequestQueue(this);
 
-            //display the selected image
-            uploadImageView.setImageURI(imageUri);
-            uploadImageView.setVisibility(View.VISIBLE);
+                    //get the image URI
+                    Uri imageUri = data.getData();
 
-            //enable the upload button
-            uploadButton.setEnabled(true);
+                    //display the selected image
+                    uploadImageView.setImageURI(imageUri);
+                    uploadImageView.setVisibility(View.VISIBLE);
 
+                    //enable the upload button
+                    uploadButton.setEnabled(true);
+
+                    break;
+
+                case USE_CAMERA:
+                    //do stuff
+                    break;
+
+                case UPLOAD:
+                    //do stuff
+                    break;
+
+                default:
+                    //invalid resultCode
+                    break;
+            }
         }
+
+
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        String url ="/getuploadurl";
+//
+//        // Request a string response from the provided URL.
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // Display the first 500 characters of the response string.
+//                        mTextView.setText("Response is: "+ response.substring(0,500));
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+//            }
+//        });
+//        // Add the request to the RequestQueue.
+//        queue.add(stringRequest);
+//
+
 
         //todo add camera and upload code
     }
