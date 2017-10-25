@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@+id/btn_takepicture"
-        android:layout_weight="0.6">
+        android:layout_weight="0.4">
 
         <TextureView
             android:id="@+id/camera_texture"
@@ -43,7 +43,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="0.15"
+        android:layout_weight="0.05"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -95,7 +95,11 @@
             android:layout_weight="0.04"
             android:orientation="horizontal">
 
-
+            <Button
+                android:id="@+id/back_to_all_streams"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Streams" />
 
         </LinearLayout>
     </LinearLayout>

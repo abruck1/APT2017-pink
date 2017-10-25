@@ -9,6 +9,7 @@ package com.pink.apt.connexus_pink_android.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
@@ -59,6 +60,7 @@ public class CameraActivity extends AppCompatActivity {
     private static final String TAG = "CameraActivity";
     private View takePictureButton;
     private View usePictureButton;
+    private View backToStreams;
     private TextureView textureView;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -99,12 +101,29 @@ public class CameraActivity extends AppCompatActivity {
             }
         });
 
-        usePictureButton = (View) findViewById(R.id.button_use_picture);
+        usePictureButton = findViewById(R.id.button_use_picture);
         assert usePictureButton != null;
         usePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, file);
+                setResult(RESULT_OK, intent);
+                finish();
                 Toast.makeText(CameraActivity.this, "Using this picture!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        usePictureButton.setEnabled(false);
+        usePictureButton.setAlpha(0.5f);
+
+        backToStreams = findViewById(R.id.back_to_all_streams);
+        assert backToStreams != null;
+        backToStreams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ViewAllStreamsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
@@ -292,6 +311,8 @@ public class CameraActivity extends AppCompatActivity {
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
+                        usePictureButton.setEnabled(true);
+                        usePictureButton.setAlpha(1f);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
