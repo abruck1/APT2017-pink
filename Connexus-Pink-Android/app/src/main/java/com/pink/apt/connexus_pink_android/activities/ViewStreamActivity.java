@@ -1,5 +1,7 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.ActivityCompat;
@@ -30,7 +32,13 @@ public class ViewStreamActivity extends AppCompatActivity {
     String TAG = "ViewStreamActivity";
     String nextCursor;
     String prevCursor;
+    String completePrevUrl;
+    String completeNextUrl;
+    String streamId;
+    Button prevButton;
+    Button nextButton;
     RequestQueue queue;
+    FetchStreamReceiver fetchStreamReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +51,7 @@ public class ViewStreamActivity extends AppCompatActivity {
 
         // get stream id from intent
         Bundle extras = this.getIntent().getExtras();
-        final String streamId = extras.getString(Intent.EXTRA_TEXT);
+        streamId = extras.getString(Intent.EXTRA_TEXT);
 
         // create and set progress bar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_stream);
@@ -73,7 +81,7 @@ public class ViewStreamActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // make JSON call to get stream images
-        ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
+        ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue, this);
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 
         // Should we show an explanation?
@@ -117,23 +125,74 @@ public class ViewStreamActivity extends AppCompatActivity {
             }
         });
 
-        Button prevButton = (Button) findViewById(R.id.prev_button);
+        prevButton = (Button) findViewById(R.id.prev_button);
         prevButton.setVisibility(View.INVISIBLE);
         prevButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
+                completePrevUrl = VIEW_STREAM_URL + streamId + "?prev_cursor=" + prevCursor;
+                ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(completePrevUrl, queue, getApplicationContext());
                 returnedJson.getJSONObject(adapter, progressBar, recyclerView);
             }
         });
 
-        Button nextButton = (Button) findViewById(R.id.next_button);
+        nextButton = (Button) findViewById(R.id.next_button);
+        nextButton.setVisibility(View.INVISIBLE);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(VIEW_STREAM_URL + streamId, queue);
+                completeNextUrl = VIEW_STREAM_URL + streamId + "?next_cursor=" + nextCursor;
+                ViewStreamJSONHandler returnedJson = new ViewStreamJSONHandler(completeNextUrl, queue, getApplicationContext());
                 returnedJson.getJSONObject(adapter, progressBar, recyclerView);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter fetchStreamCompleteFilter = new IntentFilter(ViewStreamJSONHandler.ACTION_FETCH_STREAM_COMPLETE);
+        fetchStreamCompleteFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        fetchStreamReceiver = new FetchStreamReceiver();
+        registerReceiver(fetchStreamReceiver, fetchStreamCompleteFilter);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        unregisterReceiver(fetchStreamReceiver);
+    }
+
+    public class FetchStreamReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent){
+            String action = intent.getAction();
+            switch (action) {
+                case(ViewStreamJSONHandler.ACTION_FETCH_STREAM_COMPLETE) :
+                    Bundle extras = intent.getExtras();
+                    prevCursor = extras.getString(ViewStreamJSONHandler.EXTRA_PREV_CURSOR);
+                    nextCursor = extras.getString(ViewStreamJSONHandler.EXTRA_NEXT_CURSOR);
+                    String prevBool = extras.getString(ViewStreamJSONHandler.EXTRA_PREV_BOOL);
+                    String nextBool = extras.getString(ViewStreamJSONHandler.EXTRA_NEXT_BOOL);
+                    if(prevBool.equals("false")){
+                        Log.d(TAG, "prevCursor is empty");
+                        prevButton.setVisibility(View.INVISIBLE);
+                    } else{
+                        Log.d(TAG, "prevCursor is not empty");
+                        prevButton.setVisibility(View.VISIBLE);
+                    }
+
+                    if(nextBool.equals("false")){
+                        Log.d(TAG, "nextCursor is empty");
+                        nextButton.setVisibility(View.INVISIBLE);
+                    } else{
+                        Log.d(TAG, "nextCursor is not empty");
+                        nextButton.setVisibility(View.VISIBLE);
+                    }
+
+                    return;
+            }
+        }
     }
 }

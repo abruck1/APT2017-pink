@@ -1,5 +1,7 @@
 package com.pink.apt.connexus_pink_android.backend;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
@@ -22,11 +24,18 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.EMPTY_COVER_IMAGE_UR
 
 public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
 
+    final public static String ACTION_FETCH_STREAM_COMPLETE = "com.pink.apt.connexus_pink_android.ACTION_FETCH_STREAM_COMPLETE";
+    final public static String EXTRA_PREV_CURSOR = "com.pink.apt.connexus_pink_android.EXTRA_PREV_CURSOR";
+    final public static String EXTRA_NEXT_CURSOR = "com.pink.apt.connexus_pink_android.EXTRA_NEXT_CURSOR";
+    final public static String EXTRA_PREV_BOOL = "com.pink.apt.connexus_pink_android.EXTRA_PREV_BOOL";
+    final public static String EXTRA_NEXT_BOOL = "com.pink.apt.connexus_pink_android.EXTRA_NEXT_BOOL";
     private ViewStreamJSONHandler(){};
+    private Context context;
 
-    public ViewStreamJSONHandler(String url, RequestQueue queue){
+    public ViewStreamJSONHandler(String url, RequestQueue queue, Context context){
         this.url = url;
         this.queue = queue;
+        this.context = context;
     }
 
     @Override
@@ -43,6 +52,7 @@ public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
         try {
             String name = stream.getString("stream_name");
             JSONArray coverImageURL = stream.getJSONArray("image_urls");
+            String prevCursorUrl = stream.getString("prev_cursor");
             String nextCursorUrl = stream.getString("next_cursor");
             ArrayList<String> arr = new ArrayList<>();
             for(int i = 0; i < coverImageURL.length(); i++) {
@@ -59,6 +69,16 @@ public class ViewStreamJSONHandler extends RequestJSONArrayHandler {
             streamModel.setStreamName(name);
             streamModel.appendImageUrls(arr);
             streamModel.setNextCursorUrl(nextCursorUrl);
+            String prevBool = stream.getString("prev");
+            String nextBool = stream.getString("next");
+
+            Intent newIntent = new Intent(ACTION_FETCH_STREAM_COMPLETE);
+            newIntent.putExtra(EXTRA_PREV_CURSOR, prevCursorUrl);
+            newIntent.putExtra(EXTRA_NEXT_CURSOR, nextCursorUrl);
+            newIntent.putExtra(EXTRA_PREV_BOOL, prevBool);
+            newIntent.putExtra(EXTRA_NEXT_BOOL, nextBool);
+            context.sendBroadcast(newIntent);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
