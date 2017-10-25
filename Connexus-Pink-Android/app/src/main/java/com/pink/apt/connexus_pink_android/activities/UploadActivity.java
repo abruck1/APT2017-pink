@@ -17,6 +17,7 @@ import com.pink.apt.connexus_pink_android.R;
 
 
 public class UploadActivity extends AppCompatActivity {
+    private String TAG = "UploadActivity";
 
     //request codes
     private static final int PICK_IMAGE = 1;
@@ -26,13 +27,19 @@ public class UploadActivity extends AppCompatActivity {
     private ImageView uploadImageView;
     private EditText tagsEditText;
     private Button uploadButton;
-
+    private String streamID;
+    private String streamName;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
+
+        // get info from intent
+        Bundle extras = this.getIntent().getExtras();
+        streamID = extras.getString("streamID");
+        streamName = extras.getString("streamName");
 
         //setup the controls
         tagsEditText = (EditText) findViewById(R.id.tagsEditText);
@@ -70,9 +77,8 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
-        //TODO set stream name edit text, how to pass this in from stream page
-        TextView streamName = (TextView) findViewById(R.id.streamName);
-
+        TextView streamNameTextView = (TextView) findViewById(R.id.streamNameTextView);
+        streamNameTextView.setText(streamNameTextView.getText() + streamName);
 
     }
 
