@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.UploadActivity">
+    tools:context=".activities.UploadActivity"
+    android:weightSum="1">
 
-
-    <Button
-        android:id="@+id/uploadFromCameraButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Use camera" />
 
     <Button
         android:id="@+id/uploadFromLibraryButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose from your library" />
+        android:text="@string/choose_from_library_button_text" />
+
+    <Button
+        android:id="@+id/uploadFromCameraButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/use_camera_button_text" />
 
     <EditText
-        android:id="@+id/uploadEditText"
-        android:layout_width="wrap_content"
+        android:id="@+id/tagsEditText"
         style="@style/Widget.AppCompat.EditText"
-        android:layout_height="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="99dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/upload_edit_box"
         android:hint="@string/upload_text_hint"
         android:inputType="textMultiLine"
-        android:maxLength="255" />
+        android:maxLength="255"
+        android:gravity="top" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/uploadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Upload" />
+        android:text="@string/upload_button_text"
+        android:enabled="false"/>
 
     <TextView
-        android:id="@+id/streamName"
-        android:layout_width="200dp"
+        android:id="@+id/streamNameTextView"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="streamName" />
+        android:text="@string/stream_name_text" />
+
+    <ImageView
+        android:id="@+id/uploadImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="invisible"
+        app:srcCompat="@mipmap/camera_icon" />
 
 </LinearLayout>
