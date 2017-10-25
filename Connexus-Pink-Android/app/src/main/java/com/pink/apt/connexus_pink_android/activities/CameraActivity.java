@@ -92,12 +92,17 @@ public class CameraActivity extends AppCompatActivity {
         textureView = (TextureView) findViewById(R.id.camera_texture);
         assert textureView != null;
         textureView.setSurfaceTextureListener(textureListener);
+
         takePictureButton = (View) findViewById(R.id.button_take_picture);
         assert takePictureButton != null;
+        takePictureButton.setEnabled(true);
+        takePictureButton.setAlpha(1f);
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takePicture();
+                takePicture(v);
+                usePictureButton.setEnabled(true);
+                usePictureButton.setAlpha(1f);
             }
         });
 
@@ -271,7 +276,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
 
-    protected void takePicture() {
+    protected void takePicture(View v) {
         if(null == cameraDevice) {
             Log.e(TAG, "cameraDevice is null");
             return;
@@ -311,8 +316,6 @@ public class CameraActivity extends AppCompatActivity {
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
-                        usePictureButton.setEnabled(true);
-                        usePictureButton.setAlpha(1f);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

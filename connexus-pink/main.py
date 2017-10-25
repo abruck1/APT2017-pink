@@ -39,6 +39,7 @@ app = webapp2.WSGIApplication([
     ('/m_view', MobileViewAll),
     (r'/m_view/(\d+)', MobileViewStream),
     (r'/m_search', MobileSearch),
+    ('/m_manage', MobileManage),
 
 ], debug=True)
 # [END app]

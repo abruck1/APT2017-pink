@@ -49,24 +49,14 @@ class MobileManage(webapp2.RequestHandler):
             user_subscriptions = ""
 
         # build json for return
-        data = {}
-        data["page"] = 'Manage'
-        data["user_streams"] = user_streams
-        data["subscribe"] = user_subscriptions
+        data = {
+            'page': 'Manage',
+            'user_streams': user_streams,
+            'subscribe': user_subscriptions,
+        }
+        json_data = [data]
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(data, separators=(',', ':')))
+        self.response.write(json.dumps(json_data, cls=MyJsonEncoder))
 
-        # template_values = {
-        #     'user_streams': user_streams,
-        #     'subscribe': user_subscriptions,
-        #     'page': 'Manage',
-        # }
-        # url, url_linktext, user = logout_func(self)
-        # template_values['url'] = url
-        # template_values['url_linktext'] = url_linktext
-        # template_values['user'] = user
-        #
-        # template = JINJA_ENVIRONMENT.get_template('manage.html')
-        # self.response.write(template.render(template_values))
 # [END MobileManage]
