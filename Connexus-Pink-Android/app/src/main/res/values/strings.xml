@@ -65,6 +65,8 @@
     <string name="view_stream_text">Stream</string>
     <string name="upload_button_text">Upload</string>
     <string name="back_to_view_all_text">Streams</string>
+    <string name="previous_images_button_text">Prev</string>
+    <string name="next_images_button_text">Next</string>
 
     <!-- Camera Activity Strings  -->
     <string name="take_picture">Take Picture</string>
@@ -75,5 +77,8 @@
     <string name="stream_name_text">Stream: </string>
     <string name="choose_from_library_button_text">Choose from your library</string>
     <string name="use_camera_button_text">Use camera</string>
+
+    <!-- Search Activity Strings  -->
+    <string name="search_searchbox_text_hint">Search for Streams and Tags</string>
 
 </resources>

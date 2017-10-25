@@ -1,6 +1,8 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -47,7 +50,26 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar_view_all_streams);
         progressBar.setVisibility(View.VISIBLE);
 
-        final SearchView editText = findViewById(R.id.view_all_search_text_field);
+        final SearchView searchBox = findViewById(R.id.view_all_search_text_field);
+        searchBox.setQueryHint("Search for Streams and Tags");
+
+        searchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getBaseContext(), "Searching for: " + query, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
 
         final NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nested_scroll_view_all_streams);
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -55,23 +77,8 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         int a = (displaymetrics.heightPixels * 40) / 100;
         nsv.getLayoutParams().height = a;
 
-        editText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                nsv.smoothScrollTo(0, editText.getBottom());
-                nsv.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        editText.requestFocus();
-                    }
-                }
-                );
-                return false;
-            }
-        }
-        );
         int b = (displaymetrics.widthPixels * 45) / 100;
-        editText.getLayoutParams().width = b;
+        searchBox.getLayoutParams().width = b;
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(layoutManager);

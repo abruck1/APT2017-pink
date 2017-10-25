@@ -32,7 +32,8 @@
         android:background="@drawable/upload_edit_box"
         android:hint="@string/upload_text_hint"
         android:inputType="textMultiLine"
-        android:maxLength="255" />
+        android:maxLength="255"
+        android:gravity="top" />
 
     <Button
         android:id="@+id/uploadButton"

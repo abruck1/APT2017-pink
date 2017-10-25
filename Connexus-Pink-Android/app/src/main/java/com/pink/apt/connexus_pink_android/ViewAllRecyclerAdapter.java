@@ -2,6 +2,7 @@ package com.pink.apt.connexus_pink_android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -40,7 +41,10 @@ public class ViewAllRecyclerAdapter extends RecyclerAdapter {
             public void onClick(View v) {
                 final Intent intent;
                 intent = new Intent(context, ViewStreamActivity.class);
-                intent.putExtra(Intent.EXTRA_TEXT, galleryList.get(viewHolder.getAdapterPosition()).getId());
+                Bundle extras = new Bundle();
+                extras.putString("STREAM_ID", galleryList.get(viewHolder.getAdapterPosition()).getId());
+                extras.putString("STREAM_NAME", galleryList.get(viewHolder.getAdapterPosition()).getStreamName());
+                intent.putExtras(extras);
                 context.startActivity(intent);
             }
         });

@@ -23,8 +23,6 @@ import org.json.JSONObject;
 public abstract class RequestJSONArrayHandler {
     String url;
     RequestQueue queue;
-    String jsonResponse;
-    JSONObject response;
     String TAG = "JSONObjectHandler";
 
     protected RequestJSONArrayHandler() {};

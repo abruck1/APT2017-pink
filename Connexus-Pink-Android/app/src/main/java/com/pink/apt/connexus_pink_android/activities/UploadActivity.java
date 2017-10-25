@@ -36,8 +36,7 @@ public class UploadActivity extends AppCompatActivity {
         tagsEditText = (EditText) findViewById(R.id.tagsEditText);
         uploadImageView = (ImageView) findViewById(R.id.uploadImageView);
 
-
-        Button cameraButton = (Button) findViewById(R.id.uploadFromCameraButton);
+        Button cameraButton = findViewById(R.id.uploadFromCameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,8 +77,6 @@ public class UploadActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
-
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
             //get the image URI
             Uri imageUri = data.getData();
@@ -91,8 +88,9 @@ public class UploadActivity extends AppCompatActivity {
             //enable the upload button
             uploadButton.setEnabled(true);
 
-
-
         }
+
+        //todo add camera and upload code
     }
+
 }
