@@ -52,8 +52,7 @@ class ViewStream(webapp2.RequestHandler):
             image_urls.append(get_stream_image_url(stream_image.imageBlobKey))
 
         # generate upload URL
-        # todo this needs to be generated closer to the actual upload, jquery maybe?
-        # it will work as is, but there's a 10 min timeout on the blob key
+        # this value is replaced by dropzone code
         upload_url = blobstore.create_upload_url('/upload', )
 
         template_values = {
@@ -118,7 +117,6 @@ class MobileViewStream(webapp2.RequestHandler):
             image_urls.append(get_stream_image_url(stream_image.imageBlobKey))
 
         # generate upload URL
-        # todo this needs to be generated closer to the actual upload, jquery maybe?
         # it will work as is, but there's a 10 min timeout on the blob key
         upload_url = blobstore.create_upload_url('/upload', )
 

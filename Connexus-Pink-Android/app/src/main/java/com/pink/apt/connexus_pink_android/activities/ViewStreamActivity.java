@@ -95,6 +95,10 @@ public class ViewStreamActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UploadActivity.class);
+                //pass the StreamID, StreamName, and UploadURL
+                Bundle b = new Bundle();
+                b.putString("streamID", streamId);
+                intent.putExtras(b); //Put your id to your next Intent
                 startActivity(intent);
             }
         });
