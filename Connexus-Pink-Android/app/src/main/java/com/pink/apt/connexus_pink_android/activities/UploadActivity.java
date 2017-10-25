@@ -24,11 +24,11 @@ public class UploadActivity extends AppCompatActivity {
 
         // Set the upload edit text hint
         EditText uploadHint;
-        uploadHint = (EditText) findViewById(R.id.uploadEditText);
+        uploadHint = findViewById(R.id.uploadEditText);
         uploadHint.setHint("Add a message and/or tags");
         uploadHint.setGravity(Gravity.TOP);
 
-        Button cameraButton = (Button) findViewById(R.id.uploadFromCameraButton);
+        Button cameraButton = findViewById(R.id.uploadFromCameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +41,13 @@ public class UploadActivity extends AppCompatActivity {
         //TODO set stream name edit text
         TextView streamName = (TextView) findViewById(R.id.streamName);
         streamName.setEnabled(false);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Todo Make sure we can pass stuff from camera to upload
+        //https://www.google.com/url?q=https%3A%2F%2Fstackoverflow.com%2Fquestions%2F14785806%2Fandroid-how-to-make-an-activity-return-results-to-the-activity-which-calls-it&sa=D&sntz=1&usg=AFQjCNEFRNi-Ej1t2OYlYScEZK8RiIdo9A
 
     }
 }
