@@ -136,13 +136,4 @@ public class ViewStreamActivity extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-
-        IntentFilter intentFilter = new IntentFilter(ViewStreamJSONHandler.FINISHED_JSON);
-
-    }
-
 }
