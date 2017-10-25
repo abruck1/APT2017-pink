@@ -33,8 +33,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="0.15"
+        android:orientation="vertical">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="0.15"
         android:orientation="horizontal">
 
@@ -77,6 +85,20 @@
                 android:text="@string/use_picture"
                 android:textAlignment="center" />
         </LinearLayout>
+
     </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="0.04"
+            android:orientation="horizontal">
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

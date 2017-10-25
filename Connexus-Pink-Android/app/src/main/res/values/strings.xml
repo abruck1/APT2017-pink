@@ -74,4 +74,8 @@
 
     <!-- Upload Activity Strings  -->
     <string name="upload_text_hint">Add a message and/or tags</string>
+
+    <!-- Search Activity Strings  -->
+    <string name="search_searchbox_text_hint">Search for Streams and Tags</string>
+
 </resources>
