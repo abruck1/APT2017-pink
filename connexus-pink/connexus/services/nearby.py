@@ -18,6 +18,12 @@ class MobileNearby(webapp2.RequestHandler):
     def get(self):
         in_long = self.request.get('long')
         in_lat = self.request.get('lat')
+
+        page = self.request.get('p')
+        if page == "":
+            page = 1
+        else:
+            page = int(page)
        
         stream_images = StreamImage.query().fetch()
 
@@ -46,8 +52,33 @@ class MobileNearby(webapp2.RequestHandler):
             }
 
             data.append(image)
+       
+        data.sort(key=lambda x: x['distance'])
+
+        MAX_DATA_PER_PAGE = 16
+
+        low_range = 0 + MAX_DATA_PER_PAGE*(page-1)
+        high_range = MAX_DATA_PER_PAGE + MAX_DATA_PER_PAGE*(page-1)
         
+        next_page = 'false'
+        if high_range < len(data):
+            next_page = 'true'
+
+        if page != 1:
+            prev_page = 'true'
+        else:
+            prev_page = 'false'
+
+        json_array = []
+
+        json_array.append({'next_page': next_page})
+        json_array.append({'prev_page': prev_page})
+        json_array.append({'next_cursor': page+1})
+        json_array.append({'prev_cursor': page-1})
+
+        json_array.append(data)
+
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(data, cls=MyJsonEncoder))
+        self.response.write(json.dumps(json_array, cls=MyJsonEncoder))
 
 # [END MobileNearby]
