@@ -35,6 +35,9 @@ class MobileNearby(webapp2.RequestHandler):
             db_coord = (s.latitude, s.longitude)
             distance = vincenty(input_coord, db_coord).feet
 
+            if s.key.parent().get() is None:
+                continue
+
             image = {
                 'stream_name': s.key.parent().get().name,
                 'distance': distance,
