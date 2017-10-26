@@ -75,12 +75,28 @@ class MobileSearch(webapp2.RequestHandler):
                 found_streams.append(stream)
 
         MAX_SEARCH_RESULT_PER_PAGE = 8
+        low_range = 0 + MAX_SEARCH_RESULT_PER_PAGE*(search_page-1)
+        high_range = MAX_SEARCH_RESULT_PER_PAGE + MAX_SEARCH_RESULT_PER_PAGE*(search_page-1)
+        
+        next_page = 'false'
+        if high_range < num_results:
+            next_page = 'true'
+
+        if search_page != 1:
+            prev_page = 'true'
+        else:
+            prev_page = 'false'
+
         template_values = {
             'page': 'Connex.us',
             'search_string': original_search_string,
             'num_results': num_results,
             'search_page': search_page,
-            'found_streams': found_streams[0 + MAX_SEARCH_RESULT_PER_PAGE*(search_page-1): MAX_SEARCH_RESULT_PER_PAGE + 2*(search_page-1)],
+            'found_streams': found_streams[low_range : high_range],
+            'next_page': next_page,
+            'next_cursor': search_page + 1,
+            'prev_page': prev_page,
+            'prev_cursor': search_page - 1,
         }
         self.response.write(json.dumps([template_values], cls=MyJsonEncoder))
 # [END MobileSearch]

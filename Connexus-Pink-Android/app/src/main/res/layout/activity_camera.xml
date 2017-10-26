@@ -8,101 +8,85 @@
     style="@style/MainActivityTheme"
     tools:context=".activities.LoginActivity">
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:layout_weight="0.1">-->
-        <!--<include layout="@layout/content_connexus_title" />-->
-    <!--</LinearLayout>-->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_above="@+id/btn_takepicture"
-        android:layout_weight="0.4">
+        android:layout_weight="0.6"
+        android:layout_marginTop="10dp">
 
         <TextureView
             android:id="@+id/camera_texture"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/btn_takepicture" />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="0.14"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_weight="0.15"
         android:orientation="vertical">
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="0.05"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:id="@+id/button_take_picture"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                app:srcCompat="@mipmap/camera_icon" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/take_picture"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/button_use_picture"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                app:srcCompat="@mipmap/thumbs_up" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/use_picture"
-                android:textAlignment="center" />
-        </LinearLayout>
-
-    </LinearLayout>
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_weight="0.04"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/back_to_all_streams"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/button_take_picture"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
-                android:text="Streams" />
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    app:srcCompat="@mipmap/camera_icon" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/take_picture"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_use_picture"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    app:srcCompat="@mipmap/thumbs_up" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/use_picture"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
         </LinearLayout>
+
     </LinearLayout>
 
+    <Button
+        android:id="@+id/back_to_all_streams"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:layout_marginBottom="10dp"
+        android:text="Streams" />
 
 </LinearLayout>

@@ -5,11 +5,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/edge_padding"
     tools:context=".activities.SearchActivity">
 
     <android.support.v7.widget.SearchView
         android:layout_width="match_parent"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:title="@string/search_searchbox_text_hint"
@@ -21,30 +21,55 @@
         android:id="@+id/results_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="How Many results found" />
-
+        android:text="@string/search_searchbox_text_hint" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:fillViewport="true"
-        android:layout_below="@id/results_text"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:id="@+id/nested_scroll_view_all_streams">
+        android:id="@+id/nested_scroll_search_streams">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/search_imagegallery"
             android:layout_width="match_parent"
-            android:layout_below="@id/results_text"
             android:layout_height="match_parent" />
 
     </android.support.v4.widget.NestedScrollView>
 
     <ProgressBar
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/progress_bar_search"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@id/results_text"/>
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_prev_button"
+            android:paddingLeft="@dimen/edge_padding"
+            android:paddingRight="@dimen/edge_padding"
+            android:text="@string/previous_images_button_text"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_next_button"
+            android:text="@string/next_images_button_text"
+            android:paddingLeft="@dimen/edge_padding"
+            android:paddingRight="@dimen/edge_padding"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

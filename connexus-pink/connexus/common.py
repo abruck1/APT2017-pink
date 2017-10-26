@@ -91,7 +91,12 @@ class MyJsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime):
             # format however you like/need
-            return obj.strftime("%Y-%m-%d")
+            time = ""
+            if obj == "":
+                pass
+            else:
+                time = obj.isoformat()
+            return time
         if isinstance(obj, ndb.Key):
             return obj.id()
         if isinstance(obj, ndb.Model):
@@ -99,6 +104,9 @@ class MyJsonEncoder(json.JSONEncoder):
                 'stream_id': obj.key.id(),
                 'stream_coverImageURL': obj.coverImageURL,
                 'stream_name': obj.name,
+                'stream_number_of_images': obj.imageCount,
+                'stream_last_pic_date': obj.lastPicDate,
+                'stream_views': obj.viewCount,
             }
             return single_stream
         # pass any other unknown types to the base class handler, probably
