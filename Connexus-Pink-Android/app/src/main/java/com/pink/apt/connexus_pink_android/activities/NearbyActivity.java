@@ -24,7 +24,10 @@ import com.pink.apt.connexus_pink_android.NearbyPicturesRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.R;
 import com.pink.apt.connexus_pink_android.backend.NearbyJSONArrayHandler;
 import com.pink.apt.connexus_pink_android.backend.ViewStreamJSONHandler;
+import com.pink.apt.connexus_pink_android.models.NearbyPicture;
 import com.pink.apt.connexus_pink_android.models.NearbyPictures;
+
+import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.NEARBY_URL;
 
@@ -37,9 +40,13 @@ public class NearbyActivity extends AppCompatActivity {
     Button moreButton;
     NearbyPictures nearbyPictures;
     String url;
-    String currentLong;
-    String currentLat;
+    String currentLong = "0";
+    String currentLat = "0";
+    String nextPage = "1";
+    LocationManager lm;
     NearbyStreamReceiver nearbyStreamReceiver;
+    NearbyPicturesRecyclerAdapter adapter;
+    String TAG = "NearbyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,21 +82,21 @@ public class NearbyActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // setup recyclerview adapter for nearby
-        NearbyPicturesRecyclerAdapter adapter = new NearbyPicturesRecyclerAdapter(this, nearbyPictures);
+        adapter = new NearbyPicturesRecyclerAdapter(this, nearbyPictures);
         recyclerView.setAdapter(adapter);
 
         // get users current location
         // check for user permissions
-        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+        lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        currentLong = Double.toString(location.getLongitude());
+//        currentLat = Double.toString(location.getLatitude());
 
         // create first url to send request to
-        url = NEARBY_URL + "long=" + currentLong + "&lat=" + currentLat;
+        url = NEARBY_URL + "long=" + currentLong + "&lat=" + currentLat + "&p=" + nextPage;
         // send JSON request
-        NearbyJSONArrayHandler n
+        NearbyJSONArrayHandler jsonHandler = new NearbyJSONArrayHandler(url, queue, this);
+        jsonHandler.getJSONObject();
 
         // setup buttons
         viewAllStreamsButton = findViewById(R.id.nearby_view_all_streams_button);
@@ -104,10 +111,12 @@ public class NearbyActivity extends AppCompatActivity {
         moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                NearbyJSONArrayHandler jsonHandler = new NearbyJSONArrayHandler(url, queue, getApplicationContext());
+                jsonHandler.getJSONObject();
+                progressBar.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.INVISIBLE);
             }
         });
-
     }
 
     private final LocationListener locationListener = new LocationListener() {
@@ -137,10 +146,12 @@ public class NearbyActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter fetchStreamCompleteFilter = new IntentFilter(ViewStreamJSONHandler.ACTION_FETCH_STREAM_COMPLETE);
-        fetchStreamCompleteFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        IntentFilter nearbyStreamCompleteFilter = new IntentFilter(NearbyJSONArrayHandler.ACTION_NEARBY_SEARCH_COMPLETE);
+        nearbyStreamCompleteFilter.addCategory(Intent.CATEGORY_DEFAULT);
         nearbyStreamReceiver = new NearbyActivity.NearbyStreamReceiver();
-        registerReceiver(nearbyStreamReceiver, fetchStreamCompleteFilter);
+        registerReceiver(nearbyStreamReceiver, nearbyStreamCompleteFilter);
+
+//        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
     }
 
     @Override
@@ -148,6 +159,8 @@ public class NearbyActivity extends AppCompatActivity {
     {
         super.onPause();
         unregisterReceiver(nearbyStreamReceiver);
+
+        lm.removeUpdates(locationListener);
     }
 
     public class NearbyStreamReceiver extends BroadcastReceiver {
@@ -155,26 +168,31 @@ public class NearbyActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent){
             String action = intent.getAction();
             switch (action) {
-                case(ViewStreamJSONHandler.ACTION_FETCH_STREAM_COMPLETE) :
+                case(NearbyJSONArrayHandler.ACTION_NEARBY_SEARCH_COMPLETE) :
                     Bundle extras = intent.getExtras();
-                    prevCursor = extras.getString(ViewStreamJSONHandler.EXTRA_PREV_CURSOR);
-                    nextCursor = extras.getString(ViewStreamJSONHandler.EXTRA_NEXT_CURSOR);
-                    String prevBool = extras.getString(ViewStreamJSONHandler.EXTRA_PREV_BOOL);
-                    String nextBool = extras.getString(ViewStreamJSONHandler.EXTRA_NEXT_BOOL);
-                    if(prevBool.equals("false")){
-                        Log.d(TAG, "prevCursor is empty");
-                        prevButton.setVisibility(View.INVISIBLE);
-                    } else{
-                        Log.d(TAG, "prevCursor is not empty");
-                        prevButton.setVisibility(View.VISIBLE);
+                    nextPage = extras.getString(NearbyJSONArrayHandler.EXTRA_NEXT_CURSOR);
+                    String nextBool = extras.getString(NearbyJSONArrayHandler.EXTRA_NEXT_BOOL);
+                    ArrayList<String> urls = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_IMAGE_URL);
+                    ArrayList<String> distances = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_DISTANCE);
+                    ArrayList<String> ids = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_STREAM_ID);
+
+                    for(int i=0; i<urls.size(); i++){
+                        NearbyPicture nearbyPicture = new NearbyPicture();
+                        nearbyPicture.setUrl(urls.get(i));
+                        nearbyPicture.setDistanceFromDevice(distances.get(i));
+                        nearbyPicture.setStreamId(ids.get(i));
+                        nearbyPictures.getNearbyPictures().add(nearbyPicture);
                     }
+
+                    adapter.updateNearbyPictures(nearbyPictures);
+                    adapter.notifyDataSetChanged();
 
                     if(nextBool.equals("false")){
                         Log.d(TAG, "nextCursor is empty");
-                        nextButton.setVisibility(View.INVISIBLE);
+                        moreButton.setVisibility(View.INVISIBLE);
                     } else{
                         Log.d(TAG, "nextCursor is not empty");
-                        nextButton.setVisibility(View.VISIBLE);
+                        moreButton.setVisibility(View.VISIBLE);
                     }
 
                     return;

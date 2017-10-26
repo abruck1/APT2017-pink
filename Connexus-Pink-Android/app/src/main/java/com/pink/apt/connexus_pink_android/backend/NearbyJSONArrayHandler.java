@@ -39,7 +39,6 @@ public class NearbyJSONArrayHandler {
     private RequestQueue queue;
     String TAG = "JSONObjectHandler";
     private Context context;
-    private ArrayList<NearbyPackage> nearbyPackageArrayList;
 
     private NearbyJSONArrayHandler() {};
 
@@ -47,7 +46,6 @@ public class NearbyJSONArrayHandler {
         this.url = url;
         this.queue = queue;
         this.context = context;
-        this.nearbyPackageArrayList = new ArrayList<>();
     }
 
     public void getJSONObject() {
@@ -61,19 +59,41 @@ public class NearbyJSONArrayHandler {
                         //make an array of createlists
                         //pass the array of createlists to adapter
                         //notify adapter to update
-                        nearbyPackageArrayList.clear();
+                        String nextPage = "";
+                        String nextBool = "false";
+                        ArrayList<String> streamId = new ArrayList<>();
+                        ArrayList<String> imageUrl = new ArrayList<>();
+                        ArrayList<String> distance = new ArrayList<>();
 
                         try {
                             // Parsing json array response
                             // loop through each json object
-                            for (int i = 0; i < response.length(); i++) {
+                            JSONObject stream = new JSONObject();
 
-                                JSONObject stream = (JSONObject) response.get(i);
-                                nearbyPackageArrayList.add(processJSONObject(stream));
+                            // expect to go through this loop only once. this will just protect it from null returns
+                            for (int i = 0; i < response.length(); i++){
+                                stream = (JSONObject) response.get(i);
+                                nextBool = stream.getString("next_page"); // this looks wrong but what is coming from the page is named inconsistently
+                                nextPage = stream.getString("next_cursor"); // this looks wrong but what is coming from the page is named inconsistently
+                            }
+
+                            JSONArray foundStreams = stream.getJSONArray("found_streams");
+                            for (int i = 0; i < foundStreams.length(); i++) {
+                                streamId.add(((JSONObject) foundStreams.get(i)).getString("stream_id"));
+                                imageUrl.add(((JSONObject) foundStreams.get(i)).getString("image_url"));
+                                distance.add(((JSONObject) foundStreams.get(i)).getString("distance"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        Intent newIntent = new Intent(ACTION_NEARBY_SEARCH_COMPLETE);
+                        newIntent.putExtra(EXTRA_DISTANCE, distance);
+                        newIntent.putExtra(EXTRA_STREAM_ID, streamId);
+                        newIntent.putExtra(EXTRA_IMAGE_URL, imageUrl);
+                        newIntent.putExtra(EXTRA_NEXT_CURSOR, nextPage);
+                        newIntent.putExtra(EXTRA_NEXT_BOOL, nextBool);
+                        context.sendBroadcast(newIntent);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -85,55 +105,8 @@ public class NearbyJSONArrayHandler {
         // send broadcast with results
         // unpackage results into String arrays
 
-        String streamId[] = new String[this.nearbyPackageArrayList.size()];
-        String imageUrl[] = new String[this.nearbyPackageArrayList.size()];
-        String nextCursorUrl[] = new String[this.nearbyPackageArrayList.size()];
-        String nextBool[] = new String[this.nearbyPackageArrayList.size()];
-        String distance[] = new String[this.nearbyPackageArrayList.size()];
-
-        for(int i=0; i<this.nearbyPackageArrayList.size(); i++){
-            NearbyPackage currentPackage = new NearbyPackage();
-            streamId[i] = currentPackage.streamId;
-            imageUrl[i] = currentPackage.imageUrl;
-            nextCursorUrl[i] = currentPackage.nextCursorUrl;
-            nextBool[i] = currentPackage.nextBool;
-            distance[i] = currentPackage.distance;
-        }
-
-        Intent newIntent = new Intent(ACTION_NEARBY_SEARCH_COMPLETE);
-        newIntent.putExtra(EXTRA_DISTANCE, distance);
-        newIntent.putExtra(EXTRA_STREAM_ID, streamId);
-        newIntent.putExtra(EXTRA_IMAGE_URL, imageUrl);
-        newIntent.putExtra(EXTRA_NEXT_CURSOR, nextCursorUrl);
-        newIntent.putExtra(EXTRA_NEXT_BOOL, nextBool);
-        context.sendBroadcast(newIntent);
-
         Log.d(TAG, "Requested to this url " + this.url);
         this.queue.add(req);
-    }
-
-    private NearbyPackage processJSONObject(JSONObject stream) {
-
-        NearbyPackage nearbyPackage = new NearbyPackage();
-        try {
-            nearbyPackage.streamId = stream.getString("stream_id");
-            nearbyPackage.imageUrl = stream.getString("image_url");
-            nearbyPackage.nextCursorUrl = stream.getString("next_cursor");
-            nearbyPackage.nextBool = stream.getString("next");
-            nearbyPackage.distance = stream.getString("distance");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return nearbyPackage;
-    }
-
-    private class NearbyPackage{
-        String streamId;
-        String imageUrl;
-        String nextCursorUrl;
-        String nextBool;
-        String distance;
     }
 
 }
