@@ -9,7 +9,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -20,26 +20,32 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ViewAllStreamsActivity"
+        <activity
+            android:name=".activities.ViewAllStreamsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".activities.ViewStreamActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.CameraActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.UploadActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.SearchActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.ViewStreamActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.CameraActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.UploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SearchActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activities.NearbyActivity"></activity>
     </application>
 
 </manifest>
