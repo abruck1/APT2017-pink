@@ -13,6 +13,7 @@ import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
 
 
     RequestQueue queue;
+    Button nearbyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,15 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         ViewAllStreamsJSONHandler returnedJson = new ViewAllStreamsJSONHandler(VIEW_ALL_STREAMS_URL, queue);
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
+
+        nearbyButton = findViewById(R.id.nearby_button);
+        nearbyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), NearbyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

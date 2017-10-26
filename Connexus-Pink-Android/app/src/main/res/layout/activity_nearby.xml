@@ -24,6 +24,12 @@
                 android:text="@string/title_text"
                 android:textSize="@dimen/h1_text"/>
 
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress_bar_view_nearby"
+                android:layout_gravity="center_horizontal" />
+
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,12 +44,6 @@
 
             </android.support.v4.widget.NestedScrollView>
 
-            <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/progress_bar_view_nearby"
-                android:layout_gravity="center_horizontal" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,23 +52,49 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
                     android:id="@+id/nearby_pictures_text"
                     android:text="@string/nearby_pictures_text"
-                    android:textSize="@dimen/h2_text"/>
+                    android:textSize="@dimen/h3_text"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
                 <Button
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/nearby_more_button_text"
                     android:layout_gravity="end"
                     android:id="@+id/nearby_more_button"/>
             </LinearLayout>
 
-            <Button
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/nearby_view_all_streams_button"
-                android:text="@string/view_all_streams_text"/>
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:paddingRight="@dimen/edge_padding"
+                    android:paddingLeft="@dimen/edge_padding"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/nearby_view_all_streams_button"
+                    android:text="@string/view_all_streams_text"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
