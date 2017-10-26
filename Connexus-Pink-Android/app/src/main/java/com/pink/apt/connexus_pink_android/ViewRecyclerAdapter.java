@@ -40,6 +40,9 @@ public class ViewRecyclerAdapter extends RecyclerAdapter {
 
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+        viewHolder.lastPicDate.setEnabled(false);
+        viewHolder.viewCount.setEnabled(false);
+        viewHolder.imgCount.setEnabled(false);
         Picasso.with(context).load(galleryList.get(0).getImageUrls().get(i)).resize(75, 75).into(viewHolder.img);
     }
 }

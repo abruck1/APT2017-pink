@@ -114,11 +114,11 @@ class MyJsonEncoder(json.JSONEncoder):
                 }
             elif obj.key.kind() == "StreamSubscriber":
                 single_stream = {
-                    'stream': obj.stream,
-                    'user': obj.user,
+                    'stream_id': obj.stream,
+                    'stream_coverImageURL': obj.stream.get().coverImageURL,
                     'stream_name': obj.stream.get().name,
-                    'stream_last_pic_date': obj.stream.get().lastPicDate,
                     'stream_number_of_images': obj.stream.get().imageCount,
+                    'stream_last_pic_date': obj.stream.get().lastPicDate,
                     'stream_views': obj.stream.get().viewCount,
                 }
             return single_stream

@@ -25,4 +25,12 @@
         android:id="@+id/progress_bar_owned"
         android:layout_gravity="center_horizontal" />
 
+    <Button
+        android:id="@+id/manage_delete_stream"
+        android:layout_below="@id/nested_scroll_owned_streams"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Delete Selected Streams" />
+
 </RelativeLayout>

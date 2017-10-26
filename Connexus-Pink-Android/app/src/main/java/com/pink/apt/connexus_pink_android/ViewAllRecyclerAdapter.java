@@ -35,6 +35,10 @@ public class ViewAllRecyclerAdapter extends RecyclerAdapter {
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
         viewHolder.title.setText(galleryList.get(i).getStreamName());
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        viewHolder.lastPicDate.setEnabled(false);
+        viewHolder.viewCount.setEnabled(false);
+        viewHolder.imgCount.setEnabled(false);
+
         Picasso.with(context).load(galleryList.get(i).getStreamUrl()).resize(75, 75).into(viewHolder.img);
         viewHolder.img.setOnClickListener(new View.OnClickListener() {
             @Override

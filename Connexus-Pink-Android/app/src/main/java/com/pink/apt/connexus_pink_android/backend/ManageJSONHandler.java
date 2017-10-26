@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.EMPTY_COVER_IMAGE_URL;
+import static com.pink.apt.connexus_pink_android.GlobalVars.MANAGE_URL;
 
 /**
  * Created by matt on 10/22/17.
@@ -37,16 +38,32 @@ public class ManageJSONHandler extends RequestJSONArrayHandler {
         ManageStreamData streamModel = new ManageStreamData();
         String TAG2 = "MANAGE";
         try {
-
-            JSONArray userStreams = stream.getJSONArray("user_streams");
+            JSONArray userStreams;
+            String ownedStreams = MANAGE_URL+"#1";
+            if (this.url.equals(ownedStreams)) {
+                userStreams = stream.getJSONArray("user_streams");
+                Log.d(TAG2, "Doing user_streams");
+            } else {
+                userStreams = stream.getJSONArray("subscribe");
+                Log.d(TAG2, "Doing subscribe");
+            }
             for(int i = 0; i < userStreams.length(); i++) {
                 String streamId = ((JSONObject) userStreams.get(i)).getString("stream_id");
                 String coverImageURL = ((JSONObject) userStreams.get(i)).getString("stream_coverImageURL");
                 String name = ((JSONObject) userStreams.get(i)).getString("stream_name");
                 Log.d(TAG2, "Stream_name=" + name + " StreamId=" + streamId);
 
+                String numViews = ((JSONObject) userStreams.get(i)).getString("stream_views");
+                String lastPicDate = ((JSONObject) userStreams.get(i)).getString("stream_last_pic_date");
+                String numImages = ((JSONObject) userStreams.get(i)).getString("stream_number_of_images");
+                Log.d(TAG2, "Stream_name=" + name + " StreamNumImages=" + numImages);
+
+
                 streamModel.setId(streamId);
                 streamModel.setStreamName(name);
+                streamModel.setViewCount("Number of Views: " + numViews);
+                streamModel.setLastPicDate("Date last image was uploaded: " + lastPicDate);
+                streamModel.setNumImages("Number of Images: " + numImages);
                 if (coverImageURL.isEmpty()) {
                     Log.d(TAG, "Name" + name + " was empty");
                     streamModel.setStreamUrl(EMPTY_COVER_IMAGE_URL);
