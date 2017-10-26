@@ -36,6 +36,7 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
 
 
     RequestQueue queue;
+    Button nearbyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,15 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         ViewAllStreamsJSONHandler returnedJson = new ViewAllStreamsJSONHandler(VIEW_ALL_STREAMS_URL, queue);
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
+
+        nearbyButton = findViewById(R.id.nearby_button);
+        nearbyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), NearbyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Should we show an explanation?
         if (ActivityCompat.shouldShowRequestPermissionRationale(this,

@@ -8,6 +8,7 @@ public class GlobalVars {
     public static final String VIEW_ALL_STREAMS_URL = "http://phase3.connexus-pink.appspot.com/m_view";
     public static final String VIEW_STREAM_URL = "http://phase3.connexus-pink.appspot.com/m_view/";
     public static final String SEARCH_URL = "http://phase3.connexus-pink.appspot.com/m_search?";
+    public static final String NEARBY_URL = "http://phase3.connexus-pink.appspot.com/m_nearby?";
     public static final String GET_UPLOADURL_URL = "http://phase3.connexus-pink.appspot.com/getuploadurl";
     public static final String MANAGE_URL = "http://phase3.connexus-pink.appspot.com/m_manage";
 
