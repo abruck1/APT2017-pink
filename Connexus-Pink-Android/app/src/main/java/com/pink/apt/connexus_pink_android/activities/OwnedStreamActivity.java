@@ -58,18 +58,24 @@ public class OwnedStreamActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<ManageStreamData> streamsList = new ArrayList<>();
 
-        ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
+        final ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
 
         ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#1", queue, this);
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 
-
-
         Button deleteStream = findViewById(R.id.manage_delete_stream);
         deleteStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String deleteList = "";
+                if (!adapter.selectedList.isEmpty()) {
+                    for (Integer i: adapter.selectedList) {
+                        deleteList = deleteList + adapter.galleryList.get(i).getId();
+                    }
+                    adapter.selectedList.clear();
+                }
+                Log.d(TAG, "Deleting Stream id=" + deleteList);
                 finish();
             }
         });
