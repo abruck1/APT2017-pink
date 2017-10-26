@@ -26,7 +26,12 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.EMPTY_COVER_IMAGE_UR
 
 public class SearchJSONHandler extends RequestJSONArrayHandler {
 
+    public static final String SEARCHSTRING = "com.pink.apt.connexus_pink_android.EXTRA_SEARCHSTRING";
     public static final String NUMFOUND = "com.pink.apt.connexus_pink_android.EXTRA_NUMFOUND";
+    public static final String NEXTBOOL = "com.pink.apt.connexus_pink_android.EXTRA_NEXTBOOL";
+    public static final String PREVBOOL = "com.pink.apt.connexus_pink_android.EXTRA_PREVBOOL";
+    public static final String NEXTCURSOR = "com.pink.apt.connexus_pink_android.EXTRA_NEXTCURSOR";
+    public static final String PREVCURSOR = "com.pink.apt.connexus_pink_android.EXTRA_PREVCURSOR";
     public static final String SEARCH_COMPLETE = "com.pink.apt.connexus_pink_android.ACTION_SEARCH_COMPLETE";
 
     private Context context;
@@ -45,9 +50,19 @@ public class SearchJSONHandler extends RequestJSONArrayHandler {
         String TAG2 = "SEARCHING";
         try {
             String numFound = stream.getString("num_results");
+            String nextBool = stream.getString("next_page");
+            String prevBool = stream.getString("prev_page");
+            String nextCursor = stream.getString("next_cursor");
+            String prevCursor = stream.getString("prev_cursor");
+            String searchString = stream.getString("search_string");
 
             Intent newIntent = new Intent(SEARCH_COMPLETE);
             newIntent.putExtra(NUMFOUND, numFound);
+            newIntent.putExtra(NEXTBOOL, nextBool);
+            newIntent.putExtra(PREVBOOL, prevBool);
+            newIntent.putExtra(NEXTCURSOR, nextCursor);
+            newIntent.putExtra(PREVCURSOR, prevCursor);
+            newIntent.putExtra(SEARCHSTRING, searchString);
             context.sendBroadcast(newIntent);
             Log.d(TAG2, "numFound=" + numFound);
 

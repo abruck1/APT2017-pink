@@ -13,6 +13,7 @@ from connexus.services.upload import *
 from connexus.services.view_all import *
 from connexus.services.view_stream import *
 from connexus.services.geo_view import *
+from connexus.services.nearby import *
 # [END imports]
 
 
@@ -40,6 +41,7 @@ app = webapp2.WSGIApplication([
     (r'/m_view/(\d+)', MobileViewStream),
     (r'/m_search', MobileSearch),
     ('/m_manage', MobileManage),
+    (r'/m_nearby', MobileNearby),
 
 ], debug=True)
 # [END app]
