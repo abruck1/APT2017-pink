@@ -60,6 +60,8 @@ class MobileNearby(webapp2.RequestHandler):
         low_range = 0 + MAX_DATA_PER_PAGE*(page-1)
         high_range = MAX_DATA_PER_PAGE + MAX_DATA_PER_PAGE*(page-1)
         
+        sliced_data = data[low_range : high_range]
+
         next_page = 'false'
         if high_range < len(data):
             next_page = 'true'
@@ -76,7 +78,7 @@ class MobileNearby(webapp2.RequestHandler):
         json_array.append({'next_cursor': page+1})
         json_array.append({'prev_cursor': page-1})
 
-        json_array.append(data)
+        json_array.append(sliced_data)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(json_array, cls=MyJsonEncoder))
