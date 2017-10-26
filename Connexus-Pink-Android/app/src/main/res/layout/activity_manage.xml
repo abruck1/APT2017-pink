@@ -7,7 +7,6 @@
     android:padding="10dp"
     tools:context=".activities.ManageActivity">
 
-
     <Button
         android:id="@+id/manage_back_to_all_streams"
         android:layout_width="match_parent"
@@ -29,14 +28,13 @@
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
-                android:layout_height="0dip"
+                android:layout_height="fill_parent"
                 android:layout_weight="1" />
 
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-4dp"
                 android:layout_weight="0" />
 
         </LinearLayout>
