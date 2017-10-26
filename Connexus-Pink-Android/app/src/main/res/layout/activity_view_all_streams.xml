@@ -80,6 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/view_subscribed_stream_text"
+            android:id="@+id/view_all_manage_streams"
             android:layout_below="@id/search_nearby_ll"
             android:textSize="@dimen/h3_text"/>
 

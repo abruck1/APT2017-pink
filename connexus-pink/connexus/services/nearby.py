@@ -73,12 +73,13 @@ class MobileNearby(webapp2.RequestHandler):
 
         json_array = []
 
-        json_array.append({'next_page': next_page})
-        json_array.append({'prev_page': prev_page})
-        json_array.append({'next_cursor': page+1})
-        json_array.append({'prev_cursor': page-1})
-
-        json_array.append(sliced_data)
+        json_array.append({
+            'next_page': next_page,
+            'prev_page': prev_page,
+            'next_cursor': page+1,
+            'prev_cursor': page-1,
+            'found_streams': sliced_data,
+        })
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(json_array, cls=MyJsonEncoder))

@@ -45,7 +45,10 @@
             android:name=".activities.SearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.NearbyActivity"></activity>
+        <activity android:name=".activities.NearbyActivity" />
+        <activity android:name=".activities.ManageActivity" />
+        <activity android:name=".activities.OwnedStreamActivity" />
+        <activity android:name=".activities.SubscribedStreamsActivity" />
     </application>
 
 </manifest>

@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/back_to_view_all_text"
-            android:id="@+id/back_to_all_streams"
+            android:id="@+id/camera_back_to_all_streams"
             android:layout_below="@id/upload_image"
             android:layout_centerHorizontal="true"
             android:paddingLeft="@dimen/edge_padding"

@@ -4,6 +4,8 @@ from google.appengine.api import images
 from google.appengine.api import users
 from urllib import urlencode
 
+from connexus.ndb_model import *
+
 from datetime import datetime
 from google.appengine.ext import ndb
 
@@ -100,14 +102,25 @@ class MyJsonEncoder(json.JSONEncoder):
         if isinstance(obj, ndb.Key):
             return obj.id()
         if isinstance(obj, ndb.Model):
-            single_stream = {
-                'stream_id': obj.key.id(),
-                'stream_coverImageURL': obj.coverImageURL,
-                'stream_name': obj.name,
-                'stream_number_of_images': obj.imageCount,
-                'stream_last_pic_date': obj.lastPicDate,
-                'stream_views': obj.viewCount,
-            }
+            single_stream = {}
+            if obj.key.kind() == "Stream":
+                single_stream = {
+                    'stream_id': obj.key.id(),
+                    'stream_coverImageURL': obj.coverImageURL,
+                    'stream_name': obj.name,
+                    'stream_number_of_images': obj.imageCount,
+                    'stream_last_pic_date': obj.lastPicDate,
+                    'stream_views': obj.viewCount,
+                }
+            elif obj.key.kind() == "StreamSubscriber":
+                single_stream = {
+                    'stream': obj.stream,
+                    'user': obj.user,
+                    'stream_name': obj.stream.get().name,
+                    'stream_last_pic_date': obj.stream.get().lastPicDate,
+                    'stream_number_of_images': obj.stream.get().imageCount,
+                    'stream_views': obj.stream.get().viewCount,
+                }
             return single_stream
         # pass any other unknown types to the base class handler, probably
         # to raise a TypeError.   

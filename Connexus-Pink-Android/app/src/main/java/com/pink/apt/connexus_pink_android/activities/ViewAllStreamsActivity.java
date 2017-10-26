@@ -13,6 +13,7 @@ import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.pink.apt.connexus_pink_android.ViewAllRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.ViewRecyclerAdapter;
+import com.pink.apt.connexus_pink_android.backend.ManageJSONHandler;
 import com.pink.apt.connexus_pink_android.models.StreamModel;
 import com.pink.apt.connexus_pink_android.RecyclerAdapter;
 import com.pink.apt.connexus_pink_android.R;
@@ -70,6 +72,14 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
             }
         });
 
+        Button manageStreams = findViewById(R.id.view_all_manage_streams);
+        manageStreams.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+                startActivity(intent);
+            }
+        });
 
         final NestedScrollView nsv = (NestedScrollView) findViewById(R.id.nested_scroll_view_all_streams);
         DisplayMetrics displaymetrics = new DisplayMetrics();

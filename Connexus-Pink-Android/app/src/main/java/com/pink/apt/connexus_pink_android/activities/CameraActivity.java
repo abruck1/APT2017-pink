@@ -121,7 +121,7 @@ public class CameraActivity extends AppCompatActivity {
         usePictureButton.setEnabled(false);
         usePictureButton.setAlpha(0.5f);
 
-        backToStreams = findViewById(R.id.back_to_all_streams);
+        backToStreams = findViewById(R.id.camera_back_to_all_streams);
         assert backToStreams != null;
         backToStreams.setOnClickListener(new View.OnClickListener() {
             @Override

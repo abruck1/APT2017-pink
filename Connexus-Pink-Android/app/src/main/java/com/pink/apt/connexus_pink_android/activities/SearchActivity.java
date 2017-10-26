@@ -13,7 +13,6 @@ import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -25,8 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.pink.apt.connexus_pink_android.R;
 import com.pink.apt.connexus_pink_android.ViewAllRecyclerAdapter;
 import com.pink.apt.connexus_pink_android.backend.SearchJSONHandler;
-import com.pink.apt.connexus_pink_android.backend.ViewAllStreamsJSONHandler;
-import com.pink.apt.connexus_pink_android.backend.ViewStreamJSONHandler;
 import com.pink.apt.connexus_pink_android.models.ViewAllStreamData;
 
 import java.io.UnsupportedEncodingException;
@@ -34,8 +31,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.SEARCH_URL;
-import static com.pink.apt.connexus_pink_android.GlobalVars.VIEW_ALL_STREAMS_URL;
-import static com.pink.apt.connexus_pink_android.GlobalVars.VIEW_STREAM_URL;
 
 /**
  * Created by ari on 10/24/17.

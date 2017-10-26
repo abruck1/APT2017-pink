@@ -128,7 +128,7 @@ public class ViewStreamActivity extends AppCompatActivity {
             }
         });
 
-        Button streamsButton = (Button) findViewById(R.id.back_to_all_streams);
+        Button streamsButton = (Button) findViewById(R.id.camera_back_to_all_streams);
         streamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

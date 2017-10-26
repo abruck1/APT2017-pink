@@ -84,4 +84,8 @@
     <!--Nearby pictures-->
     <string name="nearby_pictures_text">Nearby pictures</string>
     <string name="nearby_more_button_text">More</string>
+
+    <!-- Manage Activity Strings-->
+    <string name="manage_owned_streams_tab">Owned Streams</string>
+    <string name="manage_subscribed_streams_tab">Subscribed Streams</string>
 </resources>
