@@ -29,6 +29,7 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.MANAGE_URL;
 public class OwnedStreamActivity extends AppCompatActivity {
     RequestQueue queue;
     String TAG = "OwnedStreamActivity";
+    int numRemoved = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +74,16 @@ public class OwnedStreamActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String deleteList = "";
                 if (!adapter.selectedList.isEmpty()) {
-                    int numRemoved = 0;
                     for (Integer i: adapter.selectedList) {
-                        Log.d(TAG, "position is " + i);
+                        Log.d(TAG, "position is " + i + " " + adapter.getItemCount());
+                        Log.d(TAG, "Before numRemoved=" + numRemoved);
                         deleteList = deleteList + adapter.galleryList.get(i-numRemoved).getId() + ",";
                         Log.d(TAG, "Before gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
                         adapter.removeFromGellryList(i-numRemoved);
                         Log.d(TAG, "After gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
                         adapter.notifyItemRemoved(i-numRemoved);
                         numRemoved++;
+                        Log.d(TAG, "After numRemoved=" + numRemoved + " " + adapter.getItemCount());
                     }
                     adapter.selectedList.clear();
                 }
