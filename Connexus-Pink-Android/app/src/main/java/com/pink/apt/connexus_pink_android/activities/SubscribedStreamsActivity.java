@@ -76,13 +76,15 @@ public class SubscribedStreamsActivity extends AppCompatActivity {
                 if (!adapter.selectedList.isEmpty()) {
                     int numRemoved = 0;
                     for (Integer i: adapter.selectedList) {
-                        Log.d(TAG, "position is " + i);
+                        Log.d(TAG, "position is " + i + " " + adapter.getItemCount());
+                        Log.d(TAG, "Before numRemoved=" + numRemoved);
                         unsubList = unsubList + adapter.galleryList.get(i-numRemoved).getId() + ",";
                         Log.d(TAG, "Before gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
                         adapter.removeFromGellryList(i-numRemoved);
                         Log.d(TAG, "After gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
                         adapter.notifyItemRemoved(i-numRemoved);
                         numRemoved++;
+                        Log.d(TAG, "After numRemoved=" + numRemoved + " " + adapter.getItemCount());
                     }
                     adapter.selectedList.clear();
                 }
