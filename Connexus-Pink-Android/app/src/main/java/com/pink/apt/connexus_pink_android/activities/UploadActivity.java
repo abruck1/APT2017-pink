@@ -116,7 +116,7 @@ public class UploadActivity extends AppCompatActivity {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, GET_UPLOADURL_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_UPLOADURL_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -134,7 +134,7 @@ public class UploadActivity extends AppCompatActivity {
                         Log.d(TAG, "GetUploadURL onErrorResponse: " + error.toString());
                     }
                 });
-
+        Log.d(TAG, "request to this url:" + stringRequest);
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
@@ -164,7 +164,9 @@ public class UploadActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d(TAG, "Activity result");
         if (resultCode == RESULT_OK) {
+            Log.d(TAG, "result ok requestCode=" + requestCode);
             switch (requestCode) {
                 case PICK_IMAGE:
                     imageUri = data.getData();
@@ -181,7 +183,9 @@ public class UploadActivity extends AppCompatActivity {
 
                 case USE_CAMERA:
                     //todo will this be same code as above?
+                    Log.d(TAG, "In use camera");
                     imageUri = data.getData();
+                    Log.d(TAG, "image uri=" + imageUri);
 
                     //display the selected image
                     uploadImageView.setImageURI(imageUri);

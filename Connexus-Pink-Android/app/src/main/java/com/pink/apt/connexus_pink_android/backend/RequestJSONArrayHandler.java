@@ -60,6 +60,7 @@ public abstract class RequestJSONArrayHandler {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.getStackTrace().toString());
                 Log.d(TAG, "Error: " + error.getMessage());
             }
         });
