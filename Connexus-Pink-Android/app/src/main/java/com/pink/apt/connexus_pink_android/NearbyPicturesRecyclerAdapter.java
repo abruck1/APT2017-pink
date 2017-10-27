@@ -30,6 +30,10 @@ public class NearbyPicturesRecyclerAdapter extends RecyclerView.Adapter<NearbyPi
         this.context = context;
     }
 
+    public NearbyPictures getNearbyPictures(){
+        return this.nearbyPictures;
+    }
+
     public void updateNearbyPictures(NearbyPictures nearbyPictures){
         this.nearbyPictures = nearbyPictures;
     }
@@ -54,6 +58,9 @@ public class NearbyPicturesRecyclerAdapter extends RecyclerView.Adapter<NearbyPi
             }
         });
         holder.title.setText(nearbyPictures.getNearbyPictures().get(position).getDistanceFromDevice());
+        holder.imgCount.setHeight(0);
+        holder.viewCount.setHeight(0);
+        holder.lastPicDate.setHeight(0);
     }
 
     @Override
@@ -64,11 +71,18 @@ public class NearbyPicturesRecyclerAdapter extends RecyclerView.Adapter<NearbyPi
     public class ViewHolder extends RecyclerView.ViewHolder{
         protected TextView title;
         protected ImageView img;
+        protected TextView imgCount;
+        protected TextView viewCount;
+        protected TextView lastPicDate;
+
         public ViewHolder(View view) {
             super(view);
 
             title = (TextView)view.findViewById(R.id.title);
             img = (ImageView) view.findViewById(R.id.img);
+            imgCount = view.findViewById(R.id.imgCount);
+            viewCount = view.findViewById(R.id.viewCount);
+            lastPicDate = view.findViewById(R.id.lastPicDate);
         }
     }
 }

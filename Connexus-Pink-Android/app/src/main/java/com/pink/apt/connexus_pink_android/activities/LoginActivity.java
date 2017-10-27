@@ -127,6 +127,8 @@ public class LoginActivity extends AppCompatActivity implements
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
+            Log.d(TAG,"email " + acct.getEmail());
+            Log.d(TAG,"name " + acct.getDisplayName());
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.

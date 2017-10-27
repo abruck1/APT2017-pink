@@ -1,12 +1,18 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.android.volley.RequestQueue;
@@ -37,6 +44,7 @@ public class NearbyActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ProgressBar progressBar;
     Button viewAllStreamsButton;
+    LinearLayout buttonContainer;
     Button moreButton;
     NearbyPictures nearbyPictures;
     String url;
@@ -46,6 +54,9 @@ public class NearbyActivity extends AppCompatActivity {
     LocationManager lm;
     NearbyStreamReceiver nearbyStreamReceiver;
     NearbyPicturesRecyclerAdapter adapter;
+    public static int MY_PERMISSIONS_REQUEST_COURSE_LOCATION = 1;
+    public static int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 2;
+    Location location;
     String TAG = "NearbyActivity";
 
     @Override
@@ -88,12 +99,30 @@ public class NearbyActivity extends AppCompatActivity {
         // get users current location
         // check for user permissions
         lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-//        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        currentLong = Double.toString(location.getLongitude());
-//        currentLat = Double.toString(location.getLatitude());
+
+        ActivityCompat.requestPermissions(
+                this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                MY_PERMISSIONS_REQUEST_COURSE_LOCATION
+        );
+
+        ActivityCompat.requestPermissions(
+                this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                MY_PERMISSIONS_REQUEST_FINE_LOCATION
+        );
+
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if(hasCourseLocationPermission() && hasFineLocationPermission()) {
+            location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            currentLong = Double.toString(location.getLongitude());
+            currentLat = Double.toString(location.getLatitude());
+            Log.d(TAG, "Lat,Long: " + currentLat + "," + currentLong);
+        } else {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
 
         // create first url to send request to
-        url = NEARBY_URL + "long=" + currentLong + "&lat=" + currentLat + "&p=" + nextPage;
+        updateUrl();
         // send JSON request
         NearbyJSONArrayHandler jsonHandler = new NearbyJSONArrayHandler(url, queue, this);
         jsonHandler.getJSONObject();
@@ -107,6 +136,9 @@ public class NearbyActivity extends AppCompatActivity {
             }
         });
 
+        buttonContainer = findViewById(R.id.nearby_more_button_container);
+        buttonContainer.setVisibility(View.GONE);
+
         moreButton = findViewById(R.id.nearby_more_button);
         moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +146,6 @@ public class NearbyActivity extends AppCompatActivity {
                 NearbyJSONArrayHandler jsonHandler = new NearbyJSONArrayHandler(url, queue, getApplicationContext());
                 jsonHandler.getJSONObject();
                 progressBar.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -151,7 +182,9 @@ public class NearbyActivity extends AppCompatActivity {
         nearbyStreamReceiver = new NearbyActivity.NearbyStreamReceiver();
         registerReceiver(nearbyStreamReceiver, nearbyStreamCompleteFilter);
 
-//        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+        if(hasCourseLocationPermission() && hasFineLocationPermission()) {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, locationListener);
+        }
     }
 
     @Override
@@ -176,27 +209,69 @@ public class NearbyActivity extends AppCompatActivity {
                     ArrayList<String> distances = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_DISTANCE);
                     ArrayList<String> ids = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_STREAM_ID);
 
+                    updateUrl();
+
                     for(int i=0; i<urls.size(); i++){
                         NearbyPicture nearbyPicture = new NearbyPicture();
                         nearbyPicture.setUrl(urls.get(i));
-                        nearbyPicture.setDistanceFromDevice(distances.get(i));
+                        Double distance = Double.parseDouble(distances.get(i));
+                        if(distance>100000){
+                            nearbyPicture.setDistanceFromDevice("Very Far Away");
+                        }else {
+                            nearbyPicture.setDistanceFromDevice(Integer.toString(distance.intValue()) + "\'");
+                        }
                         nearbyPicture.setStreamId(ids.get(i));
                         nearbyPictures.getNearbyPictures().add(nearbyPicture);
                     }
 
                     adapter.updateNearbyPictures(nearbyPictures);
                     adapter.notifyDataSetChanged();
+                    recyclerView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
                     if(nextBool.equals("false")){
                         Log.d(TAG, "nextCursor is empty");
-                        moreButton.setVisibility(View.INVISIBLE);
+                        buttonContainer.setVisibility(View.GONE);
                     } else{
                         Log.d(TAG, "nextCursor is not empty");
-                        moreButton.setVisibility(View.VISIBLE);
+                        buttonContainer.setVisibility(View.VISIBLE);
                     }
 
                     return;
             }
         }
+    }
+
+    private boolean hasCourseLocationPermission()
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+
+            if (PermissionChecker.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean hasFineLocationPermission()
+    {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+
+            if (PermissionChecker.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void updateUrl(){
+        url = NEARBY_URL + "long=" + currentLong + "&lat=" + currentLat + "&p=" + nextPage;
     }
 }

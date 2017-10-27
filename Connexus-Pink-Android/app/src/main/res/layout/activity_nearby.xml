@@ -58,17 +58,25 @@
                     android:text="@string/nearby_pictures_text"
                     android:textSize="@dimen/h3_text"/>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-
-                <Button
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/nearby_more_button_text"
-                    android:layout_gravity="end"
-                    android:id="@+id/nearby_more_button"/>
+                    android:orientation="horizontal"
+                    android:id="@+id/nearby_more_button_container">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/nearby_more_button_text"
+                        android:layout_gravity="end"
+                        android:id="@+id/nearby_more_button"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

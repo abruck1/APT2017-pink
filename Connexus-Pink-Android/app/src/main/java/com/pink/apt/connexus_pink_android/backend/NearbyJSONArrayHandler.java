@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -102,11 +103,11 @@ public class NearbyJSONArrayHandler {
             }
         });
 
-        // send broadcast with results
-        // unpackage results into String arrays
-
+        req.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 1, 1.0f));
         Log.d(TAG, "Requested to this url " + this.url);
         this.queue.add(req);
     }
+
+
 
 }
