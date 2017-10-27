@@ -39,7 +39,7 @@ class MobileNearby(webapp2.RequestHandler):
                 continue
 
             db_coord = (s.latitude, s.longitude)
-            distance = vincenty(input_coord, db_coord).feet
+            distance = vincenty(input_coord, db_coord).miles
 
             if s.key.parent().get() is None:
                 continue
