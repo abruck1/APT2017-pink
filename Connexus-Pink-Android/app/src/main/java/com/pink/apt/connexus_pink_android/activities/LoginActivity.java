@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Intent viewStreamsIntent = new Intent(LoginActivity.this, ViewAllStreamsActivity.class);
+                viewStreamsIntent.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(viewStreamsIntent);
 
             }
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .build();
         // [END configure_signin]
 
@@ -129,6 +131,12 @@ public class LoginActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG,"email " + acct.getEmail());
             Log.d(TAG,"name " + acct.getDisplayName());
+            Log.d(TAG,"idtoken " + acct.getIdToken());
+            Log.d(TAG,"id " + acct.getId());
+            Intent intent = new Intent(LoginActivity.this, ViewAllStreamsActivity.class);
+            intent.putExtra(Intent.EXTRA_TEXT, acct.getEmail());
+            startActivity(intent);
+
             updateUI(true);
         } else {
             // Signed out, show unauthenticated UI.

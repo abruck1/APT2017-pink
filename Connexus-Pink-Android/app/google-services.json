@@ -13,11 +13,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "475475708929-1jkp9i0g9tfdes6743ru2cr6p4komjg2.apps.googleusercontent.com",
+          "client_id": "475475708929-qfppbfvcoep1c459vnfbmtsihlf1p6eu.apps.googleusercontent.com",
           "client_type": 3
         },
         {
-          "client_id": "475475708929-avgd2hl9rtmipltdb8h0pkpulrgt9lfd.apps.googleusercontent.com",
+          "client_id": "475475708929-pa14kt6i8dujsdl3tdrlqlq22kb10ih4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pink.apt.connexus_pink_android",
+            "certificate_hash": "616fa7e3e322453492a2cd6617d8780d943c4fdd"
+          }
+        },
+        {
+          "client_id": "475475708929-u9iiml6mg30csbjtrds4i2el52kvl2oh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.pink.apt.connexus_pink_android",

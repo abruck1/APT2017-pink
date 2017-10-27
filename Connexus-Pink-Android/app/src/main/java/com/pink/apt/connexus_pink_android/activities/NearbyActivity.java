@@ -227,7 +227,7 @@ public class NearbyActivity extends AppCompatActivity {
                     adapter.updateNearbyPictures(nearbyPictures);
                     adapter.notifyDataSetChanged();
                     recyclerView.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.INVISIBLE);
 
                     if(nextBool.equals("false")){
                         Log.d(TAG, "nextCursor is empty");
