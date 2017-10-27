@@ -68,21 +68,25 @@ public class SubscribedStreamsActivity extends AppCompatActivity {
         ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+email+"#2", queue, this);
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 
-
-
         Button deleteStream = findViewById(R.id.manage_unsub_stream);
         deleteStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String unsubList = "";
                 if (!adapter.selectedList.isEmpty()) {
+                    int numRemoved = 0;
                     for (Integer i: adapter.selectedList) {
-                        unsubList = unsubList + adapter.galleryList.get(i).getId();
+                        Log.d(TAG, "position is " + i);
+                        unsubList = unsubList + adapter.galleryList.get(i-numRemoved).getId() + ",";
+                        Log.d(TAG, "Before gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
+                        adapter.removeFromGellryList(i-numRemoved);
+                        Log.d(TAG, "After gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
+                        adapter.notifyItemRemoved(i-numRemoved);
+                        numRemoved++;
                     }
                     adapter.selectedList.clear();
                 }
                 Log.d(TAG, "Unsub Stream id=" + unsubList);
-                finish();
             }
         });
 

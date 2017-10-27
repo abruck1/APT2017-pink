@@ -73,13 +73,19 @@ public class OwnedStreamActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String deleteList = "";
                 if (!adapter.selectedList.isEmpty()) {
+                    int numRemoved = 0;
                     for (Integer i: adapter.selectedList) {
-                        deleteList = deleteList + adapter.galleryList.get(i).getId();
+                        Log.d(TAG, "position is " + i);
+                        deleteList = deleteList + adapter.galleryList.get(i-numRemoved).getId() + ",";
+                        Log.d(TAG, "Before gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
+                        adapter.removeFromGellryList(i-numRemoved);
+                        Log.d(TAG, "After gallerylist=" + adapter.galleryList.size() + adapter.galleryList.toString());
+                        adapter.notifyItemRemoved(i-numRemoved);
+                        numRemoved++;
                     }
                     adapter.selectedList.clear();
                 }
                 Log.d(TAG, "Deleting Stream id=" + deleteList);
-                finish();
             }
         });
 
