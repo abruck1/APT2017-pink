@@ -215,10 +215,10 @@ public class NearbyActivity extends AppCompatActivity {
                         NearbyPicture nearbyPicture = new NearbyPicture();
                         nearbyPicture.setUrl(urls.get(i));
                         Double distance = Double.parseDouble(distances.get(i));
-                        if(distance>100000){
-                            nearbyPicture.setDistanceFromDevice("Very Far Away");
+                        if(distance<1){
+                            nearbyPicture.setDistanceFromDevice("<1 mi");
                         }else {
-                            nearbyPicture.setDistanceFromDevice(Integer.toString(distance.intValue()) + "\'");
+                            nearbyPicture.setDistanceFromDevice(Integer.toString(distance.intValue()) + " mi");
                         }
                         nearbyPicture.setStreamId(ids.get(i));
                         nearbyPictures.getNearbyPictures().add(nearbyPicture);
