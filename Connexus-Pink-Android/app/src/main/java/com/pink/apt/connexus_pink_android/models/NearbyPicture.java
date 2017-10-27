@@ -10,6 +10,7 @@ public class NearbyPicture {
     private String latitude;
     private String longitude;
     private String distanceFromDevice;
+    private String streamName;
 
     public String getStreamId() {
         return streamId;
@@ -49,5 +50,13 @@ public class NearbyPicture {
 
     public void setDistanceFromDevice(String distanceFromDevice) {
         this.distanceFromDevice = distanceFromDevice;
+    }
+
+    public String getStreamName() {
+        return streamName;
+    }
+
+    public void setStreamName(String streamName) {
+        this.streamName = streamName;
     }
 }

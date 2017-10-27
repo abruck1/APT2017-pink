@@ -35,6 +35,7 @@ public class NearbyJSONArrayHandler {
     final public static String EXTRA_DISTANCE = "com.pink.apt.connexus_pink_android.EXTRA_DISTANCE";
     final public static String EXTRA_STREAM_ID = "com.pink.apt.connexus_pink_android.EXTRA_STREAM_ID";
     final public static String EXTRA_IMAGE_URL = "com.pink.apt.connexus_pink_android.EXTRA_IMAGE_URL";
+    final public static String EXTRA_STREAM_NAME = "com.pink.apt.connexus_pink_android.EXTRA_STREAM_NAME";
 
     private String url;
     private RequestQueue queue;
@@ -62,6 +63,7 @@ public class NearbyJSONArrayHandler {
                         //notify adapter to update
                         String nextPage = "";
                         String nextBool = "false";
+                        ArrayList<String> streamName = new ArrayList<>();
                         ArrayList<String> streamId = new ArrayList<>();
                         ArrayList<String> imageUrl = new ArrayList<>();
                         ArrayList<String> distance = new ArrayList<>();
@@ -83,6 +85,7 @@ public class NearbyJSONArrayHandler {
                                 streamId.add(((JSONObject) foundStreams.get(i)).getString("stream_id"));
                                 imageUrl.add(((JSONObject) foundStreams.get(i)).getString("image_url"));
                                 distance.add(((JSONObject) foundStreams.get(i)).getString("distance"));
+                                streamName.add((((JSONObject) foundStreams.get(i)).getString("stream_name")));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -94,6 +97,7 @@ public class NearbyJSONArrayHandler {
                         newIntent.putExtra(EXTRA_IMAGE_URL, imageUrl);
                         newIntent.putExtra(EXTRA_NEXT_CURSOR, nextPage);
                         newIntent.putExtra(EXTRA_NEXT_BOOL, nextBool);
+                        newIntent.putExtra(EXTRA_STREAM_NAME, streamName);
                         context.sendBroadcast(newIntent);
                     }
                 }, new Response.ErrorListener() {

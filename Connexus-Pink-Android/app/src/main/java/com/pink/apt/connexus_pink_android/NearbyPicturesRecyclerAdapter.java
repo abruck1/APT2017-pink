@@ -53,6 +53,7 @@ public class NearbyPicturesRecyclerAdapter extends RecyclerView.Adapter<NearbyPi
                 final Intent intent = new Intent(context, ViewStreamActivity.class);
                 Bundle extras = new Bundle();
                 extras.putString("STREAM_ID", nearbyPictures.getNearbyPictures().get(holder.getAdapterPosition()).getStreamId());
+                extras.putString("STREAM_NAME", nearbyPictures.getNearbyPictures().get(holder.getAdapterPosition()).getStreamName());
                 intent.putExtras(extras);
                 context.startActivity(intent);
             }

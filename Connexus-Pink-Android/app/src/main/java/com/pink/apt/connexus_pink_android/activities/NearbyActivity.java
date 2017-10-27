@@ -113,9 +113,11 @@ public class NearbyActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if(hasCourseLocationPermission() && hasFineLocationPermission()) {
             location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            currentLong = Double.toString(location.getLongitude());
-            currentLat = Double.toString(location.getLatitude());
-            Log.d(TAG, "Lat,Long: " + currentLat + "," + currentLong);
+            if(location != null) {
+                currentLong = Double.toString(location.getLongitude());
+                currentLat = Double.toString(location.getLatitude());
+                Log.d(TAG, "Lat,Long: " + currentLat + "," + currentLong);
+            }
         } else {
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -193,7 +195,7 @@ public class NearbyActivity extends AppCompatActivity {
         super.onPause();
         unregisterReceiver(nearbyStreamReceiver);
 
-        lm.removeUpdates(locationListener);
+//        lm.removeUpdates(locationListener);
     }
 
     public class NearbyStreamReceiver extends BroadcastReceiver {
@@ -208,6 +210,7 @@ public class NearbyActivity extends AppCompatActivity {
                     ArrayList<String> urls = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_IMAGE_URL);
                     ArrayList<String> distances = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_DISTANCE);
                     ArrayList<String> ids = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_STREAM_ID);
+                    ArrayList<String> streamNames = extras.getStringArrayList(NearbyJSONArrayHandler.EXTRA_STREAM_NAME);
 
                     updateUrl();
 
@@ -221,6 +224,7 @@ public class NearbyActivity extends AppCompatActivity {
                             nearbyPicture.setDistanceFromDevice(Integer.toString(distance.intValue()) + " mi");
                         }
                         nearbyPicture.setStreamId(ids.get(i));
+                        nearbyPicture.setStreamName(streamNames.get(i));
                         nearbyPictures.getNearbyPictures().add(nearbyPicture);
                     }
 
