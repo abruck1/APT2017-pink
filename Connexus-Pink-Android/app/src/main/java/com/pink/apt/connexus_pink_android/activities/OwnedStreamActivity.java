@@ -1,8 +1,5 @@
 package com.pink.apt.connexus_pink_android.activities;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +20,6 @@ import com.pink.apt.connexus_pink_android.models.ManageStreamData;
 import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.MANAGE_URL;
-import static com.pink.apt.connexus_pink_android.GlobalVars.NEARBY_URL;
 
 /**
  * Created by ari on 10/26/17.
@@ -62,8 +58,7 @@ public class OwnedStreamActivity extends AppCompatActivity {
         final ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
 
-        //ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#1", queue, this);
-        ManageJSONHandler returnedJson = new ManageJSONHandler(NEARBY_URL + "long=100&lat=200&p=1", queue, this);
+        ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#1", queue, this);
 
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 

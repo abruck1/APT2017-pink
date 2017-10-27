@@ -1,8 +1,10 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -19,10 +22,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.pink.apt.connexus_pink_android.MultipartUtility;
 import com.pink.apt.connexus_pink_android.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -30,6 +41,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 
 
+import static android.R.attr.mimeType;
 import static com.pink.apt.connexus_pink_android.GlobalVars.GET_UPLOADURL_URL;
 
 
@@ -48,6 +60,7 @@ public class UploadActivity extends AppCompatActivity {
     private String streamName;
     private String uploadURL;
     private Uri imageUri;
+    private RequestQueue queue;
 
 
     @Override
@@ -55,10 +68,19 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
 
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         // get info from intent
         Bundle extras = this.getIntent().getExtras();
         streamID = extras.getString("streamID");
         streamName = extras.getString("streamName");
+
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(this);
 
         //setup the controls
         tagsEditText = (EditText) findViewById(R.id.tagsEditText);
@@ -113,10 +135,7 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void GetUploadURL() {
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_UPLOADURL_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, GET_UPLOADURL_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -141,9 +160,33 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     private void UploadImage() throws IOException {
+        Log.d(TAG, "StreamID=" + streamID);
+        Log.d(TAG, "uploadURL=" + uploadURL);
+
+//        String charset = "UTF-8";
+//        MultipartUtility multipart = new MultipartUtility(uploadURL, charset);
+//
+//        // In your case you are not adding form data so ignore this
+//                /*This is to add parameter values */
+//        multipart.addFormField("streamid", streamID);
+//
+//        //add your file here.
+//                /*This is to add file content*/
+//        multipart.addFilePart("image", new File(imageUri.getPath()));
+//
+//        List<String> response = multipart.finish();
+//        Log.d(TAG, "SERVER REPLIED:");
+//        for (String line : response) {
+//            Log.d(TAG, "Upload Files Response:::" + line);
+//// get your server response here.
+//            //responseString = line;
+//        }
+//    }
+
 
         OkHttpClient client = new OkHttpClient();
         File file = new File(imageUri.getPath());
+
 
         RequestBody formBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -153,19 +196,20 @@ public class UploadActivity extends AppCompatActivity {
 
         okhttp3.Request request = new okhttp3.Request.Builder().url(uploadURL).post(formBody).build();
 
+        Log.d(TAG, "POST request is:" + request);
+
         okhttp3.Response response = client.newCall(request).execute();
         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
         Log.d(TAG, "UploadImage: " + response.toString());
-
-
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.d(TAG, "Activity result");
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             Log.d(TAG, "result ok requestCode=" + requestCode);
             switch (requestCode) {
                 case PICK_IMAGE:
@@ -183,7 +227,7 @@ public class UploadActivity extends AppCompatActivity {
 
                 case USE_CAMERA:
                     //todo will this be same code as above?
-                    Log.d(TAG, "In use camera");
+                    Log.d(TAG, "In use camera" + data.getData());
                     imageUri = data.getData();
                     Log.d(TAG, "image uri=" + imageUri);
 
@@ -211,6 +255,8 @@ public class UploadActivity extends AppCompatActivity {
                     //invalid resultCode
                     break;
             }
+        } else{
+            Log.d(TAG, "Either result code was error or data was null");
         }
 
     }
