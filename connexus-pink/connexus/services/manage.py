@@ -42,6 +42,8 @@ class MobileManage(webapp2.RequestHandler):
         try:
             #user = users.get_current_user().email()
             user = self.request.get('user_email')
+            if user == "":
+                user = 'test@example.com'
             user_streams = Stream.query(Stream.owner == user).fetch()
             user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
         except:

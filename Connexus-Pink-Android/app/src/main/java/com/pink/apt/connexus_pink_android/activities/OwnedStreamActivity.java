@@ -37,7 +37,7 @@ public class OwnedStreamActivity extends AppCompatActivity {
 
         // get email from intent
         Bundle extras = this.getIntent().getExtras();
-        final String email = extras.getString(Intent.EXTRA_TEXT);
+        String email = extras.getString(Intent.EXTRA_TEXT);
 
         queue = Volley.newRequestQueue(this);
         queue.start();

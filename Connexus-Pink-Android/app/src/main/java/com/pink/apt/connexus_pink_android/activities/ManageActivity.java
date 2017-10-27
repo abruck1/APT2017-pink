@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.Toast;
+import static com.pink.apt.connexus_pink_android.GlobalVars.MY_EMAIL;
+
 
 import com.pink.apt.connexus_pink_android.R;
 
@@ -23,7 +25,7 @@ public class ManageActivity extends TabActivity {
 
         // get email from intent
         Bundle extras = this.getIntent().getExtras();
-        final String email = extras.getString(Intent.EXTRA_TEXT);
+        String email = extras.getString(Intent.EXTRA_TEXT);
 
         Button streamsButton = findViewById(R.id.manage_back_to_all_streams);
         streamsButton.setOnClickListener(new View.OnClickListener() {
