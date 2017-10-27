@@ -43,6 +43,9 @@ public class ViewRecyclerAdapter extends RecyclerAdapter {
         viewHolder.lastPicDate.setEnabled(false);
         viewHolder.viewCount.setEnabled(false);
         viewHolder.imgCount.setEnabled(false);
+        viewHolder.imgCount.setHeight(0);
+        viewHolder.viewCount.setHeight(0);
+        viewHolder.lastPicDate.setHeight(0);
         Picasso.with(context).load(galleryList.get(0).getImageUrls().get(i)).resize(75, 75).into(viewHolder.img);
     }
 }

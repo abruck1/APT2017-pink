@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -27,6 +28,8 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.MANAGE_URL;
 
 public class SubscribedStreamsActivity extends AppCompatActivity {
     RequestQueue queue;
+    String TAG = "SubStreamActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,7 @@ public class SubscribedStreamsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<ManageStreamData> streamsList = new ArrayList<>();
 
-        ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
+        final ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
 
         ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#2", queue, this);
@@ -66,6 +69,14 @@ public class SubscribedStreamsActivity extends AppCompatActivity {
         deleteStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String unsubList = "";
+                if (!adapter.selectedList.isEmpty()) {
+                    for (Integer i: adapter.selectedList) {
+                        unsubList = unsubList + adapter.galleryList.get(i).getId();
+                    }
+                    adapter.selectedList.clear();
+                }
+                Log.d(TAG, "Unsub Stream id=" + unsubList);
                 finish();
             }
         });

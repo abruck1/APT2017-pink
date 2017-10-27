@@ -23,6 +23,7 @@ import com.pink.apt.connexus_pink_android.models.ManageStreamData;
 import java.util.ArrayList;
 
 import static com.pink.apt.connexus_pink_android.GlobalVars.MANAGE_URL;
+import static com.pink.apt.connexus_pink_android.GlobalVars.NEARBY_URL;
 
 /**
  * Created by ari on 10/26/17.
@@ -58,18 +59,26 @@ public class OwnedStreamActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         ArrayList<ManageStreamData> streamsList = new ArrayList<>();
 
-        ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
+        final ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
 
-        ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#1", queue, this);
+        //ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#1", queue, this);
+        ManageJSONHandler returnedJson = new ManageJSONHandler(NEARBY_URL + "long=100&lat=200&p=1", queue, this);
+
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
-
-
 
         Button deleteStream = findViewById(R.id.manage_delete_stream);
         deleteStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String deleteList = "";
+                if (!adapter.selectedList.isEmpty()) {
+                    for (Integer i: adapter.selectedList) {
+                        deleteList = deleteList + adapter.galleryList.get(i).getId();
+                    }
+                    adapter.selectedList.clear();
+                }
+                Log.d(TAG, "Deleting Stream id=" + deleteList);
                 finish();
             }
         });
