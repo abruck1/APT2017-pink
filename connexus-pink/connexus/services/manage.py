@@ -41,7 +41,7 @@ class MobileManage(webapp2.RequestHandler):
     def get(self):
         try:
             #user = users.get_current_user().email()
-            user = 'test@example.com'
+            user = self.request.get('user_email')
             user_streams = Stream.query(Stream.owner == user).fetch()
             user_subscriptions = StreamSubscriber.query(StreamSubscriber.user == user).fetch()
         except:

@@ -1,5 +1,6 @@
 package com.pink.apt.connexus_pink_android.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +35,10 @@ public class OwnedStreamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owned_streams);
 
+        // get email from intent
+        Bundle extras = this.getIntent().getExtras();
+        final String email = extras.getString(Intent.EXTRA_TEXT);
+
         queue = Volley.newRequestQueue(this);
         queue.start();
 
@@ -58,7 +63,7 @@ public class OwnedStreamActivity extends AppCompatActivity {
         final ManageRecyclerAdapter adapter = new ManageRecyclerAdapter(this, streamsList);
         recyclerView.setAdapter(adapter);
 
-        ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+"#1", queue, this);
+        ManageJSONHandler returnedJson = new ManageJSONHandler(MANAGE_URL+email+"#1", queue, this);
 
         returnedJson.getJSONObject(adapter, progressBar, recyclerView);
 

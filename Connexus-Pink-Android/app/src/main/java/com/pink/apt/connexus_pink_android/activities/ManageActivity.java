@@ -21,6 +21,10 @@ public class ManageActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
 
+        // get email from intent
+        Bundle extras = this.getIntent().getExtras();
+        final String email = extras.getString(Intent.EXTRA_TEXT);
+
         Button streamsButton = findViewById(R.id.manage_back_to_all_streams);
         streamsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +41,7 @@ public class ManageActivity extends TabActivity {
         spec.setIndicator("Owned Streams"); // set the “CONTACT” as an indicator
         // Create an Intent to launch an Activity for the tab (to be reused)
         intent = new Intent(this, OwnedStreamActivity.class);
+        intent.putExtra(intent.EXTRA_TEXT, email);
         spec.setContent(intent);
         tabHost.addTab(spec);
 
@@ -44,18 +49,10 @@ public class ManageActivity extends TabActivity {
         spec.setIndicator("Subscribed Streams"); // set the “ABOUT” as an indicator
         // Create an Intent to launch an Activity for the tab (to be reused)
         intent = new Intent(this, SubscribedStreamsActivity.class);
+        intent.putExtra(intent.EXTRA_TEXT, email);
         spec.setContent(intent);
         tabHost.addTab(spec);
         //set tab which one you want to open first time 0 or 1
         tabHost.setCurrentTab(0);
-//        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-//            @Override
-//            public void onTabChanged(String tabId) {
-//                // display the name of the tab whenever a tab is changed
-//                Toast.makeText(getApplicationContext(), tabId, Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
-
     }
 }

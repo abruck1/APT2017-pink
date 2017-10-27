@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ import static com.pink.apt.connexus_pink_android.GlobalVars.*;
 public class ViewAllStreamsActivity extends AppCompatActivity {
 
 
+    private static final String TAG = "VIEWALL";
     RequestQueue queue;
     Button nearbyButton;
 
@@ -44,6 +46,12 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         setContentView(R.layout.recycler_layout);
         queue = Volley.newRequestQueue(this);
         queue.start();
+
+        // get email from intent
+        Bundle extras = this.getIntent().getExtras();
+        final String email = extras.getString(Intent.EXTRA_TEXT);
+
+        Log.d(TAG, "User's email=" + email);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.imagegallery);
         recyclerView.setHasFixedSize(true);
@@ -74,10 +82,15 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         });
 
         Button manageStreams = findViewById(R.id.view_all_manage_streams);
+        if(email.isEmpty()) {
+            manageStreams.setEnabled(false);
+            manageStreams.setAlpha(0.5f);
+        }
         manageStreams.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ManageActivity.class);
+                intent.putExtra(Intent.EXTRA_TEXT, email);
                 startActivity(intent);
             }
         });
