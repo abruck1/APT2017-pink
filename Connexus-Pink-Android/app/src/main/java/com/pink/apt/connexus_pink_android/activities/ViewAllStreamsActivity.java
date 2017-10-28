@@ -51,8 +51,8 @@ public class ViewAllStreamsActivity extends AppCompatActivity {
         Bundle extras = this.getIntent().getExtras();
 
         // TODO: users email is not being passed around well here
-        //final String email = extras.getString(Intent.EXTRA_TEXT);
-        final String email = MY_EMAIL;
+        final String email = extras.getString(Intent.EXTRA_TEXT);
+        //final String email = MY_EMAIL;
 
         Log.d(TAG, "User's email=" + email);
 
