@@ -2,47 +2,31 @@ package com.pink.apt.connexus_pink_android.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.pink.apt.connexus_pink_android.MultipartUtility;
+import com.loopj.android.http.*;
 import com.pink.apt.connexus_pink_android.R;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
-
-
-import static android.R.attr.mimeType;
 import static com.pink.apt.connexus_pink_android.GlobalVars.GET_UPLOADURL_URL;
+import cz.msebera.android.httpclient.Header;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 
 
 public class UploadActivity extends AppCompatActivity {
@@ -67,12 +51,6 @@ public class UploadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload);
-
-        if (android.os.Build.VERSION.SDK_INT > 9)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
 
         // get info from intent
         Bundle extras = this.getIntent().getExtras();
@@ -113,19 +91,10 @@ public class UploadActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent();
-                // todo how to call startActivity to upload the image
-
                 //try upload from here
-                try {
-                    UploadImage();
-                    uploadImageView.setVisibility(View.INVISIBLE);
-                    uploadButton.setEnabled(false);
-
-                } catch (IOException e) {
-                    Log.d(TAG, "uploadButton.onClick: " + e.toString());
-                }
-
+                UploadImage();
+                uploadImageView.setVisibility(View.INVISIBLE);
+                uploadButton.setEnabled(false);
             }
         });
 
@@ -159,48 +128,69 @@ public class UploadActivity extends AppCompatActivity {
 
     }
 
-    private void UploadImage() throws IOException {
-        Log.d(TAG, "StreamID=" + streamID);
-        Log.d(TAG, "uploadURL=" + uploadURL);
+    public void UploadImage() {
+        String filePath = GetFilePath(this, imageUri);
+        File file = new File(filePath);
+        Log.d("UploadActivity", "StreamID=" + streamID);
+        Log.d("UploadActivity", "uploadURL=" + uploadURL.replace("/_ah", ""));
+        Log.d("UploadActivity", "file name=" + filePath);
 
-//        String charset = "UTF-8";
-//        MultipartUtility multipart = new MultipartUtility(uploadURL, charset);
-//
-//        // In your case you are not adding form data so ignore this
-//                /*This is to add parameter values */
-//        multipart.addFormField("streamid", streamID);
-//
-//        //add your file here.
-//                /*This is to add file content*/
-//        multipart.addFilePart("image", new File(imageUri.getPath()));
-//
-//        List<String> response = multipart.finish();
-//        Log.d(TAG, "SERVER REPLIED:");
-//        for (String line : response) {
-//            Log.d(TAG, "Upload Files Response:::" + line);
-//// get your server response here.
-//            //responseString = line;
-//        }
-//    }
+        RequestParams params = new RequestParams();
+        try {
+            params.setForceMultipartEntityContentType(true);
+            params.put("file", file, "image/jpeg");
+            params.put("streamID", streamID);
+            params.put("latitude", 0);
+            params.put("longitude", 0);
+            //params.put("url", "");
+            params.put("submit", "Submit");
+//            params.put("redirect", "https://some.url.here");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
+        // http://loopj.com/android-async-http/doc/com/loopj/android/http/AsyncHttpClient.html
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Accept-Encoding:", "gzip, deflate");
+        client.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 
-        OkHttpClient client = new OkHttpClient();
-        File file = new File(imageUri.getPath());
+        client.post(uploadURL, params, new AsyncHttpResponseHandler() {
 
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                Log.d(TAG, "onSuccess: ");
+            }
 
-        RequestBody formBody = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", "image.jpg",
-                        RequestBody.create(MediaType.parse("image/jpg"), file))
-                .build();
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] response, Throwable error) {
+                String myResponse = new String(response);
+                Log.d(TAG, "onFailure: " + myResponse);
+            }
+        });
+    }
 
-        okhttp3.Request request = new okhttp3.Request.Builder().url(uploadURL).post(formBody).build();
+    public static String GetFilePath(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
 
-        Log.d(TAG, "POST request is:" + request);
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
 
-        okhttp3.Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-        Log.d(TAG, "UploadImage: " + response.toString());
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
     }
 
 
@@ -242,13 +232,7 @@ public class UploadActivity extends AppCompatActivity {
                     break;
 
                 case UPLOAD:
-                    //do post
-                    try {
-                        UploadImage();
-                    } catch (IOException e) {
-                        Log.d(TAG, "onActivityResult: UPLOAD: " + e.toString());
-                    }
-
+                    //this isn't called
                     break;
 
                 default:
