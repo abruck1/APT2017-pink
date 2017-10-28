@@ -49,7 +49,7 @@ public class ManageRecyclerAdapter extends RecyclerAdapter {
             public boolean onLongClick(View v) {
                 if (holder.img.getAlpha() == 0.5f) {
                     holder.img.setAlpha(1f); // unselected
-                    selectedList.remove(position);
+                    selectedList.remove(selectedList.indexOf(position));
                 } else {
                     holder.img.setAlpha(0.5f); // selected
                     selectedList.add(position);
@@ -63,5 +63,9 @@ public class ManageRecyclerAdapter extends RecyclerAdapter {
     @Override
     public int getItemCount() {
         return galleryList.size();
+    }
+
+    public void removeFromGellryList (int index) {
+        this.galleryList.remove(index);
     }
 }
